@@ -1,10 +1,8 @@
-
 package co.edu.udistrital.model;
 
 import co.edu.udistrital.model.enums.TipoServicio;
 import co.edu.udistrital.model.enums.NivelCriticidad;
 import co.edu.udistrital.model.enums.EstadoSolicitud;
-
 
 public class SolicitudServicio {
 
@@ -59,8 +57,17 @@ public class SolicitudServicio {
         return criticidad;
     }
 
-    public void setCriticidad(NivelCriticidad criticidad) {
-        this.criticidad = criticidad;
+    public void setCriticidad(int personasHeridas, int viasAfectadas, int complejidad) {
+        long puntajeCriticidad = personasHeridas * 5 + viasAfectadas + complejidad;
+        if (0 <= puntajeCriticidad && puntajeCriticidad < 5) {
+            criticidad = NivelCriticidad.ORDINARIA;
+        } else if (5 <= puntajeCriticidad) {
+            criticidad = NivelCriticidad.CRITICA;
+        } else if (3 <= complejidad) {
+            criticidad = NivelCriticidad.CRITICA;
+        } else {
+            criticidad = null;
+        }
     }
 
     public UnidadServicio getUnidadAsignada() {
