@@ -3,18 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package co.edu.udistrital.controller;
+import com.formdev.flatlaf.FlatDarkLaf;
+import co.edu.udistrital.view.VentanaPrincipal;
+import javax.swing.SwingUtilities;
 
 /**
- *
- * @author Home
+ * Clase encargada de lanzar la primera vez la ventana principal de todo el proyecto
+ * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano.
  */
-public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
+public class Main {
     public static void main(String[] args) {
-        System.out.println("Hola mundo!");
+        FlatDarkLaf.setup(); // dark theme antes de todo
+        SwingUtilities.invokeLater(() -> {
+            new VentanaPrincipal().setVisible(true);
+        });
     }
-    
 }
