@@ -1,6 +1,9 @@
 package co.edu.udistrital.model;
 
 import co.edu.udistrital.model.enums.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Clase central que contiene toda la lógica y estructuras de datos del sistema
@@ -53,6 +56,21 @@ public class Sistema {
         listaUnidades.eliminar(unidad);
     }
 
+    public void enviarAMantenimiento(UnidadServicio unidad) {
+        EstadoUnidad estadoAnterior = unidad.getEstado();
+        unidad.setEstado(EstadoUnidad.MANTENIMIENTO);
+        unidad.setDisponibilidad(false);
+        historial.apilar(new OperacionCambioEstadoUnidad(unidad, estadoAnterior));
+    }
+
+    public void sacarDeMantenimiento(UnidadServicio unidad) {
+        EstadoUnidad estadoAnterior = unidad.getEstado();
+        unidad.setEstado(EstadoUnidad.ACTIVO);
+        unidad.setDisponibilidad(true);
+        historial.apilar(new OperacionCambioEstadoUnidad(unidad, estadoAnterior));
+    }
+    
+    
     public void añadirTecnico(String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
         Tecnico tecnico = new Tecnico(id, nombre, especialidad, disponibilidad, estado);
         listaTecnicos.agregar(tecnico);
@@ -76,12 +94,12 @@ public class Sistema {
         return listaTecnicos.iterador();
     }
 
-    public void añadirCliente(String id, String nombre, String tipo) {
+    public void añadirCliente(String id, String nombre, TipoCliente tipo) {
         Cliente cliente = new Cliente(id, nombre, tipo);
         listaClientes.agregar(cliente);
     }
 
-    public void actualizarCliente(Cliente cliente, String id, String nombre, String tipo) {
+    public void actualizarCliente(Cliente cliente, String id, String nombre, TipoCliente tipo) {
         if (listaClientes.contiene(cliente)) {
             cliente.setId(id);
             cliente.setNombre(nombre);
@@ -96,7 +114,103 @@ public class Sistema {
     public ListaEnlazadaSimple.Iterador<Cliente> iteradorClientes() {
         return listaClientes.iterador();
     }
+    
+    public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion, 
+                                   Tecnico tecnico, String zona){
+        
+        SolicitudServicio solicitud = new SolicitudServicio(cliente, tipoServicio, descripcion, NivelCriticidad.ORDINARIA, null, null, null, EstadoSolicitud.PENDIENTE,zona);
+        
+        solicitud.setPuntajeCriticidad(solicitud.calcularPuntaje());
+        solicitud.setCriticidad(solicitud.calcularNivel());
+        
+        if(solicitud.getCriticidad() == NivelCriticidad.CRITICA){
+            colaCritica.insertar(solicitud);
+        }else{
+            colaOrdinaria.enqueue(solicitud);
+        }
+    }
+    
+    private void atenderSiguienteSolicitud(){
+        SolicitudServicio solicitud;
+        if(!colaCritica.estaVacia()){
+           solicitud = colaCritica.extraerMaxPrioridad();
+        }
+        else if(!colaOrdinaria.estaVacia()){
+            solicitud = colaOrdinaria.dequeue();
+        }else{
+            return;
+        }
+        
+        ListaEnlazadaSimple.Iterador<UnidadServicio> itUnidades = iteradorUnidades();
+        UnidadServicio unidadDisponible = null;
 
+        while (itUnidades.tieneSiguiente()) {
+            UnidadServicio u = itUnidades.siguiente();
+            if (u.isDisponibilidad() && u.getEstado() != EstadoUnidad.MANTENIMIENTO && esCompatible(u.getTipo(), solicitud.getTipoServicio())) {
+                unidadDisponible = u;
+                break;
+            }
+        }
+        
+        if(unidadDisponible == null){
+            if(solicitud.getCriticidad() == NivelCriticidad.CRITICA){
+                colaCritica.insertar(solicitud);
+            }else{
+                colaOrdinaria.enqueue(solicitud);
+            }
+            return;
+        }
+        
+        ListaEnlazadaSimple.Iterador<Tecnico> itTecnicos = iteradorTecnicos();
+        Tecnico tecnicoDisponible = null;
+        
+        while(itTecnicos.tieneSiguiente()){
+            Tecnico t = itTecnicos.siguiente();
+            if(t.isDisponibilidad() && t.getEstado() != EstadoTecnico.ASIGNADO){
+                tecnicoDisponible = t;
+                break;
+            }
+        }
+        
+        if(tecnicoDisponible == null){
+            if(solicitud.getCriticidad() == NivelCriticidad.CRITICA){
+                colaCritica.insertar(solicitud);
+            }else{
+                colaOrdinaria.enqueue(solicitud);
+            }
+            return;
+        }
+        
+        solicitud.setUnidadAsignada(unidadDisponible);
+        solicitud.setTecnico(tecnicoDisponible);
+        unidadDisponible.setDisponibilidad(false);
+        unidadDisponible.setEstado(EstadoUnidad.OCUPADO);
+        tecnicoDisponible.setDisponibilidad(false);
+        tecnicoDisponible.setEstado(EstadoTecnico.ASIGNADO);
+        
+        solicitud.setEstado(EstadoSolicitud.EN_EJECUCION);
+        
+        historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
+        historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
+    }
+
+    public void cerrarSolicitud(SolicitudServicio solicitud) {
+        solicitud.setEstado(EstadoSolicitud.CERRADA);
+
+        if (solicitud.getUnidadAsignada() != null) {
+            solicitud.getUnidadAsignada().setDisponibilidad(true);
+            solicitud.getUnidadAsignada().setEstado(EstadoUnidad.ACTIVO);
+        }
+
+        if (solicitud.getTecnico() != null) {
+            solicitud.getTecnico().setDisponibilidad(true);
+            solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
+        }
+
+        listaCerradas.agregar(solicitud);
+        historial.apilar(new OperacionCierreServicio(solicitud));
+    }
+    
     public Kit añadirKit(String id, String descripcion, boolean completo, boolean requiereReposicion) {
         Kit kit = new Kit(id, descripcion, completo, requiereReposicion);
         return kit;
@@ -135,5 +249,48 @@ public class Sistema {
 
     public Operacion verUltimaOperacion() {
         return historial.verCima();
+    }
+    
+    public ListaEnlazadaSimple.Iterador<SolicitudServicio> iteradorCerradas(){
+        return listaCerradas.iterador();
+    }
+    
+    public void csv() throws IOException{
+        BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.csv"));
+        writer.write("id,   cliente,    tipoServicio,    zona");
+        
+        ListaEnlazadaSimple.Iterador<SolicitudServicio> it = iteradorCerradas();
+        
+        writer.newLine();
+        while (it.tieneSiguiente()) {
+            SolicitudServicio s = it.siguiente();
+            writer.write(s.getId() + ", " + s.getCliente().getNombre() + ", " + s.getTipoServicio() + ", " + s.getZona());
+            writer.newLine();
+        }
+        writer.close();
+    }
+    
+    private boolean esCompatible(TipoUnidad tipoUnidad, TipoServicio tipoServicio) {
+    switch (tipoServicio) {
+            case GRUA:
+                return tipoUnidad == TipoUnidad.GRUA;
+            case PASO_CORRIENTE:
+                return tipoUnidad == TipoUnidad.MOTO 
+                    || tipoUnidad == TipoUnidad.CAMIONETA 
+                    || tipoUnidad == TipoUnidad.VEHICULO_LIVIANO;
+            case CAMBIO_LLANTA:
+                return tipoUnidad == TipoUnidad.CAMIONETA 
+                    || tipoUnidad == TipoUnidad.VEHICULO_LIVIANO;
+            case APERTURA_PUERTAS:
+            case COMBUSTIBLE:
+                return tipoUnidad == TipoUnidad.MOTO 
+                    || tipoUnidad == TipoUnidad.CAMIONETA 
+                    || tipoUnidad == TipoUnidad.VEHICULO_LIVIANO;
+            case REVISION_MECANICA:
+                return tipoUnidad == TipoUnidad.CAMIONETA 
+                    || tipoUnidad == TipoUnidad.VEHICULO_LIVIANO;
+            default:
+                return false;
+        }
     }
 }
