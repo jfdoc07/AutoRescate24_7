@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package co.edu.udistrital.controller;
-import com.formdev.flatlaf.FlatDarkLaf;
+import co.formdev.flatlaf.FlatDarkLaf;
 import co.edu.udistrital.view.VentanaPrincipal;
 import javax.swing.SwingUtilities;
 

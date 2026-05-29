@@ -2,6 +2,7 @@
 package co.edu.udistrital.model;
 import co.edu.udistrital.model.enums.TipoUnidad;
 import co.edu.udistrital.model.enums.EstadoUnidad;
+import java.util.UUID;
 
 public class UnidadServicio {
     
@@ -15,8 +16,8 @@ public class UnidadServicio {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId() {
+        this.id = UUID.randomUUID().toString();
     }
 
     public TipoUnidad getTipo() {

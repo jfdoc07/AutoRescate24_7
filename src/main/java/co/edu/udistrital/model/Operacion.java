@@ -2,8 +2,7 @@
 package co.edu.udistrital.model;
 
 
-public class Operacion <R> {
-    private String descripcion;
-    private String tipo;
-    private R datos;
+public abstract class Operacion {
+    public abstract void deshacer();
+    
 }

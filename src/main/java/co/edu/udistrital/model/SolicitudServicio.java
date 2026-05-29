@@ -86,6 +86,13 @@ public class SolicitudServicio {
         this.tecnico = tecnico;
     }
 
+    public void eliminarTecnico(Tecnico t) {
+        if (tecnico != null && t.equals(this.tecnico)) {
+            tecnico = null;
+        }
+
+    }
+
     public EstadoSolicitud getEstado() {
         return estado;
     }
