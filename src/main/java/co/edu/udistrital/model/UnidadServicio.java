@@ -12,13 +12,19 @@ public class UnidadServicio {
     private String zona;
     private boolean disponibilidad; 
 
+    public UnidadServicio(String id, TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
+        this.id = UUID.randomUUID().toString();
+        this.tipo = tipo;
+        this.estado = EstadoUnidad.ACTIVO;
+        this.zona = zona;
+        this.disponibilidad = disponibilidad;
+    }
+
+    
     public String getId() {
         return id;
     }
 
-    public void setId() {
-        this.id = UUID.randomUUID().toString();
-    }
 
     public TipoUnidad getTipo() {
         return tipo;
