@@ -32,7 +32,11 @@ public class SolicitudServicio {
     }
 
     public Cliente getCliente() {
+<<<<<<< HEAD
         return this.cliente;
+=======
+        return cliente;
+>>>>>>> d4ef097f82bc21d93324f9de9c4a2a207279024c
     }
 
     public void setCliente(Cliente cliente) {
