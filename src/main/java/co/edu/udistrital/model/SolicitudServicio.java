@@ -31,12 +31,12 @@ public class SolicitudServicio {
         this.id = id;
     }
 
-    public String getDatosCliente() {
-        return datosCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setDatosCliente(Cliente datosCliente) {
-        this.datosCliente = datosCliente.toString();
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public TipoServicio getTipoServicio() {
