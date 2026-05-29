@@ -7,16 +7,18 @@ import co.edu.udistrital.model.enums.EstadoSolicitud;
 public class SolicitudServicio {
 
     private String id;
-    private String datosCliente;
+    private Cliente cliente;
     private TipoServicio tipoServicio;
     private String descripcion;
     private NivelCriticidad criticidad;
     private UnidadServicio unidadAsignada;
     private Tecnico tecnico;
+    private Kit kitAsignado;
 
     private EstadoSolicitud estado;
     private String zona;
 
+    
     public int getPrioridad() {
         return this.criticidad == NivelCriticidad.CRITICA ? 2 : 1;
     }
