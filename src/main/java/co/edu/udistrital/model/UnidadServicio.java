@@ -19,7 +19,6 @@ public class UnidadServicio {
         this.zona = zona;
         this.disponibilidad = disponibilidad;
     }
-
     
     public String getId() {
         return id;

@@ -16,6 +16,16 @@ public class Tecnico {
     private boolean disponibilidad;
     private EstadoTecnico estado;
 
+    public Tecnico(String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
+        this.id = id;
+        this.nombre = nombre;
+        this.especialidad = especialidad;
+        this.disponibilidad = disponibilidad;
+        this.estado = estado;
+    }
+
+    
+    
     public String getId() {
         return id;
     }
