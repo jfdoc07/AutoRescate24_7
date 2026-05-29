@@ -31,17 +31,6 @@ public class SolicitudServicio {
         this.id = id;
     }
 
-    public Cliente getCliente() {
-<<<<<<< HEAD
-        return cliente;
-=======
-<<<<<<< HEAD
-        return this.cliente;
-=======
-        return cliente;
->>>>>>> d4ef097f82bc21d93324f9de9c4a2a207279024c
->>>>>>> 30c65bb469061a52d7be73586c4d28302605958e
-    }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
