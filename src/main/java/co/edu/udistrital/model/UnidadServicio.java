@@ -12,7 +12,7 @@ public class UnidadServicio {
     private String zona;
     private boolean disponibilidad; 
 
-    public UnidadServicio(String id, TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
+    public UnidadServicio(TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
         this.id = UUID.randomUUID().toString();
         this.tipo = tipo;
         this.estado = EstadoUnidad.ACTIVO;
