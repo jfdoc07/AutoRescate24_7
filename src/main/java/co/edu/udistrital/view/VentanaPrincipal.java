@@ -112,7 +112,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        labelFoto.setText("AutoRescate");
+        labelFoto.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        labelFoto.setText("AutoRescate 24/7");
 
         botonHistorial.setText("Historial");
         botonHistorial.setBorder(null);
@@ -141,7 +142,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addComponent(botonHistorial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(cajaBotonesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                .addComponent(labelFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         cajaBotonesLayout.setVerticalGroup(
