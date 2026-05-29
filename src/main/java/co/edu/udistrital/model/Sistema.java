@@ -19,44 +19,7 @@ public class Sistema {
 
     }
 
-    public void añadirUnidad(String id, TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
-        UnidadServicio unidad = new UnidadServicio(id, tipo, estado, zona, disponibilidad);
-        listaUnidades.agregar(unidad);
-    }
 
-    public void verUnidades() {
-        while (listaUnidades.iterador().tieneSiguiente()) {
-            //printea/muestra todas las unidades
-        }
-    }
-
-    public void actualizarUnidad(UnidadServicio unidad, String id, TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
-        while (listaUnidades.iterador().tieneSiguiente()) {
-            if (listaUnidades.contiene(unidad)) {
-                unidad.setTipo(tipo);
-                unidad.setEstado(estado);
-                unidad.setZona(zona);
-                unidad.setDisponibilidad(disponibilidad);
-            }
-        }
-    }
-
-    public void eliminarUnidad(UnidadServicio unidad) {
-        listaUnidades.eliminar(unidad);
-    }
-
-    public void añadirKit(String id, String descripcion, boolean completo, boolean requiereReposicion) {
-        Kit kit = new Kit(id, descripcion, completo, requiereReposicion);
-        pilaKit.apilar(kit);
-    }
-
-    public void apilarKit(Kit kit) {
-        pilaKit.apilar(kit);
-    }
-
-    public void desapilarKit() {
-        pilaKit.desapilar();
-    }
     
     
 }
