@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package co.edu.udistrital.model;
+
+import co.edu.udistrital.model.enums.TipoCliente;
 
 /**
  *
@@ -11,9 +9,9 @@ package co.edu.udistrital.model;
 public class Cliente {
     private String id;
     private String nombre;
-    private String tipo;
+    private TipoCliente tipo;
 
-    public Cliente(String id, String nombre, String tipo) {
+    public Cliente(String id, String nombre, TipoCliente tipo) {
         this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -36,10 +34,10 @@ public class Cliente {
     }
 
     public String getTipo() {
-        return tipo;
+        return tipo.toString();
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoCliente tipo) {
         this.tipo = tipo;
     }
 
