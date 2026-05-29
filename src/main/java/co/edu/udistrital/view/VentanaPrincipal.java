@@ -4,17 +4,46 @@
  */
 package co.edu.udistrital.view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import javax.swing.JPanel;
+
 /**
+ * JFrame que tiene todos los contenidos de la aplicación.
  *
- * @author Home
+ * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     /**
-     * Creates new form VentanaPrincipal
+     * Constructor del JFrame.
      */
+    private PanelDashboard dashboard;
+    private PanelSolicitudes solicitudes;
+    private PanelTecnicos tecnicos;
+
     public VentanaPrincipal() {
         initComponents();
+        getContentPane().setBackground(new Color(26, 26, 46));
+
+// Fondo del panel contenido
+// Fondo del panel de botones laterales
+// (el que tiene los botones de navegación)
+        cajaBotones.setOpaque(true);
+        cajaBotones.setBackground(new Color(26, 26, 46));
+        contenido.setOpaque(true);
+        contenido.setBackground(new Color(26, 26, 46));
+        contenido.setLayout(new BorderLayout());
+        dashboard = new PanelDashboard();
+        solicitudes = new PanelSolicitudes();
+        tecnicos = new PanelTecnicos();
+
+        mostrarPanel(dashboard);
+        setResizable(false);
+        setSize(1200, 650);           // ancho x alto que quieras
+        setLocationRelativeTo(null);  // centrar en pantalla
     }
 
     /**
@@ -26,57 +55,180 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        contenido = new javax.swing.JPanel();
+        cajaBotones = new javax.swing.JPanel();
+        botonDashboard = new javax.swing.JButton();
+        botonSolicitudes = new javax.swing.JButton();
+        botonTecnicos = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(26, 26, 46));
+
+        javax.swing.GroupLayout contenidoLayout = new javax.swing.GroupLayout(contenido);
+        contenido.setLayout(contenidoLayout);
+        contenidoLayout.setHorizontalGroup(
+            contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1076, Short.MAX_VALUE)
+        );
+        contenidoLayout.setVerticalGroup(
+            contenidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        botonDashboard.setText("Dashboard");
+        botonDashboard.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonDashboardActionPerformed(evt);
+            }
+        });
+
+        botonSolicitudes.setText("Solicitudes");
+        botonSolicitudes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSolicitudesActionPerformed(evt);
+            }
+        });
+
+        botonTecnicos.setText("Técnicos");
+        botonTecnicos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonTecnicosActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("AutoRescate");
+
+        javax.swing.GroupLayout cajaBotonesLayout = new javax.swing.GroupLayout(cajaBotones);
+        cajaBotones.setLayout(cajaBotonesLayout);
+        cajaBotonesLayout.setHorizontalGroup(
+            cajaBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cajaBotonesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(cajaBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(botonDashboard, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                    .addComponent(botonSolicitudes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonTecnicos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(cajaBotonesLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        cajaBotonesLayout.setVerticalGroup(
+            cajaBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cajaBotonesLayout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(botonDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonTecnicos, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 403, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1138, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cajaBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 553, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(contenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cajaBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void botonTecnicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTecnicosActionPerformed
+        mostrarPanel(tecnicos);
+    }//GEN-LAST:event_botonTecnicosActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaPrincipal().setVisible(true);
-            }
-        });
+    private void botonDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDashboardActionPerformed
+        mostrarPanel(dashboard);
+    }//GEN-LAST:event_botonDashboardActionPerformed
+
+    private void botonSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSolicitudesActionPerformed
+        mostrarPanel(solicitudes);
+    }//GEN-LAST:event_botonSolicitudesActionPerformed
+
+    /**
+     * Este método muestra el panel según el botón que se clickee.
+     * @param panel es el panel que se mostrará
+     */
+    
+    private void mostrarPanel(JPanel panel) {
+        // Desactivar todos
+        estilizarBoton(botonDashboard, false);
+        estilizarBoton(botonSolicitudes, false);
+        estilizarBoton(botonTecnicos, false);
+        /*estilizarBoton(botonKits, false);
+        estilizarBoton(botonHistorial, false);*/
+
+        // Activar el que corresponde
+        if (panel == dashboard) {
+            estilizarBoton(botonDashboard, true);
+        }
+        if (panel == solicitudes) {
+            estilizarBoton(botonSolicitudes, true);
+        }
+        if (panel == tecnicos) {
+            estilizarBoton(botonTecnicos, true);
+        }
+        /*if (panel == kits) {
+            estilizarBoton(botonKits, true);
+        }
+        if (panel == historial) {
+            estilizarBoton(botonHistorial, true);
+        }*/
+
+        // Cambiar panel
+        contenido.removeAll();
+        contenido.add(panel, BorderLayout.CENTER);
+        contenido.revalidate();
+        contenido.repaint();
+    }
+
+    /**
+     * Este método colorea los botones del menú lateral.
+     * @param btn objeto botón que se pintará
+     * @param activo condición si el botón está clickeado. Cambia el color del botón
+     * si éste está clickeado.
+     */
+    
+    private void estilizarBoton(javax.swing.JButton btn, boolean activo) {
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        if (activo) {
+            btn.setBackground(new Color(233, 69, 96));
+            btn.setForeground(Color.WHITE);
+        } else {
+            btn.setBackground(new Color(26, 26, 46));
+            btn.setForeground(new Color(126, 200, 227));
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonDashboard;
+    private javax.swing.JButton botonSolicitudes;
+    private javax.swing.JButton botonTecnicos;
+    private javax.swing.JPanel cajaBotones;
+    private javax.swing.JPanel contenido;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -18,6 +18,22 @@ public class SolicitudServicio {
     private EstadoSolicitud estado;
     private String zona;
 
+    public SolicitudServicio(String id, Cliente cliente, TipoServicio tipoServicio, String descripcion, NivelCriticidad criticidad, UnidadServicio unidadAsignada, Tecnico tecnico, Kit kitAsignado, EstadoSolicitud estado, String zona) {
+        this.id = id;
+        this.cliente = cliente;
+        this.tipoServicio = tipoServicio;
+        this.descripcion = descripcion;
+        this.criticidad = criticidad;
+        this.unidadAsignada = unidadAsignada;
+        this.tecnico = tecnico;
+        this.kitAsignado = kitAsignado;
+        this.estado = estado;
+        this.zona = zona;
+    }
+
+    public void setCriticidad(NivelCriticidad criticidad) {
+        this.criticidad = criticidad;
+    }
     
     public int getPrioridad() {
         return this.criticidad == NivelCriticidad.CRITICA ? 2 : 1;
@@ -32,11 +48,7 @@ public class SolicitudServicio {
     }
 
     public Cliente getCliente() {
-<<<<<<< HEAD
         return this.cliente;
-=======
-        return cliente;
->>>>>>> d4ef097f82bc21d93324f9de9c4a2a207279024c
     }
 
     public void setCliente(Cliente cliente) {
@@ -109,6 +121,4 @@ public class SolicitudServicio {
     public void setKitAsignado(Kit kitAsignado) {
         this.kitAsignado = kitAsignado;
     }
-
-    
 }
