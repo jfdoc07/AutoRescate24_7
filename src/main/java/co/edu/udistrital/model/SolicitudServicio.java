@@ -31,12 +31,12 @@ public class SolicitudServicio {
         this.id = id;
     }
 
-    public String getDatosCliente() {
-        return datosCliente;
+    public Cliente getCliente() {
+        return this.cliente;
     }
 
-    public void setDatosCliente(Cliente datosCliente) {
-        this.datosCliente = datosCliente.toString();
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public TipoServicio getTipoServicio() {
@@ -59,18 +59,6 @@ public class SolicitudServicio {
         return criticidad;
     }
 
-    public void setCriticidad(int personasHeridas, int viasAfectadas, int complejidad) {
-        long puntajeCriticidad = personasHeridas * 5 + viasAfectadas + complejidad;
-        if (0 <= puntajeCriticidad && puntajeCriticidad < 5) {
-            criticidad = NivelCriticidad.ORDINARIA;
-        } else if (5 <= puntajeCriticidad) {
-            criticidad = NivelCriticidad.CRITICA;
-        } else if (3 <= complejidad) {
-            criticidad = NivelCriticidad.CRITICA;
-        } else {
-            criticidad = null;
-        }
-    }
 
     public UnidadServicio getUnidadAsignada() {
         return unidadAsignada;
@@ -92,7 +80,6 @@ public class SolicitudServicio {
         if (tecnico != null && t.equals(this.tecnico)) {
             tecnico = null;
         }
-
     }
 
     public EstadoSolicitud getEstado() {
@@ -111,4 +98,13 @@ public class SolicitudServicio {
         this.zona = zona;
     }
 
+    public Kit getKitAsignado() {
+        return kitAsignado;
+    }
+
+    public void setKitAsignado(Kit kitAsignado) {
+        this.kitAsignado = kitAsignado;
+    }
+
+    
 }
