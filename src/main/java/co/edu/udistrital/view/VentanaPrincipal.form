@@ -84,7 +84,7 @@
                   <Component id="botonHistorial" alignment="1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="labelFoto" pref="98" max="32767" attributes="0"/>
+                      <Component id="labelFoto" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -145,7 +145,10 @@
             </Component>
             <Component class="javax.swing.JLabel" name="labelFoto">
               <Properties>
-                <Property name="text" type="java.lang.String" value="AutoRescate"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="3"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="AutoRescate 24/7"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="botonHistorial">
