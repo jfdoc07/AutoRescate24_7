@@ -32,7 +32,7 @@ public class Sistema {
 
     public void actualizarUnidad(UnidadServicio unidad, String id, TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
         while (listaUnidades.iterador().tieneSiguiente()) {
-            if(listaUnidades.contiene(unidad)){
+            if (listaUnidades.contiene(unidad)) {
                 unidad.setTipo(tipo);
                 unidad.setEstado(estado);
                 unidad.setZona(zona);
@@ -40,8 +40,22 @@ public class Sistema {
             }
         }
     }
-    public void eliminarUnidad(UnidadServicio unidad){
+
+    public void eliminarUnidad(UnidadServicio unidad) {
         listaUnidades.eliminar(unidad);
+    }
+
+    public void añadirKit(String id, String descripcion, boolean completo, boolean requiereReposicion) {
+        Kit kit = new Kit(id, descripcion, completo, requiereReposicion);
+        pilaKit.apilar(kit);
+    }
+
+    public void apilarKit(Kit kit) {
+        pilaKit.apilar(kit);
+    }
+
+    public void desapilarKit() {
+        pilaKit.desapilar();
     }
     
     

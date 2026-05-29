@@ -11,6 +11,16 @@ public class Kit {
     private boolean completo;
     private boolean requiereReposicion;
 
+    public Kit(String id, String descripcion, boolean completo, boolean requiereReposicion) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.completo = completo;
+        this.requiereReposicion = requiereReposicion;
+    }
+
+    
+    
+    
     public String getId() {
         return id;
     }
