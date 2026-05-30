@@ -3,6 +3,7 @@ package co.edu.udistrital.model;
 import co.edu.udistrital.model.enums.TipoServicio;
 import co.edu.udistrital.model.enums.NivelCriticidad;
 import co.edu.udistrital.model.enums.EstadoSolicitud;
+import co.edu.udistrital.model.enums.Zona;
 import java.util.UUID;
 
 public class SolicitudServicio {
@@ -16,7 +17,7 @@ public class SolicitudServicio {
     private Tecnico tecnico;
     private Kit kitAsignado;
     private EstadoSolicitud estado;
-    private String zona;
+    private Zona zona;
 
     public int getPuntajeCriticidad() {
         return puntajeCriticidad;
@@ -27,7 +28,7 @@ public class SolicitudServicio {
     }
     private int puntajeCriticidad; // se calcula al construir
 
-    public SolicitudServicio(Cliente cliente, TipoServicio tipoServicio, String descripcion, NivelCriticidad criticidad, UnidadServicio unidadAsignada, Tecnico tecnico, Kit kitAsignado, EstadoSolicitud estado, String zona) {
+    public SolicitudServicio(Cliente cliente, TipoServicio tipoServicio, String descripcion, NivelCriticidad criticidad, UnidadServicio unidadAsignada, Tecnico tecnico, Kit kitAsignado, EstadoSolicitud estado, Zona zona) {
         this.id = UUID.randomUUID().toString();
         this.cliente = cliente;
         this.tipoServicio = tipoServicio;
@@ -47,7 +48,6 @@ public class SolicitudServicio {
     public int calcularPuntaje() {
         int puntaje = 0;
 
-        // Gravedad del servicio
         switch (tipoServicio) {
             case GRUA:              puntaje += 30; break;
             case REVISION_MECANICA: puntaje += 20; break;
@@ -57,27 +57,19 @@ public class SolicitudServicio {
             case COMBUSTIBLE:       puntaje +=  5; break;
         }
 
-        // Tipo de cliente
         switch (cliente.getTipo()) {
             case "ASEGURADORA":         puntaje += 30; break;
             case "EMPRESA_TRANSPORTE":  puntaje += 20; break;
             case "PARTICULAR":          puntaje +=  5; break;
         }
 
-        // Impacto vial
-        if (zona != null && zona.toUpperCase().contains("VIA_PRINCIPAL")) {
-            puntaje += 20;
-        }
-
         return puntaje;
     }
 
-    // El nivel sigue existiendo para saber si es crítica o no
     public NivelCriticidad calcularNivel() {
-        return puntajeCriticidad >= 50 ? NivelCriticidad.CRITICA : NivelCriticidad.ORDINARIA;
+        return puntajeCriticidad >= 35 ? NivelCriticidad.CRITICA : NivelCriticidad.ORDINARIA;
     }
 
-    // Este es el que usa ColaPrioridad para ordenar
     public int getPrioridad() {
         return puntajeCriticidad;
     }
@@ -145,11 +137,11 @@ public class SolicitudServicio {
         this.estado = estado;
     }
 
-    public String getZona() {
+    public Zona getZona() {
         return zona;
     }
 
-    public void setZona(String zona) {
+    public void setZona(Zona zona) {
         this.zona = zona;
     }
 

@@ -4,6 +4,8 @@
  */
 package co.edu.udistrital.model;
 import co.edu.udistrital.model.enums.EstadoTecnico;
+import co.edu.udistrital.model.enums.TipoServicio;
+import java.util.UUID;
 
 /**
  *
@@ -12,12 +14,12 @@ import co.edu.udistrital.model.enums.EstadoTecnico;
 public class Tecnico {
     private String id;
     private String nombre;
-    private String especialidad;
+    private TipoServicio especialidad;
     private boolean disponibilidad;
     private EstadoTecnico estado;
 
-    public Tecnico(String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
-        this.id = id;
+    public Tecnico(String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
+        this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.especialidad = especialidad;
         this.disponibilidad = disponibilidad;
@@ -30,9 +32,6 @@ public class Tecnico {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
@@ -42,11 +41,11 @@ public class Tecnico {
         this.nombre = nombre;
     }
 
-    public String getEspecialidad() {
+    public TipoServicio getEspecialidad() {
         return especialidad;
     }
 
-    public void setEspecialidad(String especialidad) {
+    public void setEspecialidad(TipoServicio especialidad) {
         this.especialidad = especialidad;
     }
 

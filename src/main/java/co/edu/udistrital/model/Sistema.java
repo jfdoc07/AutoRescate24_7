@@ -33,7 +33,7 @@ public class Sistema {
         listaCerradas = new ListaEnlazadaSimple<>();
     }
 
-    public void añadirUnidad(TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
+    public void añadirUnidad(TipoUnidad tipo, EstadoUnidad estado, Zona zona, boolean disponibilidad) {
         UnidadServicio unidad = new UnidadServicio(tipo, estado, zona, disponibilidad);
         listaUnidades.agregar(unidad);
     }
@@ -43,7 +43,7 @@ public class Sistema {
     }
 
     public void actualizarUnidad(UnidadServicio unidad, TipoUnidad tipo, EstadoUnidad estado,
-            String zona, boolean disponibilidad) {
+            Zona zona, boolean disponibilidad) {
         if (listaUnidades.contiene(unidad)) {
             unidad.setTipo(tipo);
             unidad.setEstado(estado);
@@ -71,14 +71,13 @@ public class Sistema {
     }
     
     
-    public void añadirTecnico(String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
-        Tecnico tecnico = new Tecnico(id, nombre, especialidad, disponibilidad, estado);
+    public void añadirTecnico( String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
+        Tecnico tecnico = new Tecnico(nombre, especialidad, disponibilidad, estado);
         listaTecnicos.agregar(tecnico);
     }
 
-    public void actualizarTecnico(Tecnico tecnico, String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
+    public void actualizarTecnico(Tecnico tecnico, String id, String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
         if (listaTecnicos.contiene(tecnico)) {
-            tecnico.setId(id);
             tecnico.setNombre(nombre);
             tecnico.setEspecialidad(especialidad);
             tecnico.setDisponibilidad(disponibilidad);
@@ -116,7 +115,7 @@ public class Sistema {
     }
     
     public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion, 
-                                   Tecnico tecnico, String zona){
+                                   Tecnico tecnico, Zona zona){
         
         SolicitudServicio solicitud = new SolicitudServicio(cliente, tipoServicio, descripcion, NivelCriticidad.ORDINARIA, null, null, null, EstadoSolicitud.PENDIENTE,zona);
         
@@ -146,7 +145,8 @@ public class Sistema {
 
         while (itUnidades.tieneSiguiente()) {
             UnidadServicio u = itUnidades.siguiente();
-            if (u.isDisponibilidad() && u.getEstado() != EstadoUnidad.MANTENIMIENTO && esCompatible(u.getTipo(), solicitud.getTipoServicio())) {
+            if (u.isDisponibilidad() && u.getEstado() != EstadoUnidad.MANTENIMIENTO 
+                && esCompatible(u.getTipo(), solicitud.getTipoServicio()) && u.getZona() == solicitud.getZona()){
                 unidadDisponible = u;
                 break;
             }
@@ -166,7 +166,7 @@ public class Sistema {
         
         while(itTecnicos.tieneSiguiente()){
             Tecnico t = itTecnicos.siguiente();
-            if(t.isDisponibilidad() && t.getEstado() != EstadoTecnico.ASIGNADO){
+            if(t.isDisponibilidad() && t.getEstado() != EstadoTecnico.ASIGNADO && t.getEspecialidad() == solicitud.getTipoServicio()){
                 tecnicoDisponible = t;
                 break;
             }
@@ -293,4 +293,37 @@ public class Sistema {
                 return false;
         }
     }
+
+    public Cola<SolicitudServicio> getColaOrdinaria() {
+        return colaOrdinaria;
+    }
+
+    public ColaPrioridad getColaCritica() {
+        return colaCritica;
+    }
+
+    public Pila<Operacion> getHistorial() {
+        return historial;
+    }
+
+    public Pila<Kit> getPilaKits() {
+        return pilaKits;
+    }
+
+    public ListaEnlazadaSimple<UnidadServicio> getListaUnidades() {
+        return listaUnidades;
+    }
+
+    public ListaEnlazadaSimple<Tecnico> getListaTecnicos() {
+        return listaTecnicos;
+    }
+
+    public ListaEnlazadaSimple<Cliente> getListaClientes() {
+        return listaClientes;
+    }
+
+    public ListaEnlazadaSimple<SolicitudServicio> getListaCerradas() {
+        return listaCerradas;
+    }
+    
 }

@@ -2,6 +2,7 @@
 package co.edu.udistrital.model;
 import co.edu.udistrital.model.enums.TipoUnidad;
 import co.edu.udistrital.model.enums.EstadoUnidad;
+import co.edu.udistrital.model.enums.Zona;
 import java.util.UUID;
 
 public class UnidadServicio {
@@ -9,10 +10,10 @@ public class UnidadServicio {
     private String id;
     private TipoUnidad tipo;
     private EstadoUnidad estado;
-    private String zona;
+    private Zona zona;
     private boolean disponibilidad; 
 
-    public UnidadServicio(TipoUnidad tipo, EstadoUnidad estado, String zona, boolean disponibilidad) {
+    public UnidadServicio(TipoUnidad tipo, EstadoUnidad estado, Zona zona, boolean disponibilidad) {
         this.id = UUID.randomUUID().toString();
         this.tipo = tipo;
         this.estado = EstadoUnidad.ACTIVO;
@@ -41,11 +42,11 @@ public class UnidadServicio {
         this.estado = estado;
     }
 
-    public String getZona() {
+    public Zona getZona() {
         return zona;
     }
 
-    public void setZona(String zona) {
+    public void setZona(Zona zona) {
         this.zona = zona;
     }
 
