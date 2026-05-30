@@ -43,7 +43,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", nombre=" + nombre + ", tipo=" + tipo + '}';
+        return this.nombre;
     }
     
     

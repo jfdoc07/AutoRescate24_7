@@ -25,7 +25,6 @@ public class UnidadServicio {
         return id;
     }
 
-
     public TipoUnidad getTipo() {
         return tipo;
     }
@@ -58,6 +57,9 @@ public class UnidadServicio {
         this.disponibilidad = disponibilidad;
     }
     
-    
+    @Override
+    public String toString(){
+        return tipo.toString();
+    }
     
 }
