@@ -71,14 +71,13 @@ public class Sistema {
     }
     
     
-    public void añadirTecnico(String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
-        Tecnico tecnico = new Tecnico(id, nombre, especialidad, disponibilidad, estado);
+    public void añadirTecnico( String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
+        Tecnico tecnico = new Tecnico(nombre, especialidad, disponibilidad, estado);
         listaTecnicos.agregar(tecnico);
     }
 
     public void actualizarTecnico(Tecnico tecnico, String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
         if (listaTecnicos.contiene(tecnico)) {
-            tecnico.setId(id);
             tecnico.setNombre(nombre);
             tecnico.setEspecialidad(especialidad);
             tecnico.setDisponibilidad(disponibilidad);
@@ -293,4 +292,37 @@ public class Sistema {
                 return false;
         }
     }
+
+    public Cola<SolicitudServicio> getColaOrdinaria() {
+        return colaOrdinaria;
+    }
+
+    public ColaPrioridad getColaCritica() {
+        return colaCritica;
+    }
+
+    public Pila<Operacion> getHistorial() {
+        return historial;
+    }
+
+    public Pila<Kit> getPilaKits() {
+        return pilaKits;
+    }
+
+    public ListaEnlazadaSimple<UnidadServicio> getListaUnidades() {
+        return listaUnidades;
+    }
+
+    public ListaEnlazadaSimple<Tecnico> getListaTecnicos() {
+        return listaTecnicos;
+    }
+
+    public ListaEnlazadaSimple<Cliente> getListaClientes() {
+        return listaClientes;
+    }
+
+    public ListaEnlazadaSimple<SolicitudServicio> getListaCerradas() {
+        return listaCerradas;
+    }
+    
 }

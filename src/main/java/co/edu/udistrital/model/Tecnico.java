@@ -4,6 +4,7 @@
  */
 package co.edu.udistrital.model;
 import co.edu.udistrital.model.enums.EstadoTecnico;
+import java.util.UUID;
 
 /**
  *
@@ -16,8 +17,8 @@ public class Tecnico {
     private boolean disponibilidad;
     private EstadoTecnico estado;
 
-    public Tecnico(String id, String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
-        this.id = id;
+    public Tecnico(String nombre, String especialidad, boolean disponibilidad, EstadoTecnico estado) {
+        this.id = UUID.randomUUID().toString();
         this.nombre = nombre;
         this.especialidad = especialidad;
         this.disponibilidad = disponibilidad;
@@ -30,9 +31,6 @@ public class Tecnico {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;

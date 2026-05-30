@@ -36,11 +36,11 @@ public class MainController {
         // Nota: Necesitarás crear métodos "getters" en VentanaPrincipal 
         // para acceder a cada panel, ej: ventana.getPanelTecnicos()
         
-        this.tecnicosController = new TecnicosController(ventana.getPanelTecnicos(), sistema);
-        this.solicitudesController = new SolicitudesController(ventana.getPanelSolicitudes(), sistema);
-        this.kitsController = new KitsController(ventana.getPanelKits(), sistema);
-        this.historialController = new HistorialController(ventana.getPanelHistorial(), sistema);
-        this.dashboardController = new DashboardController(ventana.getPanelDashboard(), sistema);
+        this.tecnicosController = new TecnicosController(ventana.getTecnicos(), sistema);
+        this.solicitudesController = new SolicitudesController(ventana.getSolicitudes(), sistema);
+        this.kitsController = new KitsController(ventana.getKits(), sistema);
+        this.historialController = new HistorialController(ventana.getHistorial(), sistema);
+        this.dashboardController = new DashboardController(ventana.getDashboard(), sistema);
     }
     
     public void iniciar() {
