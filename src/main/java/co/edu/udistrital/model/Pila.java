@@ -33,7 +33,7 @@ public class Pila<T> {
 
     public T desapilar() {
         if (estaVacia()) {
-            throw new RuntimeException("No se puede desapilar: la pila está vacía.");
+            throw new RuntimeException("Pila vacía.");
         }
         T dato = cima.dato;
         cima = cima.siguiente;
@@ -49,44 +49,52 @@ public class Pila<T> {
     }
 
     public boolean estaVacia() {
-        return tamanio == 0;
-    }
-
-    public int tamanio() {
-        return tamanio;
-    }
-
-    public void vaciar() {
-        cima = null;
-        tamanio = 0;
+        return cima == null;
     }
 
     public boolean contiene(T dato) {
+
         Nodo<T> actual = cima;
+
         while (actual != null) {
+
             if (actual.dato.equals(dato)) {
+
                 return true;
+
             }
+
             actual = actual.siguiente;
+
         }
+
         return false;
+
     }
 
-    @Override
-    public String toString() {
-        if (estaVacia()) {
-            return "Pila: []";
+    public Iterador<T> iterador() {
+        return new Iterador<>(cima);
+    }
+
+    public static class Iterador<T> {
+
+        private Nodo<T> actual;
+
+        public Iterador(Nodo<T> cima) {
+            this.actual = cima;
         }
-        StringBuilder sb = new StringBuilder("Pila (cima → base): [");
-        Nodo<T> actual = cima;
-        while (actual != null) {
-            sb.append(actual.dato);
-            if (actual.siguiente != null) {
-                sb.append(", ");
+
+        public boolean tieneSiguiente() {
+            return actual != null;
+        }
+
+        public T siguiente() {
+            if (!tieneSiguiente()) {
+                throw new IllegalStateException("No hay más elementos");
             }
+            T dato = actual.dato;
             actual = actual.siguiente;
+            return dato;
         }
-        sb.append("]");
-        return sb.toString();
     }
 }

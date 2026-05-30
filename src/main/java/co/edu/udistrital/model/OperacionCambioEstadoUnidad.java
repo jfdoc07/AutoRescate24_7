@@ -24,6 +24,11 @@ public class OperacionCambioEstadoUnidad  extends Operacion{
         unidad.setEstado(anterior);
         
     }
+
+    @Override
+    public String toString() {
+        return "OperacionCambioEstadoUnidad{" + "unidad=" + unidad + ", anterior=" + anterior + '}';
+    }
     
     
 }

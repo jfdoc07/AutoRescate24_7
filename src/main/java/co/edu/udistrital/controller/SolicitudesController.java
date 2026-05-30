@@ -49,6 +49,12 @@ public class SolicitudesController {
             Tecnico tecnicoActual = itTecnico.siguiente();
             vista.getTecnico().addItem(tecnicoActual);
         }
+        
+        vista.getZona().addItem(Zona.CENTRO);
+        vista.getZona().addItem(Zona.ESTE);
+        vista.getZona().addItem(Zona.NORTE);
+        vista.getZona().addItem(Zona.OESTE);
+        vista.getZona().addItem(Zona.SUR);
 
         this.vista.getBotonGuardar.addActionListener(new ActionListener() {
             @Override
@@ -64,5 +70,6 @@ public class SolicitudesController {
         String descripcion = vista.getDescripcion().getText(); // TextArea llamado Descripcion
         Tecnico tecnico = (Tecnico) vista.getTecnico().getSelectedItem(); // ComboBox llamado Tecnico
         Zona zona = (Zona) vista.getZona().getSelectedItem(); // combo box llamado Zona
+        sistema.registrarSolicitud(cliente, tipoServicio, descripcion, tecnico, zona);
     }
 }

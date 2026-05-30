@@ -20,6 +20,11 @@ public class OperacionAsignacionTecnico extends Operacion{
         solicitud.eliminarTecnico(tecnico);
         tecnico.setDisponibilidad(true);
     }
+
+    @Override
+    public String toString() {
+        return "OperacionAsignacionTecnico{" + "tecnico=" + tecnico + ", solicitud=" + solicitud + '}';
+    }
     
     
 }

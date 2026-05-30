@@ -17,6 +17,11 @@ public class OperacionCierreServicio extends Operacion{
     public void deshacer() {
         this.solicitud.setEstado(EstadoSolicitud.EN_EJECUCION);
     }
+
+    @Override
+    public String toString() {
+        return "OperacionCierreServicio{" + "solicitud=" + solicitud + '}';
+    }
     
     
     

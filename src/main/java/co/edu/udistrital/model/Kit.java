@@ -1,6 +1,8 @@
 
 package co.edu.udistrital.model;
 
+import java.util.Random;
+
 /**
  *
  * @author Usuario
@@ -11,8 +13,9 @@ public class Kit {
     private boolean completo;
     private boolean requiereReposicion;
 
-    public Kit(String id, String descripcion, boolean completo, boolean requiereReposicion) {
-        this.id = id;
+    public Kit( String descripcion, boolean completo, boolean requiereReposicion) {
+        Random rand = new Random();
+        this.id = String.valueOf(rand.nextInt(10000));
         this.descripcion = descripcion;
         this.completo = completo;
         this.requiereReposicion = requiereReposicion;
