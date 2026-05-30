@@ -30,26 +30,26 @@ public class SolicitudesController {
     }
 
     public void inicializarEventos() {
-        
+
         ListaEnlazadaSimple.Iterador<Cliente> itCliente = sistema.getListaClientes().iterador();
         while (itCliente.tieneSiguiente()) {
             Cliente clienteActual = itCliente.siguiente();
             vista.getCliente().addItem(clienteActual);
         }
-        
+
         vista.getTipoServicio().addItem(TipoServicio.APERTURA_PUERTAS);
         vista.getTipoServicio().addItem(TipoServicio.CAMBIO_LLANTA);
         vista.getTipoServicio().addItem(TipoServicio.COMBUSTIBLE);
         vista.getTipoServicio().addItem(TipoServicio.GRUA);
         vista.getTipoServicio().addItem(TipoServicio.PASO_CORRIENTE);
         vista.getTipoServicio().addItem(TipoServicio.REVISION_MECANICA);
-        
+
         ListaEnlazadaSimple.Iterador<Tecnico> itTecnico = sistema.getListaTecnicos().iterador();
         while (itTecnico.tieneSiguiente()) {
             Tecnico tecnicoActual = itTecnico.siguiente();
             vista.getTecnico().addItem(tecnicoActual);
         }
-        
+
         vista.getZona().addItem(Zona.CENTRO);
         vista.getZona().addItem(Zona.ESTE);
         vista.getZona().addItem(Zona.NORTE);
@@ -62,6 +62,12 @@ public class SolicitudesController {
                 guardarSolicitud();
             }
         });
+        this.vista.getBotonActualizarCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actualizarOpciones();
+            }
+        });
     }
 
     public void guardarSolicitud() {
@@ -71,5 +77,21 @@ public class SolicitudesController {
         Tecnico tecnico = (Tecnico) vista.getTecnico().getSelectedItem(); // ComboBox llamado Tecnico
         Zona zona = (Zona) vista.getZona().getSelectedItem(); // combo box llamado Zona
         sistema.registrarSolicitud(cliente, tipoServicio, descripcion, tecnico, zona);
+    }
+
+    public void actualizarOpciones() {
+        vista.getCliente().removeAllItems();
+        vista.getTecnico().removeAllItems();
+
+        ListaEnlazadaSimple.Iterador<Cliente> itCliente = sistema.getListaClientes().iterador();
+        while (itCliente.tieneSiguiente()) {
+            Cliente clienteActual = itCliente.siguiente();
+            vista.getCliente().addItem(clienteActual);
+        }
+        ListaEnlazadaSimple.Iterador<Tecnico> itTecnico = sistema.getListaTecnicos().iterador();
+        while (itTecnico.tieneSiguiente()) {
+            Tecnico tecnicoActual = itTecnico.siguiente();
+            vista.getTecnico().addItem(tecnicoActual);
+        }
     }
 }

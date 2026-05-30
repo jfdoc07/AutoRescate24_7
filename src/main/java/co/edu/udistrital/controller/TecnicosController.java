@@ -6,6 +6,7 @@ package co.edu.udistrital.controller;
 
 import co.edu.udistrital.model.Sistema;
 import co.edu.udistrital.model.enums.EstadoTecnico;
+import co.edu.udistrital.model.enums.TipoServicio;
 import co.edu.udistrital.view.PanelTecnicos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,14 @@ public class TecnicosController {
     }
 
     private void inicializarEventos() {
-
+        
+        vista.getEspecialidad().addItem(TipoServicio.APERTURA_PUERTAS);
+        vista.getEspecialidad().addItem(TipoServicio.CAMBIO_LLANTA);
+        vista.getEspecialidad().addItem(TipoServicio.COMBUSTIBLE);
+        vista.getEspecialidad().addItem(TipoServicio.GRUA);
+        vista.getEspecialidad().addItem(TipoServicio.PASO_CORRIENTE);
+        vista.getEspecialidad().addItem(TipoServicio.REVISION_MECANICA);
+        
         this.vista.getBotonGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,5 +47,9 @@ public class TecnicosController {
         if (nombre != null && especialidad != null) {
             sistema.añadirTecnico(nombre, especialidad, true, EstadoTecnico.ASIGNADO);
         }
+    }
+    
+    public void actualizarTabla(){
+        
     }
 }

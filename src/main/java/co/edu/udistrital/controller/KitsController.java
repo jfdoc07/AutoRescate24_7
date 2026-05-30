@@ -35,4 +35,6 @@ public class KitsController {
         String descripcion = vista.getDescripcion().getText(); //TextArea llamado descripcion
         sistema.añadirKit(descripcion, true, true);
     }
+    
+
 }

@@ -32,9 +32,6 @@ public class MainController {
     }
     
     private void inicializarControladores() {
-        // Aquí conectamos cada panel específico con el sistema central
-        // Nota: Necesitarás crear métodos "getters" en VentanaPrincipal 
-        // para acceder a cada panel, ej: ventana.getPanelTecnicos()
         
         this.tecnicosController = new TecnicosController(ventana.getTecnicos(), sistema);
         this.solicitudesController = new SolicitudesController(ventana.getSolicitudes(), sistema);
