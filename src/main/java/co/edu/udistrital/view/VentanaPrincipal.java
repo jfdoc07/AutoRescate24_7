@@ -113,6 +113,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         labelFoto.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        labelFoto.setForeground(new java.awt.Color(126, 200, 227));
         labelFoto.setText("AutoRescate 24/7");
 
         botonHistorial.setText("Historial");
