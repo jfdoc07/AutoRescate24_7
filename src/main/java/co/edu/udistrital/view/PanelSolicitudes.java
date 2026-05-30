@@ -129,4 +129,6 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         btn.setBorderPainted(false);
         btn.setOpaque(true);
     }
+    
+    
 }

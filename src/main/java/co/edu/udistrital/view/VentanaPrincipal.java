@@ -49,6 +49,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);  // centrar en pantalla
     }
 
+    public PanelDashboard getDashboard() {
+        return dashboard;
+    }
+
+    public PanelSolicitudes getSolicitudes() {
+        return solicitudes;
+    }
+
+    public PanelTecnicos getTecnicos() {
+        return tecnicos;
+    }
+
+    public PanelKits getKits() {
+        return kits;
+    }
+
+    public PanelHistorial getHistorial() {
+        return historial;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -270,4 +290,5 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             btn.setForeground(new Color(126, 200, 227));
         }
     }
+
 }
