@@ -2,12 +2,13 @@
 package co.edu.udistrital.model;
 
 import java.util.Random;
+import java.util.UUID;
 
 /**
  *
  * @author Usuario
  */
-public class Kit {
+public class Kit implements Identificable{
     private String id;
     private String descripcion;
     private boolean completo;
@@ -15,13 +16,14 @@ public class Kit {
 
     public Kit( String descripcion, boolean completo, boolean requiereReposicion) {
         Random rand = new Random();
-        this.id = String.valueOf(rand.nextInt(10000));
+        this.id = UUID.randomUUID().toString();
         this.descripcion = descripcion;
         this.completo = completo;
         this.requiereReposicion = requiereReposicion;
     }
     
-    public String getId() {
+    @Override
+    public String getUuid() {
         return id;
     }
 

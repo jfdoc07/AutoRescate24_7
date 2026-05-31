@@ -5,7 +5,7 @@ import co.edu.udistrital.model.enums.EstadoUnidad;
 import co.edu.udistrital.model.enums.Zona;
 import java.util.UUID;
 
-public class UnidadServicio {
+public class UnidadServicio implements Identificable{
     
     private String id;
     private TipoUnidad tipo;
@@ -21,7 +21,8 @@ public class UnidadServicio {
         this.disponibilidad = disponibilidad;
     }
     
-    public String getId() {
+    @Override
+    public String getUuid() {
         return id;
     }
 

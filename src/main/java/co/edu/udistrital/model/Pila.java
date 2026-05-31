@@ -1,5 +1,7 @@
 package co.edu.udistrital.model;
 
+import java.util.UUID;
+
 public class Pila<T> {
 
     private static class Nodo<T> {
@@ -96,5 +98,29 @@ public class Pila<T> {
             actual = actual.siguiente;
             return dato;
         }
+    }
+    
+    public T obtenerPorUuid(UUID uuidBuscado) {
+        if (uuidBuscado == null || cima == null) {
+            return null;
+        }
+
+        Nodo<T> actual = cima;
+
+        while (actual != null) {
+            T datoActual = actual.dato;
+
+            if (datoActual instanceof Identificable) {
+                Identificable elemento = (Identificable) datoActual;
+
+                // Comparamos los UUIDs
+                if (elemento.getUuid().equals(uuidBuscado)) {
+                    return datoActual;
+                }
+            }
+            actual = actual.siguiente;
+        }
+
+        return null; 
     }
 }

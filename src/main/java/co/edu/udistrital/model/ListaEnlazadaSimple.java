@@ -1,5 +1,7 @@
 package co.edu.udistrital.model;
 
+import java.util.UUID;
+
 public class ListaEnlazadaSimple<T> {
 
     private Nodo<T> cabeza;
@@ -121,5 +123,27 @@ public class ListaEnlazadaSimple<T> {
             return dato;
         }
 
+    }
+    
+    public T obtenerPorUuid(UUID uuidBuscado) {
+        if (uuidBuscado == null || cabeza == null) {
+            return null;
+        }
+
+        Nodo<T> actual = cabeza;
+        
+        while (actual != null) {
+            T datoActual = actual.getDato();
+            
+            if (datoActual instanceof Identificable) {
+                Identificable elemento = (Identificable) datoActual;
+                
+                if (elemento.getUuid().equals(uuidBuscado)) {
+                    return datoActual;
+                }
+            }
+            actual = actual.getSiguiente();
+        }
+        return null;
     }
 }

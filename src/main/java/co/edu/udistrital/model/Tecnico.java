@@ -11,7 +11,7 @@ import java.util.UUID;
  *
  * @author Usuario
  */
-public class Tecnico {
+public class Tecnico implements Identificable{
     private String id;
     private String nombre;
     private TipoServicio especialidad;
@@ -28,7 +28,8 @@ public class Tecnico {
 
     
     
-    public String getId() {
+    @Override
+    public String getUuid() {
         return id;
     }
 

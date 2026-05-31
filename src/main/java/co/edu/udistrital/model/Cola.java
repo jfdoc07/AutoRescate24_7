@@ -1,6 +1,8 @@
 
 package co.edu.udistrital.model;
 
+import java.util.UUID;
+
 public class Cola <Y>{
 
     private Nodo<Y> inicio;  
@@ -67,6 +69,29 @@ public class Cola <Y>{
 
     public Nodo<Y> getFin() {
         return fin;
+    }
+    
+    public Y obtenerPorUuid(UUID uuidBuscado) {
+        if (uuidBuscado == null || inicio == null) {
+            return null;
+        }
+
+        Nodo<Y> actual = inicio;
+
+        while (actual != null) {
+            Y datoActual = actual.getDato();
+
+            if (datoActual instanceof Identificable) {
+                Identificable elemento = (Identificable) datoActual;
+                
+                if (elemento.getUuid().equals(uuidBuscado)) {
+                    return datoActual;
+                }
+            }
+            actual = actual.getSiguiente();
+        }
+
+        return null;
     }
 
     

@@ -4,6 +4,7 @@ import co.edu.udistrital.model.enums.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * Clase central que contiene toda la lógica y estructuras de datos del sistema
@@ -19,6 +20,7 @@ public class Sistema {
     private Pila<Kit> pilaKits;
     private ListaEnlazadaSimple<UnidadServicio> listaUnidades;
     private ListaEnlazadaSimple<Tecnico> listaTecnicos;
+    private ListaEnlazadaSimple<Kit> listaKits;
     private ListaEnlazadaSimple<Cliente> listaClientes;
     private ListaEnlazadaSimple<SolicitudServicio> listaCerradas;
 
@@ -29,6 +31,7 @@ public class Sistema {
         pilaKits = new Pila<>();
         listaUnidades = new ListaEnlazadaSimple<>();
         listaTecnicos = new ListaEnlazadaSimple<>();
+        listaKits = new ListaEnlazadaSimple<>();
         listaClientes = new ListaEnlazadaSimple<>();
         listaCerradas = new ListaEnlazadaSimple<>();
     }
@@ -91,7 +94,6 @@ public class Sistema {
     public ListaEnlazadaSimple.Iterador<Tecnico> iteradorTecnicos() {
         return listaTecnicos.iterador();
     }
-
 
     public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion,
             Tecnico tecnico, Zona zona) {
@@ -191,6 +193,7 @@ public class Sistema {
 
     public Kit añadirKit(String descripcion, boolean completo, boolean requiereReposicion) {
         Kit kit = new Kit(descripcion, completo, requiereReposicion);
+        listaKits.agregar(kit);
         return kit;
     }
 
@@ -200,6 +203,10 @@ public class Sistema {
 
     public void retirarKitDeRevision() {
         pilaKits.desapilar();
+    }
+    
+    public void eliminarKit(Kit kit){
+        listaKits.eliminar(kit);
     }
 
     public void actualizarKit(Kit kit, String id, String descripcion, boolean completo, boolean requiereReposicion) {
@@ -270,6 +277,32 @@ public class Sistema {
             default:
                 return false;
         }
+    }
+
+    public UnidadServicio buscarUnidadPorUuid(UUID uuidBuscado) {
+        if (uuidBuscado == null) {
+            return null;
+        }
+        UnidadServicio unidadEncontrada = listaUnidades.obtenerPorUuid(uuidBuscado);
+        return unidadEncontrada;
+    }
+
+    public Kit buscarKitPorUuid(UUID uuidBuscado) {
+        if (uuidBuscado == null) {
+            return null;
+        }
+
+        Kit kitEncontrado = listaKits.obtenerPorUuid(uuidBuscado);
+
+        return kitEncontrado;
+    }
+
+    public Tecnico buscarTecnicoPorUuid(UUID uuidBuscado) {
+        if (uuidBuscado == null) {
+            return null;
+        }
+        Tecnico tecnicoEncontrado = listaTecnicos.obtenerPorUuid(uuidBuscado);
+        return tecnicoEncontrado;
     }
 
     public Cola<SolicitudServicio> getColaOrdinaria() {
