@@ -28,10 +28,11 @@ public class MainController {
     public MainController() {
         FlatDarkLaf.setup();
 
-        this.sistema = new Sistema(); // o como se llame tu modelo
+        this.sistema = new Sistema();
         this.ventana = new VentanaPrincipal();
 
         inicializarControladores();
+        conectarNavegacion();
     }
 
     private void inicializarControladores() {
@@ -44,5 +45,31 @@ public class MainController {
 
     public void iniciar() {
         ventana.setVisible(true);
+    }
+
+    private void conectarNavegacion() {
+        ventana.getBotonDashboard().addActionListener(e -> {
+            ventana.mostrarPanel(ventana.getDashboard());
+            /*dashboardController.refrescar();*/
+        });
+
+        ventana.getBotonTecnicos().addActionListener(e -> {
+            ventana.mostrarPanel(ventana.getTecnicos());
+            /*tecnicosController.actualizarTabla();*/
+        });
+        ventana.getBotonSolicitudes().addActionListener(e -> {
+            ventana.mostrarPanel(ventana.getSolicitudes());
+            solicitudesController.llenarComboTecnicos(); // ← aquí se refresca
+        });
+
+        ventana.getBotonKits().addActionListener(e -> {
+            ventana.mostrarPanel(ventana.getKits());
+            /*kitsController.actualizarPila();*/
+        });
+
+        ventana.getBotonHistorial().addActionListener(e -> {
+            ventana.mostrarPanel(ventana.getHistorial());
+            /*historialController.actualizarPila();*/
+        });
     }
 }

@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
@@ -202,23 +203,23 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonTecnicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonTecnicosActionPerformed
-        mostrarPanel(tecnicos);
+
     }//GEN-LAST:event_botonTecnicosActionPerformed
 
     private void botonDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDashboardActionPerformed
-        mostrarPanel(dashboard);
+
     }//GEN-LAST:event_botonDashboardActionPerformed
 
     private void botonSolicitudesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSolicitudesActionPerformed
-        mostrarPanel(solicitudes);
+
     }//GEN-LAST:event_botonSolicitudesActionPerformed
 
     private void botonHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonHistorialActionPerformed
-        mostrarPanel(historial);
+
     }//GEN-LAST:event_botonHistorialActionPerformed
 
     private void botonKitsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonKitsActionPerformed
-        mostrarPanel(kits);
+
     }//GEN-LAST:event_botonKitsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -238,7 +239,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
      *
      * @param panel es el panel que se mostrará
      */
-    private void mostrarPanel(JPanel panel) {
+    public void mostrarPanel(JPanel panel) {
         // Desactivar todos
         estilizarBoton(botonDashboard, false);
         estilizarBoton(botonSolicitudes, false);
@@ -291,7 +292,25 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             btn.setForeground(new Color(126, 200, 227));
         }
     }
-    
-    
+
+    public JButton getBotonDashboard() {
+        return botonDashboard;
+    }
+
+    public JButton getBotonHistorial() {
+        return botonHistorial;
+    }
+
+    public JButton getBotonKits() {
+        return botonKits;
+    }
+
+    public JButton getBotonSolicitudes() {
+        return botonSolicitudes;
+    }
+
+    public JButton getBotonTecnicos() {
+        return botonTecnicos;
+    }
 
 }

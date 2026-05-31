@@ -27,14 +27,17 @@ public class SolicitudesController {
         this.vista = vista;
         this.sistema = sistema;
         inicializarEventos();
+        llenarComboTecnicos();
     }
 
     public void inicializarEventos() {
 
+        vista.getCliente().removeAllItems();
         vista.getCliente().addItem(Cliente.ASEGURADORA.toString());
         vista.getCliente().addItem(Cliente.EMPRESA.toString());
         vista.getCliente().addItem(Cliente.PARTICULAR.toString());
 
+        vista.getTipoServicio().removeAllItems();
         vista.getTipoServicio().addItem(TipoServicio.APERTURA_PUERTAS.toString());
         vista.getTipoServicio().addItem(TipoServicio.CAMBIO_LLANTA.toString());
         vista.getTipoServicio().addItem(TipoServicio.COMBUSTIBLE.toString());
@@ -42,11 +45,7 @@ public class SolicitudesController {
         vista.getTipoServicio().addItem(TipoServicio.PASO_CORRIENTE.toString());
         vista.getTipoServicio().addItem(TipoServicio.REVISION_MECANICA.toString());
 
-        /*while (sistema.iteradorTecnicos().tieneSiguiente()) {
-            Tecnico tecnicoActual = sistema.iteradorTecnicos().siguiente();
-            vista.getTecnico().addItem(tecnicoActual);
-        }*/
-
+        vista.getZona().removeAllItems();
         vista.getZona().addItem(Zona.CENTRO.toString());
         vista.getZona().addItem(Zona.ESTE.toString());
         vista.getZona().addItem(Zona.NORTE.toString());
@@ -59,31 +58,36 @@ public class SolicitudesController {
                 guardarSolicitud();
             }
         });
-        this.vista.getBotonActualizarCombo().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                actualizarOpciones();
-            }
-        });
     }
 
     public void guardarSolicitud() {
         Cliente cliente = (Cliente) vista.getCliente().getSelectedItem();  // Combobox llamada Cliente
         TipoServicio tipoServicio = (TipoServicio) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
         String descripcion = vista.getDescripcion().getText(); // TextArea llamado Descripcion
-        String idTecnico = vista.getTecnico(); // ComboBox llamado Tecnico
+        /*String idTecnico = vista.getTecnico(); ComboBox llamado Tecnico*/
         Zona zona = (Zona) vista.getZona().getSelectedItem(); // combo box llamado Zona
-        sistema.registrarSolicitud(cliente, tipoServicio, descripcion, tecnico, zona);
+        sistema.registrarSolicitud(cliente, tipoServicio, descripcion, zona);
         System.out.println("solicitud registrada con exito");
     }
 
-    public void actualizarOpciones() {
-        vista.getTecnico().removeAllItems();
+    public void llenarComboTecnicos() {
+        int n = sistema.getListaTecnicos().getTamanno();
 
-       /* while (sistema.iteradorTecnicos().tieneSiguiente()) {
-            Tecnico tecnicoActual = sistema.iteradorTecnicos().siguiente();
-            vista.getTecnico().addItem(tecnicoActual);
-        }*/
-       System.out.println("Opciones actualizadas");
+        String[] ids = new String[n];
+        String[] nombres = new String[n];
+
+        ListaEnlazadaSimple.Iterador<Tecnico> it
+                = sistema.getListaTecnicos().iterador();
+        int i = 0;
+
+        while (it.tieneSiguiente()) {     // ← mismo iterador
+            Tecnico t = it.siguiente();  // ← mismo iterador
+            ids[i] = t.getUuid().toString();
+            nombres[i] = t.getNombre() + " — " + t.getEspecialidad();
+            i++;
+        }
+
+        vista.llenarComboTecnicos(ids, nombres);
     }
+
 }

@@ -95,8 +95,7 @@ public class Sistema {
         return listaTecnicos.iterador();
     }
 
-    public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion,
-            Tecnico tecnico, Zona zona) {
+    public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion, Zona zona) {
 
         SolicitudServicio solicitud = new SolicitudServicio(cliente, tipoServicio, descripcion, NivelCriticidad.ORDINARIA, null, null, null, EstadoSolicitud.PENDIENTE, zona);
 
