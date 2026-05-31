@@ -48,6 +48,7 @@ public class TecnicosController {
         if (nombre != null && especialidad != null) {
             sistema.añadirTecnico(nombre, especialidad, true, EstadoTecnico.DISPONIBLE);
         }
+        System.out.println("Tecnico guardado correctamente");
     }
 
     public void actualizarTabla() {

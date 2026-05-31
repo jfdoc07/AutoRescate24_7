@@ -18,6 +18,8 @@ public class PanelSolicitudes extends javax.swing.JPanel {
     /**
      * Creates new form PanelSolicitudes
      */
+    
+    private String[] idsTecnicos;
     public PanelSolicitudes() {
         initComponents();
         pintarFondo(this);
@@ -55,6 +57,11 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         jPanel1.setPreferredSize(new java.awt.Dimension(1076, 645));
 
         cliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clienteActionPerformed(evt);
+            }
+        });
 
         tipoServicio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -149,6 +156,10 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clienteActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonActualizarCombo;
     private javax.swing.JButton botonGuardar;
@@ -165,9 +176,8 @@ public class PanelSolicitudes extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> zona;
     // End of variables declaration//GEN-END:variables
     /**
-     * Este método es el que solicita la cantidad de jugadores, solicita los
-     * nombres, indica el turno, y elimina o no a los jugadores dependiendo del
-     * número que les salga.
+     * Este método se encarga de colorear todos los contenidos dentro de los
+     * contenedores.
      *
      * @param contenedor el JPanel principal. Toma todos los elementos al
      * interior y los colorea, les da estilos.
@@ -212,6 +222,21 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         btn.setBorderPainted(false);
         btn.setOpaque(true);
     }
+    
+    /**
+     * Método encargado de llenar el combo de técnicos a partir del arreglo de
+     * nombres desde el controlador.
+     * 
+     * @param ids
+     * @param nombres 
+     */
+    public void llenarComboTecnicos(String[] ids, String [] nombres){
+        this.idsTecnicos = ids;
+        tecnico.removeAllItems();
+        for(String nombre: nombres){
+            tecnico.addItem(nombre);
+        }
+    }
 
     public JComboBox<String> getCliente() {
         return cliente;
@@ -221,8 +246,10 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         return descripcion;
     }
 
-    public JComboBox<String> getTecnico() {
-        return tecnico;
+    public String getTecnico() {
+        int indice = tecnico.getSelectedIndex();
+        if (indice < 0 || idsTecnicos == null) return null;
+        return idsTecnicos[indice];
     }
 
     public JComboBox<String> getTipoServicio() {

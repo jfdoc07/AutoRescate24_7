@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
  * @author Usuario
  */
 public class KitsController {
+
     private PanelKits vista;
     private Sistema sistema;
 
@@ -22,19 +23,20 @@ public class KitsController {
         this.sistema = sistema;
         inicializarKit();
     }
-    
-    public void inicializarKit(){
-                this.vista.getBotonGuardar().addActionListener(new ActionListener() {
+
+    public void inicializarKit() {
+        this.vista.getBotonGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarKit();
             }
         });
     }
-    public void guardarKit(){
+
+    public void guardarKit() {
         String descripcion = vista.getDescripcion().getText(); //TextArea llamado descripcion
         sistema.añadirKit(descripcion, true, true);
+        System.out.println("kit guardado correctamente");
     }
-    
 
 }
