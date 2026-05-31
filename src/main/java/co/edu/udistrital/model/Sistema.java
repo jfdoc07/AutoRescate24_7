@@ -109,9 +109,9 @@ public class Sistema {
             colaOrdinaria.enqueue(solicitud);
         }
     }
-
-    private void atenderSiguienteSolicitud() {
+    public void atenderSiguienteSolicitud() {
         SolicitudServicio solicitud;
+
         if (!colaCritica.estaVacia()) {
             solicitud = colaCritica.extraerMaxPrioridad();
         } else if (!colaOrdinaria.estaVacia()) {
@@ -122,16 +122,15 @@ public class Sistema {
 
         ListaEnlazadaSimple.Iterador<UnidadServicio> itUnidades = iteradorUnidades();
         UnidadServicio unidadDisponible = null;
-
         while (itUnidades.tieneSiguiente()) {
             UnidadServicio u = itUnidades.siguiente();
             if (u.isDisponibilidad() && u.getEstado() != EstadoUnidad.MANTENIMIENTO
-                    && esCompatible(u.getTipo(), solicitud.getTipoServicio()) && u.getZona() == solicitud.getZona()) {
+                    && esCompatible(u.getTipo(), solicitud.getTipoServicio())
+                    && u.getZona() == solicitud.getZona()) {
                 unidadDisponible = u;
                 break;
             }
         }
-
         if (unidadDisponible == null) {
             if (solicitud.getCriticidad() == NivelCriticidad.CRITICA) {
                 colaCritica.insertar(solicitud);
@@ -141,17 +140,16 @@ public class Sistema {
             return;
         }
 
+        // Verificar técnico
         ListaEnlazadaSimple.Iterador<Tecnico> itTecnicos = iteradorTecnicos();
         Tecnico tecnicoDisponible = null;
-
         while (itTecnicos.tieneSiguiente()) {
             Tecnico t = itTecnicos.siguiente();
-            if (t.isDisponibilidad() && t.getEstado() != EstadoTecnico.ASIGNADO && t.getEspecialidad() == solicitud.getTipoServicio()) {
+            if (t.isDisponibilidad() && t.getEstado() != EstadoTecnico.ASIGNADO) {
                 tecnicoDisponible = t;
                 break;
             }
         }
-
         if (tecnicoDisponible == null) {
             if (solicitud.getCriticidad() == NivelCriticidad.CRITICA) {
                 colaCritica.insertar(solicitud);
@@ -161,14 +159,29 @@ public class Sistema {
             return;
         }
 
+        // Verificar kit
+        if (pilaKits.estaVacia()) {
+            if (solicitud.getCriticidad() == NivelCriticidad.CRITICA) {
+                colaCritica.insertar(solicitud);
+            } else {
+                colaOrdinaria.enqueue(solicitud);
+            }
+            return;
+        }
+
+        // Todo disponible — asignar recursos y cambiar estados
+        Kit kit = retirarKitDeRevision();
+
         solicitud.setUnidadAsignada(unidadDisponible);
         solicitud.setTecnico(tecnicoDisponible);
+        solicitud.setKitAsignado(kit);
+        solicitud.setEstado(EstadoSolicitud.EN_EJECUCION);
+
         unidadDisponible.setDisponibilidad(false);
         unidadDisponible.setEstado(EstadoUnidad.OCUPADO);
+
         tecnicoDisponible.setDisponibilidad(false);
         tecnicoDisponible.setEstado(EstadoTecnico.ASIGNADO);
-
-        solicitud.setEstado(EstadoSolicitud.EN_EJECUCION);
 
         historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
         historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
@@ -201,8 +214,8 @@ public class Sistema {
         pilaKits.apilar(kit);
     }
 
-    public void retirarKitDeRevision() {
-        pilaKits.desapilar();
+    public Kit retirarKitDeRevision() {
+         return pilaKits.desapilar();
     }
     
     public void eliminarKit(Kit kit){
