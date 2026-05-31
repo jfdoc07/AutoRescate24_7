@@ -14,9 +14,8 @@ import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        FlatDarkLaf.setup(); // dark theme antes de todo
         SwingUtilities.invokeLater(() -> {
-            new VentanaPrincipal().setVisible(true);
+            new MainController().iniciar();
         });
     }
 }

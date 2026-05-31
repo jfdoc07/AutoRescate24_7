@@ -24,7 +24,7 @@ public class KitsController {
     }
     
     public void inicializarKit(){
-                this.vista.getBotonGuardar.addActionListener(new ActionListener() {
+                this.vista.getBotonGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarKit();

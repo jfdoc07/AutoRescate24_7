@@ -24,14 +24,14 @@ public class TecnicosController {
     }
 
     private void inicializarEventos() {
-        
-        vista.getEspecialidad().addItem(TipoServicio.APERTURA_PUERTAS);
-        vista.getEspecialidad().addItem(TipoServicio.CAMBIO_LLANTA);
-        vista.getEspecialidad().addItem(TipoServicio.COMBUSTIBLE);
-        vista.getEspecialidad().addItem(TipoServicio.GRUA);
-        vista.getEspecialidad().addItem(TipoServicio.PASO_CORRIENTE);
-        vista.getEspecialidad().addItem(TipoServicio.REVISION_MECANICA);
-        
+
+        vista.getEspecialidad().addItem(TipoServicio.APERTURA_PUERTAS.toString());
+        vista.getEspecialidad().addItem(TipoServicio.CAMBIO_LLANTA.toString());
+        vista.getEspecialidad().addItem(TipoServicio.COMBUSTIBLE.toString());
+        vista.getEspecialidad().addItem(TipoServicio.GRUA.toString());
+        vista.getEspecialidad().addItem(TipoServicio.PASO_CORRIENTE.toString());
+        vista.getEspecialidad().addItem(TipoServicio.REVISION_MECANICA.toString());
+
         this.vista.getBotonGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,13 +43,14 @@ public class TecnicosController {
 
     private void guardarTecnico() {
         String nombre = vista.getNombre().getText();  //Es un JTextField
-        String especialidad = vista.getEspecialidad().getText();  // es un JComboBox
+        String especialidadStr = vista.getEspecialidad().getSelectedItem().toString();  // es un JComboBox
+        TipoServicio especialidad = TipoServicio.valueOf(especialidadStr); // convierte a enum
         if (nombre != null && especialidad != null) {
-            sistema.añadirTecnico(nombre, especialidad, true, EstadoTecnico.ASIGNADO);
+            sistema.añadirTecnico(nombre, especialidad, true, EstadoTecnico.DISPONIBLE);
         }
     }
-    
-    public void actualizarTabla(){
-        
+
+    public void actualizarTabla() {
+
     }
 }

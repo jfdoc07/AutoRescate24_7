@@ -28,7 +28,7 @@ public class HistorialController {
     }
 
     public void inicializarHistorial() {
-        this.vista.getBoton.addActionListener(new ActionListener() {
+        this.vista.getBoton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 verHistorial();

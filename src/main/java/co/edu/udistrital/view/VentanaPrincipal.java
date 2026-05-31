@@ -49,6 +49,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);  // centrar en pantalla
     }
 
+    //Getters de los paneles
     public PanelDashboard getDashboard() {
         return dashboard;
     }
@@ -290,5 +291,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             btn.setForeground(new Color(126, 200, 227));
         }
     }
+    
+    
 
 }

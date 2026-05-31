@@ -37,12 +37,12 @@ public class SolicitudesController {
             vista.getCliente().addItem(clienteActual);
         }
 
-        vista.getTipoServicio().addItem(TipoServicio.APERTURA_PUERTAS);
-        vista.getTipoServicio().addItem(TipoServicio.CAMBIO_LLANTA);
-        vista.getTipoServicio().addItem(TipoServicio.COMBUSTIBLE);
-        vista.getTipoServicio().addItem(TipoServicio.GRUA);
-        vista.getTipoServicio().addItem(TipoServicio.PASO_CORRIENTE);
-        vista.getTipoServicio().addItem(TipoServicio.REVISION_MECANICA);
+        vista.getTipoServicio().addItem(TipoServicio.APERTURA_PUERTAS.toString());
+        vista.getTipoServicio().addItem(TipoServicio.CAMBIO_LLANTA.toString());
+        vista.getTipoServicio().addItem(TipoServicio.COMBUSTIBLE.toString());
+        vista.getTipoServicio().addItem(TipoServicio.GRUA.toString());
+        vista.getTipoServicio().addItem(TipoServicio.PASO_CORRIENTE.toString());
+        vista.getTipoServicio().addItem(TipoServicio.REVISION_MECANICA.toString());
 
         ListaEnlazadaSimple.Iterador<Tecnico> itTecnico = sistema.getListaTecnicos().iterador();
         while (itTecnico.tieneSiguiente()) {
@@ -50,19 +50,19 @@ public class SolicitudesController {
             vista.getTecnico().addItem(tecnicoActual);
         }
 
-        vista.getZona().addItem(Zona.CENTRO);
-        vista.getZona().addItem(Zona.ESTE);
-        vista.getZona().addItem(Zona.NORTE);
-        vista.getZona().addItem(Zona.OESTE);
-        vista.getZona().addItem(Zona.SUR);
+        vista.getZona().addItem(Zona.CENTRO.toString());
+        vista.getZona().addItem(Zona.ESTE.toString());
+        vista.getZona().addItem(Zona.NORTE.toString());
+        vista.getZona().addItem(Zona.OESTE.toString());
+        vista.getZona().addItem(Zona.SUR.toString());
 
-        this.vista.getBotonGuardar.addActionListener(new ActionListener() {
+        this.vista.getBotonGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 guardarSolicitud();
             }
         });
-        this.vista.getBotonActualizarCombo.addActionListener(new ActionListener() {
+        this.vista.getBotonActualizarCombo().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 actualizarOpciones();
