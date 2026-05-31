@@ -4,7 +4,7 @@
  */
 package co.edu.udistrital.controller;
 
-import co.edu.udistrital.model.Cliente;
+import co.edu.udistrital.model.enums.Cliente;
 import co.edu.udistrital.model.ListaEnlazadaSimple;
 import co.edu.udistrital.model.Sistema;
 import co.edu.udistrital.model.Tecnico;
@@ -31,11 +31,9 @@ public class SolicitudesController {
 
     public void inicializarEventos() {
 
-        ListaEnlazadaSimple.Iterador<Cliente> itCliente = sistema.getListaClientes().iterador();
-        while (itCliente.tieneSiguiente()) {
-            Cliente clienteActual = itCliente.siguiente();
-            vista.getCliente().addItem(clienteActual);
-        }
+        vista.getCliente().addItem(Cliente.ASEGURADORA);
+        vista.getCliente().addItem(Cliente.EMPRESA);
+        vista.getCliente().addItem(Cliente.PARTICULAR);
 
         vista.getTipoServicio().addItem(TipoServicio.APERTURA_PUERTAS.toString());
         vista.getTipoServicio().addItem(TipoServicio.CAMBIO_LLANTA.toString());
@@ -44,9 +42,8 @@ public class SolicitudesController {
         vista.getTipoServicio().addItem(TipoServicio.PASO_CORRIENTE.toString());
         vista.getTipoServicio().addItem(TipoServicio.REVISION_MECANICA.toString());
 
-        ListaEnlazadaSimple.Iterador<Tecnico> itTecnico = sistema.getListaTecnicos().iterador();
-        while (itTecnico.tieneSiguiente()) {
-            Tecnico tecnicoActual = itTecnico.siguiente();
+        while (sistema.iteradorTecnicos().tieneSiguiente()) {
+            Tecnico tecnicoActual = sistema.iteradorTecnicos().siguiente();
             vista.getTecnico().addItem(tecnicoActual);
         }
 
@@ -80,17 +77,10 @@ public class SolicitudesController {
     }
 
     public void actualizarOpciones() {
-        vista.getCliente().removeAllItems();
         vista.getTecnico().removeAllItems();
 
-        ListaEnlazadaSimple.Iterador<Cliente> itCliente = sistema.getListaClientes().iterador();
-        while (itCliente.tieneSiguiente()) {
-            Cliente clienteActual = itCliente.siguiente();
-            vista.getCliente().addItem(clienteActual);
-        }
-        ListaEnlazadaSimple.Iterador<Tecnico> itTecnico = sistema.getListaTecnicos().iterador();
-        while (itTecnico.tieneSiguiente()) {
-            Tecnico tecnicoActual = itTecnico.siguiente();
+        while (sistema.iteradorTecnicos().tieneSiguiente()) {
+            Tecnico tecnicoActual = sistema.iteradorTecnicos().siguiente();
             vista.getTecnico().addItem(tecnicoActual);
         }
     }

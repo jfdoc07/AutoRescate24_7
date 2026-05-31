@@ -92,26 +92,6 @@ public class Sistema {
         return listaTecnicos.iterador();
     }
 
-    public void añadirCliente(String id, String nombre, TipoCliente tipo) {
-        Cliente cliente = new Cliente(id, nombre, tipo);
-        listaClientes.agregar(cliente);
-    }
-
-    public void actualizarCliente(Cliente cliente, String id, String nombre, TipoCliente tipo) {
-        if (listaClientes.contiene(cliente)) {
-            cliente.setId(id);
-            cliente.setNombre(nombre);
-            cliente.setTipo(tipo);
-        }
-    }
-
-    public void eliminarCliente(Cliente cliente) {
-        listaClientes.eliminar(cliente);
-    }
-
-    public ListaEnlazadaSimple.Iterador<Cliente> iteradorClientes() {
-        return listaClientes.iterador();
-    }
 
     public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion,
             Tecnico tecnico, Zona zona) {
@@ -262,7 +242,7 @@ public class Sistema {
         writer.newLine();
         while (it.tieneSiguiente()) {
             SolicitudServicio s = it.siguiente();
-            writer.write(s.getId() + ", " + s.getCliente().getNombre() + ", " + s.getTipoServicio() + ", " + s.getZona());
+            writer.write(s.getId() + ", " + s.getCliente() + ", " + s.getTipoServicio() + ", " + s.getZona());
             writer.newLine();
         }
         writer.close();

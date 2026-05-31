@@ -1,5 +1,6 @@
 package co.edu.udistrital.model;
 
+import co.edu.udistrital.model.enums.Cliente;
 import co.edu.udistrital.model.enums.TipoServicio;
 import co.edu.udistrital.model.enums.NivelCriticidad;
 import co.edu.udistrital.model.enums.EstadoSolicitud;
@@ -49,18 +50,36 @@ public class SolicitudServicio {
         int puntaje = 0;
 
         switch (tipoServicio) {
-            case GRUA:              puntaje += 30; break;
-            case REVISION_MECANICA: puntaje += 20; break;
-            case PASO_CORRIENTE:    puntaje += 15; break;
-            case CAMBIO_LLANTA:     puntaje += 10; break;
-            case APERTURA_PUERTAS:  puntaje += 10; break;
-            case COMBUSTIBLE:       puntaje +=  5; break;
+            case GRUA:
+                puntaje += 30;
+                break;
+            case REVISION_MECANICA:
+                puntaje += 20;
+                break;
+            case PASO_CORRIENTE:
+                puntaje += 15;
+                break;
+            case CAMBIO_LLANTA:
+                puntaje += 10;
+                break;
+            case APERTURA_PUERTAS:
+                puntaje += 10;
+                break;
+            case COMBUSTIBLE:
+                puntaje += 5;
+                break;
         }
 
-        switch (cliente.getTipo()) {
-            case "ASEGURADORA":         puntaje += 30; break;
-            case "EMPRESA_TRANSPORTE":  puntaje += 20; break;
-            case "PARTICULAR":          puntaje +=  5; break;
+        switch (cliente) {
+            case Cliente.ASEGURADORA:
+                puntaje += 30;
+                break;
+            case Cliente.EMPRESA:
+                puntaje += 20;
+                break;
+            case Cliente.PARTICULAR:
+                puntaje += 5;
+                break;
         }
 
         return puntaje;
@@ -105,7 +124,6 @@ public class SolicitudServicio {
     public NivelCriticidad getCriticidad() {
         return criticidad;
     }
-
 
     public UnidadServicio getUnidadAsignada() {
         return unidadAsignada;
