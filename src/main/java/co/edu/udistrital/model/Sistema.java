@@ -125,7 +125,7 @@ public class Sistema {
             UnidadServicio u = itUnidades.siguiente();
             if (u.isDisponibilidad() && u.getEstado() != EstadoUnidad.MANTENIMIENTO
                     && esCompatible(u.getTipo(), solicitud.getTipoServicio())
-                    && u.getZona() == solicitud.getZona()) {
+                    && u.getZona().equals(solicitud.getZona())) {
                 unidadDisponible = u;
                 break;
             }

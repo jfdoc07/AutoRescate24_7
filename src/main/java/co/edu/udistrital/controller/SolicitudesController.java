@@ -27,7 +27,6 @@ public class SolicitudesController {
         this.vista = vista;
         this.sistema = sistema;
         inicializarEventos();
-        llenarComboTecnicos();
     }
 
     public void inicializarEventos() {
@@ -64,30 +63,9 @@ public class SolicitudesController {
         Cliente cliente = (Cliente) vista.getCliente().getSelectedItem();  // Combobox llamada Cliente
         TipoServicio tipoServicio = (TipoServicio) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
         String descripcion = vista.getDescripcion().getText(); // TextArea llamado Descripcion
-        /*String idTecnico = vista.getTecnico(); ComboBox llamado Tecnico*/
         Zona zona = (Zona) vista.getZona().getSelectedItem(); // combo box llamado Zona
         sistema.registrarSolicitud(cliente, tipoServicio, descripcion, zona);
         System.out.println("solicitud registrada con exito");
-    }
-
-    public void llenarComboTecnicos() {
-        int n = sistema.getListaTecnicos().getTamanno();
-
-        String[] ids = new String[n];
-        String[] nombres = new String[n];
-
-        ListaEnlazadaSimple.Iterador<Tecnico> it
-                = sistema.getListaTecnicos().iterador();
-        int i = 0;
-
-        while (it.tieneSiguiente()) {     // ← mismo iterador
-            Tecnico t = it.siguiente();  // ← mismo iterador
-            ids[i] = t.getUuid().toString();
-            nombres[i] = t.getNombre() + " — " + t.getEspecialidad();
-            i++;
-        }
-
-        vista.llenarComboTecnicos(ids, nombres);
     }
 
 }

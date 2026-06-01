@@ -59,7 +59,6 @@ public class MainController {
         });
         ventana.getBotonSolicitudes().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getSolicitudes());
-            solicitudesController.llenarComboTecnicos(); // ← aquí se refresca
         });
 
         ventana.getBotonKits().addActionListener(e -> {
