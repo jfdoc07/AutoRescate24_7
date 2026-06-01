@@ -362,6 +362,7 @@
                                           <Component id="clienteCritica" alignment="1" max="32767" attributes="0"/>
                                           <Component id="servicioCritica" alignment="0" max="32767" attributes="0"/>
                                           <Component id="zonaCritica" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="descCritica" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -370,14 +371,16 @@
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="clienteCritica" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="servicioCritica" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                                       <Component id="zonaCritica" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="descCritica" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -395,17 +398,22 @@
                             </Component>
                             <Component class="javax.swing.JLabel" name="clienteCritica">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="jLabel1"/>
+                                <Property name="text" type="java.lang.String" value="Sin solicitudes."/>
                               </Properties>
                             </Component>
                             <Component class="javax.swing.JLabel" name="zonaCritica">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="jLabel1"/>
+                                <Property name="text" type="java.lang.String" value="-"/>
                               </Properties>
                             </Component>
                             <Component class="javax.swing.JLabel" name="servicioCritica">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="jLabel1"/>
+                                <Property name="text" type="java.lang.String" value="-"/>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JLabel" name="descCritica">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" value="-"/>
                               </Properties>
                             </Component>
                           </SubComponents>
@@ -422,13 +430,14 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel10" alignment="0" pref="264" max="32767" attributes="0"/>
                                           <Component id="clienteNormal" alignment="1" max="32767" attributes="0"/>
                                           <Component id="servicioNormal" alignment="0" max="32767" attributes="0"/>
                                           <Component id="zonaNormal" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="descNormal" alignment="0" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -437,15 +446,17 @@
                             <DimensionLayout dim="1">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="clienteNormal" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="servicioNormal" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                                       <Component id="zonaNormal" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="19" max="32767" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="descNormal" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace pref="21" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -462,17 +473,22 @@
                             </Component>
                             <Component class="javax.swing.JLabel" name="clienteNormal">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="jLabel1"/>
+                                <Property name="text" type="java.lang.String" value="Sin solicitudes."/>
                               </Properties>
                             </Component>
                             <Component class="javax.swing.JLabel" name="zonaNormal">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="jLabel1"/>
+                                <Property name="text" type="java.lang.String" value="-"/>
                               </Properties>
                             </Component>
                             <Component class="javax.swing.JLabel" name="servicioNormal">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="jLabel1"/>
+                                <Property name="text" type="java.lang.String" value="-"/>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JLabel" name="descNormal">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" value="-"/>
                               </Properties>
                             </Component>
                           </SubComponents>

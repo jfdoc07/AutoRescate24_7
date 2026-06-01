@@ -18,14 +18,21 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PanelSolicitudes extends javax.swing.JPanel {
 
+    private String[] idsSolicitudes;
+    private int filaSeleccionadaSolicitudes = -1;
+
     /**
      * Creates new form PanelSolicitudes
      */
-    private String[] idsTecnicos;
 
     public PanelSolicitudes() {
         initComponents();
         pintarFondo(this);
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                filaSeleccionadaSolicitudes = jTable1.getSelectedRow();
+            }
+        });
     }
 
     /**
@@ -62,11 +69,13 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         clienteCritica = new javax.swing.JLabel();
         zonaCritica = new javax.swing.JLabel();
         servicioCritica = new javax.swing.JLabel();
+        descCritica = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         clienteNormal = new javax.swing.JLabel();
         zonaNormal = new javax.swing.JLabel();
         servicioNormal = new javax.swing.JLabel();
+        descNormal = new javax.swing.JLabel();
         atenderSiguienteBoton = new javax.swing.JButton();
         finalizarSeleccionada = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -121,11 +130,13 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Próxima crítica");
 
-        clienteCritica.setText("jLabel1");
+        clienteCritica.setText("Sin solicitudes.");
 
-        zonaCritica.setText("jLabel1");
+        zonaCritica.setText("-");
 
-        servicioCritica.setText("jLabel1");
+        servicioCritica.setText("-");
+
+        descCritica.setText("-");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -137,20 +148,23 @@ public class PanelSolicitudes extends javax.swing.JPanel {
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                     .addComponent(clienteCritica, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(servicioCritica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(zonaCritica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(zonaCritica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(descCritica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel9)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clienteCritica)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(servicioCritica)
                 .addGap(12, 12, 12)
                 .addComponent(zonaCritica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(descCritica)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -160,11 +174,13 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("Próxima normal");
 
-        clienteNormal.setText("jLabel1");
+        clienteNormal.setText("Sin solicitudes.");
 
-        zonaNormal.setText("jLabel1");
+        zonaNormal.setText("-");
 
-        servicioNormal.setText("jLabel1");
+        servicioNormal.setText("-");
+
+        descNormal.setText("-");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -176,21 +192,24 @@ public class PanelSolicitudes extends javax.swing.JPanel {
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                     .addComponent(clienteNormal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(servicioNormal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(zonaNormal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(zonaNormal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(descNormal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addContainerGap()
                 .addComponent(jLabel10)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clienteNormal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(servicioNormal)
                 .addGap(12, 12, 12)
                 .addComponent(zonaNormal)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(descNormal)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         atenderSiguienteBoton.setText("Atender siguiente solicitud");
@@ -399,6 +418,8 @@ public class PanelSolicitudes extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cliente;
     private javax.swing.JLabel clienteCritica;
     private javax.swing.JLabel clienteNormal;
+    private javax.swing.JLabel descCritica;
+    private javax.swing.JLabel descNormal;
     private javax.swing.JTextArea descripcion;
     private javax.swing.JButton finalizarSeleccionada;
     private javax.swing.JButton jButton1;
@@ -483,10 +504,12 @@ public class PanelSolicitudes extends javax.swing.JPanel {
             clienteNormal.setText("Sin solicitudes.");
             servicioNormal.setText("-");
             zonaNormal.setText("-");
+            descNormal.setText("-");
         } else {
             clienteNormal.setText("Cliente: " + datos[0]);
             servicioNormal.setText("Servicio requerido: " + datos[1]);
             zonaNormal.setText("Zona donde se requiere: " + datos[2]);
+            descNormal.setText("Descripción: " + datos[3]);
         }
     }
 
@@ -495,27 +518,46 @@ public class PanelSolicitudes extends javax.swing.JPanel {
             clienteCritica.setText("Sin solicitudes.");
             servicioCritica.setText("-");
             zonaCritica.setText("-");
+            descCritica.setText("-");
         } else {
             clienteCritica.setText("Cliente: " + datos[0]);
             servicioCritica.setText("Servicio requerido: " + datos[1]);
             zonaCritica.setText("Zona donde se requiere: " + datos[2]);
+            descCritica.setText("Descripción: " + datos[3]);
         }
     }
-    
-    public void mostrarTablaSolicitudes(String[][] datos){
-        String[] columnas = {"ID", "Cliente", "Servicio", "Zona", "Técnico", "Unidad"};
-        
-        DefaultTableModel modelo = new DefaultTableModel(datos, columnas){
+
+    public void mostrarTablaSolicitudes(String[][] datos) {
+        idsSolicitudes = new String[datos.length];
+        filaSeleccionadaSolicitudes = -1;
+
+        String[] columnas = {"Cliente", "Servicio", "Zona", "Técnico", "Unidad"};
+
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
+
+        for (int i = 0; i < datos.length; i++) {
+            idsSolicitudes[i] = datos[i][0];
+            modelo.addRow(new Object[]{
+                datos[i][1], datos[i][2], datos[i][3], datos[i][4], datos[i][5]
+            });
+        }
+
         jTable1.setModel(modelo);
     }
-    
-    public void mostrarMensajeError(String mensaje){
+
+    public String getIdUnidadSeleccionada() {
+        if(idsSolicitudes == null){
+            return null;
+        }
+        return idsSolicitudes[filaSeleccionadaSolicitudes];
+    }
+
+    public void mostrarMensaje(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 

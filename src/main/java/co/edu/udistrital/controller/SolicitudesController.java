@@ -62,11 +62,20 @@ public class SolicitudesController {
             public void actionPerformed(ActionEvent e) {
                 try {
                     sistema.atenderSiguienteSolicitud();
-                } catch (IllegalArgumentException err){
-                    vista.mostrarMensajeError(err.getMessage());
+                    vista.mostrarMensaje("Solicitud en proceso");
+                } catch (IllegalArgumentException err) {
+                    vista.mostrarMensaje(err.getMessage());
                 }
             }
         });
+
+        this.vista.getFinalizarSeleccionada().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                finalizarSolicitud();
+            }
+        });
+
     }
 
     public void guardarSolicitud() {
@@ -78,7 +87,7 @@ public class SolicitudesController {
         String zonaSeleccionada = (String) vista.getZona().getSelectedItem(); // combo box llamado Zona 
         Zona zona = Zona.valueOf(zonaSeleccionada);
         sistema.registrarSolicitud(cliente, tipoServicio, descripcion, zona);
-        System.out.println("solicitud registrada con exito");
+        vista.mostrarMensaje("Solicitud registrada con éxito");
     }
 
     public void actualizarProximasSolicitudes() {
@@ -88,7 +97,8 @@ public class SolicitudesController {
                 String[] datos = {
                     ordinaria.getCliente().toString(),
                     ordinaria.getTipoServicio().toString(),
-                    ordinaria.getZona().toString(),};
+                    ordinaria.getZona().toString(),
+                    ordinaria.getDescripcion()};
                 vista.mostrarProximaOrdinaria(datos);
             } else {
                 vista.mostrarProximaOrdinaria(null); // cola vacía
@@ -103,7 +113,8 @@ public class SolicitudesController {
                 String[] datos = {
                     critica.getCliente().toString(),
                     critica.getTipoServicio().toString(),
-                    critica.getZona().toString(),};
+                    critica.getZona().toString(),
+                    critica.getDescripcion()};
                 vista.mostrarProximaCritica(datos);
             } else {
                 vista.mostrarProximaCritica(null);
@@ -112,21 +123,30 @@ public class SolicitudesController {
             vista.mostrarProximaCritica(null);
         }
     }
-    
-    public void mostrarSolicitudesEjecucion(){
-        if (sistema.getListaEnEjecucion() == null){
+
+    public void finalizarSolicitud() {
+        try {
+            String idSolicitud = vista.getIdUnidadSeleccionada();
+            vista.mostrarMensaje(sistema.cerrarSolicitud(idSolicitud));
+        } catch (IllegalArgumentException e) {
+            vista.mostrarMensaje(e.getMessage());
+        }
+    }
+
+    public void mostrarSolicitudesEjecucion() {
+        if (sistema.getListaEnEjecucion() == null) {
             vista.mostrarTablaSolicitudes(new String[0][6]);
             return;
         }
-        
+
         int n = sistema.getListaEnEjecucion().getTamanno();
         String[][] datos = new String[n][6];
-        
+
         ListaEnlazadaSimple.Iterador<SolicitudServicio> it = sistema.getListaEnEjecucion().iterador();
         int i = 0;
-        while(it.tieneSiguiente()){
+        while (it.tieneSiguiente()) {
             SolicitudServicio s = it.siguiente();
-            datos[i][0] = s.getId();           // ID oculto
+            datos[i][0] = s.getUuid().toString();           // ID oculto
             datos[i][1] = s.getCliente().toString();     // cliente
             datos[i][2] = s.getTipoServicio().toString(); // servicio
             datos[i][3] = s.getZona().toString();         // zona
@@ -134,8 +154,8 @@ public class SolicitudesController {
             datos[i][5] = s.getUnidadAsignada().getTipo().toString(); // unidad
             i++;
         }
-        
+
         vista.mostrarTablaSolicitudes(datos);
     }
-    
+
 }

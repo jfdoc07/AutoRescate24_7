@@ -11,6 +11,9 @@ package co.edu.udistrital.controller;
 import co.edu.udistrital.model.Sistema;
 import co.edu.udistrital.view.VentanaPrincipal;
 import com.formdev.flatlaf.FlatDarkLaf;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 public class MainController {
@@ -49,8 +52,12 @@ public class MainController {
 
     private void conectarNavegacion() {
         ventana.getBotonDashboard().addActionListener(e -> {
-            ventana.mostrarPanel(ventana.getDashboard());
-            /*dashboardController.refrescar();*/
+            try {
+                sistema.csv();
+                System.exit(0);
+            } catch (IOException ex) {
+                
+            }
         });
 
         ventana.getBotonTecnicos().addActionListener(e -> {
@@ -73,4 +80,5 @@ public class MainController {
             /*historialController.actualizarPila();*/
         });
     }
+    
 }

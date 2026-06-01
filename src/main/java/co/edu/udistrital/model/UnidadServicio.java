@@ -7,14 +7,14 @@ import java.util.UUID;
 
 public class UnidadServicio implements Identificable{
     
-    private String id;
+    private UUID id;
     private TipoUnidad tipo;
     private EstadoUnidad estado;
     private Zona zona;
     private boolean disponibilidad; 
 
     public UnidadServicio(TipoUnidad tipo, EstadoUnidad estado, Zona zona, boolean disponibilidad) {
-        this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID();
         this.tipo = tipo;
         this.estado = EstadoUnidad.ACTIVO;
         this.zona = zona;
@@ -22,7 +22,7 @@ public class UnidadServicio implements Identificable{
     }
     
     @Override
-    public String getUuid() {
+    public UUID getUuid() {
         return id;
     }
 

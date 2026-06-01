@@ -61,18 +61,34 @@ public class Sistema {
         listaUnidades.eliminar(unidad);
     }
 
-    public void enviarAMantenimiento(UnidadServicio unidad) {
-        EstadoUnidad estadoAnterior = unidad.getEstado();
-        unidad.setEstado(EstadoUnidad.MANTENIMIENTO);
-        unidad.setDisponibilidad(false);
-        historial.apilar(new OperacionCambioEstadoUnidad(unidad, estadoAnterior));
-    }
-
-    public void sacarDeMantenimiento(UnidadServicio unidad) {
-        EstadoUnidad estadoAnterior = unidad.getEstado();
-        unidad.setEstado(EstadoUnidad.ACTIVO);
-        unidad.setDisponibilidad(true);
-        historial.apilar(new OperacionCambioEstadoUnidad(unidad, estadoAnterior));
+    public String enviarSacarMantenimiento(String unidadID) {
+        if(unidadID == null) throw new IllegalArgumentException("No se seleccionó ninguna unidad.");
+        java.util.UUID idReal = java.util.UUID.fromString(unidadID);
+        UnidadServicio u = buscarUnidadPorUuid(idReal);
+        if (u == null) {
+            throw new IllegalArgumentException("No se encontró la unidad");
+        } else {
+            switch (u.getEstado()) {
+                case MANTENIMIENTO: {
+                    //Si está en mantenimiento
+                    EstadoUnidad estadoAnterior = u.getEstado();
+                    u.setEstado(EstadoUnidad.ACTIVO);
+                    u.setDisponibilidad(true);
+                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior));
+                    return "Unidad sacada de mantenimiento";
+                }
+                case ACTIVO: {
+                    //Si esta activo o disponible
+                    EstadoUnidad estadoAnterior = u.getEstado();
+                    u.setEstado(EstadoUnidad.MANTENIMIENTO);
+                    u.setDisponibilidad(false);
+                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior));
+                    return "Unidad enviada a mantenimiento";
+                }
+                default:
+                    throw new IllegalArgumentException("La unidad se encuentra ocupada, no se puede enviar a mantenimiento.");
+            }
+        }
     }
 
     public void añadirTecnico(String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
@@ -111,7 +127,7 @@ public class Sistema {
             colaOrdinaria.enqueue(solicitud);
         }
     }
-    
+
     public void atenderSiguienteSolicitud() {
         SolicitudServicio solicitud;
 
@@ -189,13 +205,23 @@ public class Sistema {
 
         historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
         historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
-        
+
         //Se agrega a la lista de "En Ejecución"
         listaEnEjecucion.agregar(solicitud);
         System.out.println("Solicitud en proceso");
     }
 
-    public void cerrarSolicitud(SolicitudServicio solicitud) {
+    public String cerrarSolicitud(String solicitudIdStr) {
+        
+        if(solicitudIdStr == null) throw new IllegalArgumentException("No seleccionó ninguna solicitud.");
+        
+        System.out.println("=== ANALIZANDO SOLICITUD ===");
+    System.out.println("ID que llegó desde la JTable: [" + solicitudIdStr + "]");
+        if (listaEnEjecucion != null) {
+            System.out.println("Buscando en la lista con tamaño: " + listaEnEjecucion.getTamanno());
+        }
+        java.util.UUID uuidBuscado = java.util.UUID.fromString(solicitudIdStr);
+        SolicitudServicio solicitud = listaEnEjecucion.obtenerPorUuid(uuidBuscado);
         solicitud.setEstado(EstadoSolicitud.CERRADA);
 
         if (solicitud.getUnidadAsignada() != null) {
@@ -209,7 +235,9 @@ public class Sistema {
         }
 
         listaCerradas.agregar(solicitud);
+        listaEnEjecucion.eliminar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
+        return "Solicitud cerrada con éxito";
     }
 
     public Kit añadirKit(String descripcion, boolean completo, boolean requiereReposicion) {
@@ -224,14 +252,14 @@ public class Sistema {
     }
 
     public Kit retirarKitDeRevision() {
-         return pilaKits.desapilar();
+        return pilaKits.desapilar();
     }
-    
-    public void eliminarKit(Kit kit){
+
+    public void eliminarKit(Kit kit) {
         listaKits.eliminar(kit);
     }
 
-    public void actualizarKit(Kit kit, String id, String descripcion, boolean completo, boolean requiereReposicion) {
+    public void actualizarKit(Kit kit, UUID id, String descripcion, boolean completo, boolean requiereReposicion) {
         if (pilaKits.contiene(kit)) {
             kit.setId(id);
             kit.setDescripcion(descripcion);
@@ -262,19 +290,20 @@ public class Sistema {
         return listaCerradas.iterador();
     }
 
-    public void csv() throws IOException {
+    public String csv() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.csv"));
-        writer.write("id,   cliente,    tipoServicio,    zona");
+        writer.write("id,cliente,tipoServicio,zona");
 
         ListaEnlazadaSimple.Iterador<SolicitudServicio> it = iteradorCerradas();
 
         writer.newLine();
         while (it.tieneSiguiente()) {
             SolicitudServicio s = it.siguiente();
-            writer.write(s.getId() + ", " + s.getCliente() + ", " + s.getTipoServicio() + ", " + s.getZona());
+            writer.write(s.getUuid().toString() + "," + s.getCliente() + "," + s.getTipoServicio() + "," + s.getZona());
             writer.newLine();
         }
         writer.close();
+        return "Reporte generado con éxito, revisar la carpeta raíz.";
     }
 
     private boolean esCompatible(TipoUnidad tipoUnidad, TipoServicio tipoServicio) {
@@ -305,7 +334,12 @@ public class Sistema {
         if (uuidBuscado == null) {
             return null;
         }
+        System.out.println("--- EJECUTANDO BÚSQUEDA ---");
+        System.out.println("Unidades totales en memoria de la lista: " + listaUnidades.getTamanno());
+        System.out.println("Buscando el UUID: " + uuidBuscado);
+        
         UnidadServicio unidadEncontrada = listaUnidades.obtenerPorUuid(uuidBuscado);
+        System.out.println("¿Se encontró la unidad?: " + (unidadEncontrada != null));
         return unidadEncontrada;
     }
 
