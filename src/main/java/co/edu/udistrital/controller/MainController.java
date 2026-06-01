@@ -62,7 +62,7 @@ public class MainController {
 
         ventana.getBotonTecnicos().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getTecnicos());
-            /*tecnicosController.actualizarTabla();*/
+            tecnicosController.actualizarTabla();
         });
         ventana.getBotonSolicitudes().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getSolicitudes());
@@ -73,6 +73,8 @@ public class MainController {
         ventana.getBotonKits().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getKits());
             kitsController.mostrarUnidades();
+            kitsController.mostrarKits();
+            kitsController.mostrarProximoKit();
         });
 
         ventana.getBotonHistorial().addActionListener(e -> {

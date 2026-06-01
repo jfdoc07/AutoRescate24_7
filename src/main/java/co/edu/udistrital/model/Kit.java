@@ -1,7 +1,6 @@
 
 package co.edu.udistrital.model;
 
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -14,7 +13,7 @@ public class Kit implements Identificable{
     private boolean completo;
     private boolean requiereReposicion;
 
-    public Kit( String descripcion, boolean completo, boolean requiereReposicion) {
+    public Kit(String descripcion, boolean completo, boolean requiereReposicion) {
         this.id = UUID.randomUUID();
         this.descripcion = descripcion;
         this.completo = completo;

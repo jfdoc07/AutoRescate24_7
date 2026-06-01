@@ -4,6 +4,7 @@
  */
 package co.edu.udistrital.controller;
 
+import co.edu.udistrital.model.Kit;
 import co.edu.udistrital.model.ListaEnlazadaSimple;
 import co.edu.udistrital.model.Sistema;
 import co.edu.udistrital.model.UnidadServicio;
@@ -49,6 +50,13 @@ public class KitsController {
                 enviarSacarMantenimiento();
             }
         });
+        
+        this.vista.getEnviarAPila().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                añadirAPila();
+            }
+        });
 
         vista.getTipoUnidad().removeAllItems();
         vista.getTipoUnidad().addItem(TipoUnidad.CAMIONETA.toString());
@@ -66,7 +74,7 @@ public class KitsController {
 
     public void guardarKit() {
         String descripcion = vista.getDescripcion().getText(); //TextArea llamado descripcion
-        sistema.añadirKit(descripcion, true, true);
+        sistema.añadirKit(descripcion, true, false);
         vista.mostrarMensaje("Kit guardado correctamente");
     }
 
@@ -109,5 +117,51 @@ public class KitsController {
             i++;
         }
         vista.mostrarTablaUnidades(datos);
+    }
+    
+    public void mostrarKits(){
+        if (sistema.getListaKits() == null){
+            vista.mostrarTablaKits(new String [0][4]);
+            return;
+        }
+        
+        int n = sistema.getListaKits().getTamanno();
+        String[][] datos = new String[n][5];
+        
+        ListaEnlazadaSimple.Iterador<Kit> it = sistema.getListaKits().iterador();
+        int i = 0;
+        while(it.tieneSiguiente()){
+            Kit k = it.siguiente();
+            datos[i][0] = k.getUuid().toString();
+            datos[i][1] = k.getDescripcion();
+            datos[i][2] = k.isCompleto() ? "Sí" : "No";
+            datos[i][3] = k.isRequiereReposicion() ? "Sí" : "No";
+            
+            i++;
+        }
+        vista.mostrarTablaKits(datos);
+    }
+    
+    public void añadirAPila(){
+        try{
+            String idKit = vista.getIdKitSeleccionado();
+            vista.mostrarMensaje(sistema.enviarKitAPila(idKit));
+        } catch (IllegalArgumentException e) {
+            vista.mostrarMensaje(e.getMessage());
+        }
+    }
+    
+    public void mostrarProximoKit(){
+        if (!sistema.getPilaKits().estaVacia()){
+            Kit k = sistema.getPilaKits().verCima();
+            if(k != null) {
+                String desc = k.getDescripcion();
+                vista.mostrarProximoKit(desc);
+            }else{
+                vista.mostrarProximoKit(null);
+            }
+        } else {
+            vista.mostrarProximoKit(null);
+        }
     }
 }

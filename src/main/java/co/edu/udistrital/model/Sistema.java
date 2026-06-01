@@ -62,7 +62,9 @@ public class Sistema {
     }
 
     public String enviarSacarMantenimiento(String unidadID) {
-        if(unidadID == null) throw new IllegalArgumentException("No se seleccionó ninguna unidad.");
+        if (unidadID == null) {
+            throw new IllegalArgumentException("No se seleccionó ninguna unidad.");
+        }
         java.util.UUID idReal = java.util.UUID.fromString(unidadID);
         UnidadServicio u = buscarUnidadPorUuid(idReal);
         if (u == null) {
@@ -190,7 +192,7 @@ public class Sistema {
         }
 
         // Todo disponible — asignar recursos y cambiar estados
-        Kit kit = retirarKitDeRevision();
+        Kit kit = utilizarKit();
 
         solicitud.setUnidadAsignada(unidadDisponible);
         solicitud.setTecnico(tecnicoDisponible);
@@ -212,11 +214,13 @@ public class Sistema {
     }
 
     public String cerrarSolicitud(String solicitudIdStr) {
-        
-        if(solicitudIdStr == null) throw new IllegalArgumentException("No seleccionó ninguna solicitud.");
-        
+
+        if (solicitudIdStr == null) {
+            throw new IllegalArgumentException("No seleccionó ninguna solicitud.");
+        }
+
         System.out.println("=== ANALIZANDO SOLICITUD ===");
-    System.out.println("ID que llegó desde la JTable: [" + solicitudIdStr + "]");
+        System.out.println("ID que llegó desde la JTable: [" + solicitudIdStr + "]");
         if (listaEnEjecucion != null) {
             System.out.println("Buscando en la lista con tamaño: " + listaEnEjecucion.getTamanno());
         }
@@ -234,6 +238,19 @@ public class Sistema {
             solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
         }
 
+        if (solicitud.getKitAsignado() != null) {
+            double probabilidad = Math.random();
+            if (probabilidad < 0.8) {//Probabilisticamente puede llegar incompleto
+                solicitud.getKitAsignado().setCompleto(true);
+                solicitud.getKitAsignado().setRequiereReposicion(false);
+            } else {
+                solicitud.getKitAsignado().setCompleto(false);
+                solicitud.getKitAsignado().setRequiereReposicion(true);
+            }
+            listaKits.agregar(solicitud.getKitAsignado());
+
+        }
+
         listaCerradas.agregar(solicitud);
         listaEnEjecucion.eliminar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
@@ -243,15 +260,28 @@ public class Sistema {
     public Kit añadirKit(String descripcion, boolean completo, boolean requiereReposicion) {
         Kit kit = new Kit(descripcion, completo, requiereReposicion);
         listaKits.agregar(kit);
-        ingresarKitARevision(kit);
         return kit;
     }
 
-    public void ingresarKitARevision(Kit kit) {
+    public String enviarKitAPila(String idKit) {
+        if (idKit == null) {
+            throw new IllegalArgumentException("No se seleccionó ningun kit.");
+        }
+        System.out.println("=== BUSCANDO KIT ===");
+        System.out.println("ID que llegó desde la JTable: [" + idKit + "]");
+        if (listaKits != null) {
+            System.out.println("Buscando en la lista con tamaño: " + listaKits.getTamanno());
+        }
+        java.util.UUID idReal = java.util.UUID.fromString(idKit);
+        Kit kit = buscarKitPorUuid(idReal);
+        kit.setCompleto(true);
+        kit.setRequiereReposicion(false);
         pilaKits.apilar(kit);
+        listaKits.eliminar(kit);
+        return "Kit apilado con éxito.";
     }
 
-    public Kit retirarKitDeRevision() {
+    public Kit utilizarKit() {
         return pilaKits.desapilar();
     }
 
@@ -270,6 +300,10 @@ public class Sistema {
 
     public Kit verCimaKits() {
         return pilaKits.verCima();
+    }
+
+    public ListaEnlazadaSimple<Kit> getListaKits() {
+        return listaKits;
     }
 
     public void registrarOperacion(Operacion operacion) {
@@ -337,7 +371,7 @@ public class Sistema {
         System.out.println("--- EJECUTANDO BÚSQUEDA ---");
         System.out.println("Unidades totales en memoria de la lista: " + listaUnidades.getTamanno());
         System.out.println("Buscando el UUID: " + uuidBuscado);
-        
+
         UnidadServicio unidadEncontrada = listaUnidades.obtenerPorUuid(uuidBuscado);
         System.out.println("¿Se encontró la unidad?: " + (unidadEncontrada != null));
         return unidadEncontrada;
