@@ -207,7 +207,12 @@ public class Sistema {
             solicitud.getTecnico().setDisponibilidad(true);
             solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
         }
-
+        
+        if(solicitud.getKitAsignado() != null){
+            ingresarKitARevision(solicitud.getKitAsignado());
+        }
+        
+        listaEnEjecucion.eliminar(solicitud);
         listaCerradas.agregar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
     }
