@@ -146,7 +146,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        botonKits.setText("Kits");
+        botonKits.setText("Recursos");
+        botonKits.setToolTipText("");
         botonKits.setBorder(null);
         botonKits.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

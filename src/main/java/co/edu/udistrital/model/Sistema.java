@@ -34,11 +34,12 @@ public class Sistema {
         listaTecnicos = new ListaEnlazadaSimple<>();
         listaKits = new ListaEnlazadaSimple<>();
         listaClientes = new ListaEnlazadaSimple<>();
+        listaEnEjecucion = new ListaEnlazadaSimple<>();
         listaCerradas = new ListaEnlazadaSimple<>();
     }
 
-    public void añadirUnidad(TipoUnidad tipo, EstadoUnidad estado, Zona zona, boolean disponibilidad) {
-        UnidadServicio unidad = new UnidadServicio(tipo, estado, zona, disponibilidad);
+    public void añadirUnidad(TipoUnidad tipo, Zona zona) {
+        UnidadServicio unidad = new UnidadServicio(tipo, EstadoUnidad.ACTIVO, zona, true);
         listaUnidades.agregar(unidad);
     }
 
@@ -77,6 +78,7 @@ public class Sistema {
     public void añadirTecnico(String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
         Tecnico tecnico = new Tecnico(nombre, especialidad, disponibilidad, estado);
         listaTecnicos.agregar(tecnico);
+        System.out.println("Tecnico registrado con exito " + tecnico.getNombre() + " " + tecnico.getEspecialidad() + " " + tecnico.getEstado());
     }
 
     public void actualizarTecnico(Tecnico tecnico, String id, String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
@@ -213,6 +215,7 @@ public class Sistema {
     public Kit añadirKit(String descripcion, boolean completo, boolean requiereReposicion) {
         Kit kit = new Kit(descripcion, completo, requiereReposicion);
         listaKits.agregar(kit);
+        ingresarKitARevision(kit);
         return kit;
     }
 

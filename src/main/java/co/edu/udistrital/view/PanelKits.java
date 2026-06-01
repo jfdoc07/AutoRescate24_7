@@ -6,8 +6,10 @@ package co.edu.udistrital.view;
 
 import java.awt.Color;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -34,17 +36,37 @@ public class PanelKits extends javax.swing.JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         panelRegistroKits = new javax.swing.JPanel();
-        botonGuardar = new javax.swing.JButton();
+        botonGuardarKit = new javax.swing.JButton();
         descripcionScroll = new javax.swing.JScrollPane();
         descripcion = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        panelRegistroUnidades = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        tipoUnidad = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        zona = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        guardarUnidad = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
 
         jPanel2.setPreferredSize(new java.awt.Dimension(1076, 645));
 
-        botonGuardar.setText("jButton1");
+        botonGuardarKit.setText("Guardar kit");
+        botonGuardarKit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGuardarKitActionPerformed(evt);
+            }
+        });
 
         descripcion.setColumns(20);
         descripcion.setRows(5);
         descripcionScroll.setViewportView(descripcion);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Ingreso de kits");
 
         javax.swing.GroupLayout panelRegistroKitsLayout = new javax.swing.GroupLayout(panelRegistroKits);
         panelRegistroKits.setLayout(panelRegistroKitsLayout);
@@ -53,21 +75,114 @@ public class PanelKits extends javax.swing.JPanel {
             .addGroup(panelRegistroKitsLayout.createSequentialGroup()
                 .addGroup(panelRegistroKitsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelRegistroKitsLayout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(botonGuardar))
+                        .addContainerGap()
+                        .addComponent(descripcionScroll))
                     .addGroup(panelRegistroKitsLayout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(descripcionScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(140, Short.MAX_VALUE))
+                        .addGap(180, 180, 180)
+                        .addComponent(botonGuardarKit)
+                        .addGap(0, 178, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(panelRegistroKitsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelRegistroKitsLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
         panelRegistroKitsLayout.setVerticalGroup(
             panelRegistroKitsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroKitsLayout.createSequentialGroup()
-                .addContainerGap(362, Short.MAX_VALUE)
-                .addComponent(descripcionScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(76, 76, 76)
-                .addComponent(botonGuardar)
-                .addGap(92, 92, 92))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(descripcionScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(botonGuardarKit)
+                .addGap(222, 222, 222))
+            .addGroup(panelRegistroKitsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelRegistroKitsLayout.createSequentialGroup()
+                    .addGap(192, 192, 192)
+                    .addComponent(jLabel2)
+                    .addContainerGap(422, Short.MAX_VALUE)))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Ingreso de unidades");
+
+        tipoUnidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Ingrese el tipo de vehículo.");
+        jLabel3.setToolTipText("");
+
+        zona.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Ingrese la zona de operación.");
+        jLabel4.setToolTipText("");
+
+        guardarUnidad.setText("Guardar unidad");
+        guardarUnidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarUnidadActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Ingrese la zona de operación.");
+        jLabel5.setToolTipText("");
+
+        javax.swing.GroupLayout panelRegistroUnidadesLayout = new javax.swing.GroupLayout(panelRegistroUnidades);
+        panelRegistroUnidades.setLayout(panelRegistroUnidadesLayout);
+        panelRegistroUnidadesLayout.setHorizontalGroup(
+            panelRegistroUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(panelRegistroUnidadesLayout.createSequentialGroup()
+                .addGap(178, 178, 178)
+                .addComponent(guardarUnidad)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelRegistroUnidadesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelRegistroUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tipoUnidad, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(zona, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        panelRegistroUnidadesLayout.setVerticalGroup(
+            panelRegistroUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroUnidadesLayout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(tipoUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(zona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(guardarUnidad)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -75,14 +190,18 @@ public class PanelKits extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(277, 277, 277)
+                .addGap(90, 90, 90)
                 .addComponent(panelRegistroKits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(359, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(panelRegistroUnidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(panelRegistroKits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelRegistroUnidades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelRegistroKits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -98,12 +217,31 @@ public class PanelKits extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botonGuardarKitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGuardarKitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_botonGuardarKitActionPerformed
+
+    private void guardarUnidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarUnidadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_guardarUnidadActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonGuardar;
+    private javax.swing.JButton botonGuardarKit;
     private javax.swing.JTextArea descripcion;
     private javax.swing.JScrollPane descripcionScroll;
+    private javax.swing.JButton guardarUnidad;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JPanel panelRegistroKits;
+    private javax.swing.JPanel panelRegistroUnidades;
+    private javax.swing.JComboBox<String> tipoUnidad;
+    private javax.swing.JComboBox<String> zona;
     // End of variables declaration//GEN-END:variables
     /**
      * Este método se encarga de colorear todos los contenidos dentro de los
@@ -153,12 +291,37 @@ public class PanelKits extends javax.swing.JPanel {
         btn.setOpaque(true);
     }
 
-    public JButton getBotonGuardar() {
-        return botonGuardar;
+    public void mostrarTablaUnidades(String[][] datos) {
+        String[] columnas = {"Tipo", "Estado", "Zona", "Disponibilidad"};
+
+        DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        jTable1.setModel(modelo);
+    }
+
+    public JButton getBotonGuardarKit() {
+        return botonGuardarKit;
+    }
+
+    public JButton getGuardarUnidad() {
+        return guardarUnidad;
     }
 
     public JTextArea getDescripcion() {
         return descripcion;
     }
-    
+
+    public JComboBox<String> getTipoUnidad() {
+        return tipoUnidad;
+    }
+
+    public JComboBox<String> getZona() {
+        return zona;
+    }
+
 }

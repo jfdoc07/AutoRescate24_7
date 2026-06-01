@@ -134,6 +134,8 @@ public class SolicitudesController {
             datos[i][5] = s.getUnidadAsignada().getTipo().toString(); // unidad
             i++;
         }
+        
+        vista.mostrarTablaSolicitudes(datos);
     }
     
 }
