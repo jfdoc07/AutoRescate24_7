@@ -4,6 +4,7 @@
  */
 package co.edu.udistrital.controller;
 
+import co.edu.udistrital.model.ListaEnlazadaSimple;
 import co.edu.udistrital.model.enums.Cliente;
 import co.edu.udistrital.model.Sistema;
 import co.edu.udistrital.model.SolicitudServicio;
@@ -111,5 +112,28 @@ public class SolicitudesController {
             vista.mostrarProximaCritica(null);
         }
     }
-
+    
+    public void mostrarSolicitudesEjecucion(){
+        if (sistema.getListaEnEjecucion() == null){
+            vista.mostrarTablaSolicitudes(new String[0][6]);
+            return;
+        }
+        
+        int n = sistema.getListaEnEjecucion().getTamanno();
+        String[][] datos = new String[n][6];
+        
+        ListaEnlazadaSimple.Iterador<SolicitudServicio> it = sistema.getListaEnEjecucion().iterador();
+        int i = 0;
+        while(it.tieneSiguiente()){
+            SolicitudServicio s = it.siguiente();
+            datos[i][0] = s.getId();           // ID oculto
+            datos[i][1] = s.getCliente().toString();     // cliente
+            datos[i][2] = s.getTipoServicio().toString(); // servicio
+            datos[i][3] = s.getZona().toString();         // zona
+            datos[i][4] = s.getTecnico().getNombre();     // técnico
+            datos[i][5] = s.getUnidadAsignada().getTipo().toString(); // unidad
+            i++;
+        }
+    }
+    
 }

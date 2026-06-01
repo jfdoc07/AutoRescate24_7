@@ -356,4 +356,8 @@ public class Sistema {
         return listaCerradas;
     }
 
+    public ListaEnlazadaSimple<SolicitudServicio> getListaEnEjecucion() {
+        return listaEnEjecucion;
+    }
+
 }

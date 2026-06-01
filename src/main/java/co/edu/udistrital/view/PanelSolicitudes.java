@@ -10,6 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -501,6 +502,19 @@ public class PanelSolicitudes extends javax.swing.JPanel {
             servicioCritica.setText("Servicio requerido: " + datos[1]);
             zonaCritica.setText("Zona donde se requiere: " + datos[2]);
         }
+    }
+    
+    public void mostrarTablaSolicitudes(String[][] datos){
+        String[] columnas = {"ID", "Cliente", "Servicio", "Zona", "Técnico", "Unidad"};
+        
+        DefaultTableModel modelo = new DefaultTableModel(datos, columnas){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        jTable1.setModel(modelo);
     }
     
     public void mostrarMensajeError(String mensaje){
