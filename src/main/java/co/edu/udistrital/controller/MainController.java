@@ -59,6 +59,7 @@ public class MainController {
         });
         ventana.getBotonSolicitudes().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getSolicitudes());
+            solicitudesController.actualizarProximasSolicitudes();
         });
 
         ventana.getBotonKits().addActionListener(e -> {

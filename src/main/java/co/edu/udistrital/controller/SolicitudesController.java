@@ -5,10 +5,8 @@
 package co.edu.udistrital.controller;
 
 import co.edu.udistrital.model.enums.Cliente;
-import co.edu.udistrital.model.ListaEnlazadaSimple;
 import co.edu.udistrital.model.Sistema;
-import co.edu.udistrital.model.Tecnico;
-import co.edu.udistrital.model.UnidadServicio;
+import co.edu.udistrital.model.SolicitudServicio;
 import co.edu.udistrital.model.enums.*;
 import co.edu.udistrital.view.PanelSolicitudes;
 import java.awt.event.ActionEvent;
@@ -60,12 +58,47 @@ public class SolicitudesController {
     }
 
     public void guardarSolicitud() {
-        Cliente cliente = (Cliente) vista.getCliente().getSelectedItem();  // Combobox llamada Cliente
-        TipoServicio tipoServicio = (TipoServicio) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
+        String clienteSeleccionado = (String) vista.getCliente().getSelectedItem();  // Combobox llamada Cliente
+        Cliente cliente = Cliente.valueOf(clienteSeleccionado);
+        String tipoServicioSeleccionado = (String) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
+        TipoServicio tipoServicio = TipoServicio.valueOf(tipoServicioSeleccionado);
         String descripcion = vista.getDescripcion().getText(); // TextArea llamado Descripcion
-        Zona zona = (Zona) vista.getZona().getSelectedItem(); // combo box llamado Zona
+        String zonaSeleccionada = (String) vista.getZona().getSelectedItem(); // combo box llamado Zona 
+        Zona zona = Zona.valueOf(zonaSeleccionada);
         sistema.registrarSolicitud(cliente, tipoServicio, descripcion, zona);
         System.out.println("solicitud registrada con exito");
+    }
+
+    public void actualizarProximasSolicitudes() {
+        if (!sistema.getColaOrdinaria().estaVacia()) {
+            SolicitudServicio ordinaria = sistema.getColaOrdinaria().peek();
+            if (ordinaria != null) {
+                String[] datos = {
+                    ordinaria.getCliente().toString(),
+                    ordinaria.getTipoServicio().toString(),
+                    ordinaria.getZona().toString(),};
+                vista.mostrarProximaOrdinaria(datos);
+            } else {
+                vista.mostrarProximaOrdinaria(null); // cola vacía
+            }
+        } else {
+            vista.mostrarProximaOrdinaria(null);
+        }
+
+        if (!sistema.getColaCritica().estaVacia()) {
+            SolicitudServicio critica = sistema.getColaCritica().verFrente();
+            if (critica != null) {
+                String[] datos = {
+                    critica.getCliente().toString(),
+                    critica.getTipoServicio().toString(),
+                    critica.getZona().toString(),};
+                vista.mostrarProximaCritica(datos);
+            } else {
+                vista.mostrarProximaCritica(null);
+            }
+        } else {
+            vista.mostrarProximaCritica(null);
+        }
     }
 
 }
