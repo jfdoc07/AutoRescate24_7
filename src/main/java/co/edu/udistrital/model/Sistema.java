@@ -22,6 +22,7 @@ public class Sistema {
     private ListaEnlazadaSimple<Tecnico> listaTecnicos;
     private ListaEnlazadaSimple<Kit> listaKits;
     private ListaEnlazadaSimple<Cliente> listaClientes;
+    private ListaEnlazadaSimple<SolicitudServicio> listaEnEjecucion;
     private ListaEnlazadaSimple<SolicitudServicio> listaCerradas;
 
     public Sistema() {
@@ -144,7 +145,8 @@ public class Sistema {
         Tecnico tecnicoDisponible = null;
         while (itTecnicos.tieneSiguiente()) {
             Tecnico t = itTecnicos.siguiente();
-            if (t.isDisponibilidad() && t.getEstado() != EstadoTecnico.ASIGNADO) {
+            if (t.isDisponibilidad() && t.getEstado() != EstadoTecnico.ASIGNADO
+                    && t.getEspecialidad() == solicitud.getTipoServicio()) {
                 tecnicoDisponible = t;
                 break;
             }
@@ -184,6 +186,9 @@ public class Sistema {
 
         historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
         historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
+        
+        //Se agrega a la lista de "En Ejecución"
+        listaEnEjecucion.agregar(solicitud);
     }
 
     public void cerrarSolicitud(SolicitudServicio solicitud) {
