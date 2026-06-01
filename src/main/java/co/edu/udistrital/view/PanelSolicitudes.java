@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -65,7 +66,7 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         clienteNormal = new javax.swing.JLabel();
         zonaNormal = new javax.swing.JLabel();
         servicioNormal = new javax.swing.JLabel();
-        atenderSiguienteBoton1 = new javax.swing.JButton();
+        atenderSiguienteBoton = new javax.swing.JButton();
         finalizarSeleccionada = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -191,10 +192,10 @@ public class PanelSolicitudes extends javax.swing.JPanel {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        atenderSiguienteBoton1.setText("Atender siguiente solicitud");
-        atenderSiguienteBoton1.addActionListener(new java.awt.event.ActionListener() {
+        atenderSiguienteBoton.setText("Atender siguiente solicitud");
+        atenderSiguienteBoton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                atenderSiguienteBoton1ActionPerformed(evt);
+                atenderSiguienteBotonActionPerformed(evt);
             }
         });
 
@@ -209,7 +210,7 @@ public class PanelSolicitudes extends javax.swing.JPanel {
                 .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(231, 231, 231)
-                .addComponent(atenderSiguienteBoton1)
+                .addComponent(atenderSiguienteBoton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -220,7 +221,7 @@ public class PanelSolicitudes extends javax.swing.JPanel {
                     .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(atenderSiguienteBoton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(atenderSiguienteBoton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -389,12 +390,12 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_finalizarSeleccionadaActionPerformed
 
-    private void atenderSiguienteBoton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atenderSiguienteBoton1ActionPerformed
+    private void atenderSiguienteBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atenderSiguienteBotonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_atenderSiguienteBoton1ActionPerformed
+    }//GEN-LAST:event_atenderSiguienteBotonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton atenderSiguienteBoton1;
+    private javax.swing.JButton atenderSiguienteBoton;
     private javax.swing.JButton botonGuardar;
     private javax.swing.JComboBox<String> cliente;
     private javax.swing.JLabel clienteCritica;
@@ -484,9 +485,9 @@ public class PanelSolicitudes extends javax.swing.JPanel {
             servicioNormal.setText("-");
             zonaNormal.setText("-");
         } else {
-            clienteNormal.setText(datos[0]);
-            servicioNormal.setText(datos[1]);
-            zonaNormal.setText(datos[2]);
+            clienteNormal.setText("Cliente: " + datos[0]);
+            servicioNormal.setText("Servicio requerido: " + datos[1]);
+            zonaNormal.setText("Zona donde se requiere: " + datos[2]);
         }
     }
 
@@ -496,10 +497,14 @@ public class PanelSolicitudes extends javax.swing.JPanel {
             servicioCritica.setText("-");
             zonaCritica.setText("-");
         } else {
-            clienteCritica.setText(datos[0]);
-            servicioCritica.setText(datos[1]);
-            zonaCritica.setText(datos[2]);
+            clienteCritica.setText("Cliente: " + datos[0]);
+            servicioCritica.setText("Servicio requerido: " + datos[1]);
+            zonaCritica.setText("Zona donde se requiere: " + datos[2]);
         }
+    }
+    
+    public void mostrarMensajeError(String mensaje){
+        JOptionPane.showMessageDialog(this, mensaje);
     }
 
     public JComboBox<String> getCliente() {
@@ -522,8 +527,8 @@ public class PanelSolicitudes extends javax.swing.JPanel {
         return botonGuardar;
     }
 
-    public JButton getAtenderSiguienteBoton1() {
-        return atenderSiguienteBoton1;
+    public JButton getAtenderSiguienteBoton() {
+        return atenderSiguienteBoton;
     }
 
     public JLabel getClienteCritica() {

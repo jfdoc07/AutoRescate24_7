@@ -55,6 +55,17 @@ public class SolicitudesController {
                 guardarSolicitud();
             }
         });
+
+        this.vista.getAtenderSiguienteBoton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    sistema.atenderSiguienteSolicitud();
+                } catch (IllegalArgumentException err){
+                    vista.mostrarMensajeError(err.getMessage());
+                }
+            }
+        });
     }
 
     public void guardarSolicitud() {

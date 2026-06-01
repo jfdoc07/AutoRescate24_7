@@ -325,7 +325,7 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="231" max="-2" attributes="0"/>
-                                  <Component id="atenderSiguienteBoton1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="atenderSiguienteBoton" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -339,7 +339,7 @@
                                       <Component id="jPanel6" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="atenderSiguienteBoton1" min="-2" pref="23" max="-2" attributes="0"/>
+                                  <Component id="atenderSiguienteBoton" min="-2" pref="23" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -480,12 +480,12 @@
                             </Component>
                           </SubComponents>
                         </Container>
-                        <Component class="javax.swing.JButton" name="atenderSiguienteBoton1">
+                        <Component class="javax.swing.JButton" name="atenderSiguienteBoton">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Atender siguiente solicitud"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="atenderSiguienteBoton1ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="atenderSiguienteBotonActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>

@@ -109,6 +109,7 @@ public class Sistema {
             colaOrdinaria.enqueue(solicitud);
         }
     }
+    
     public void atenderSiguienteSolicitud() {
         SolicitudServicio solicitud;
 
@@ -137,7 +138,7 @@ public class Sistema {
             } else {
                 colaOrdinaria.enqueue(solicitud);
             }
-            return;
+            throw new IllegalArgumentException("No hay unidades disponibles.");
         }
 
         // Verificar técnico
@@ -157,7 +158,7 @@ public class Sistema {
             } else {
                 colaOrdinaria.enqueue(solicitud);
             }
-            return;
+            throw new IllegalArgumentException("No hay técnicos disponibles.");
         }
 
         // Verificar kit
@@ -167,7 +168,7 @@ public class Sistema {
             } else {
                 colaOrdinaria.enqueue(solicitud);
             }
-            return;
+            throw new IllegalArgumentException("No hay kits disponibles.");
         }
 
         // Todo disponible — asignar recursos y cambiar estados
@@ -189,6 +190,7 @@ public class Sistema {
         
         //Se agrega a la lista de "En Ejecución"
         listaEnEjecucion.agregar(solicitud);
+        System.out.println("Solicitud en proceso");
     }
 
     public void cerrarSolicitud(SolicitudServicio solicitud) {
