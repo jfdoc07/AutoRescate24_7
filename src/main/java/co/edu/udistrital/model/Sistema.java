@@ -72,7 +72,6 @@ public class Sistema {
         } else {
             switch (u.getEstado()) {
                 case MANTENIMIENTO: {
-                    //Si está en mantenimiento
                     EstadoUnidad estadoAnterior = u.getEstado();
                     u.setEstado(EstadoUnidad.ACTIVO);
                     u.setDisponibilidad(true);
@@ -80,7 +79,6 @@ public class Sistema {
                     return "Unidad sacada de mantenimiento";
                 }
                 case ACTIVO: {
-                    //Si esta activo o disponible
                     EstadoUnidad estadoAnterior = u.getEstado();
                     u.setEstado(EstadoUnidad.MANTENIMIENTO);
                     u.setDisponibilidad(false);
@@ -117,9 +115,7 @@ public class Sistema {
     }
 
     public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion, Zona zona) {
-
         SolicitudServicio solicitud = new SolicitudServicio(cliente, tipoServicio, descripcion, NivelCriticidad.ORDINARIA, null, null, null, EstadoSolicitud.PENDIENTE, zona);
-
         solicitud.setPuntajeCriticidad(solicitud.calcularPuntaje());
         solicitud.setCriticidad(solicitud.calcularNivel());
 
@@ -161,7 +157,6 @@ public class Sistema {
             throw new IllegalArgumentException("No hay unidades disponibles.");
         }
 
-        // Verificar técnico
         ListaEnlazadaSimple.Iterador<Tecnico> itTecnicos = iteradorTecnicos();
         Tecnico tecnicoDisponible = null;
         while (itTecnicos.tieneSiguiente()) {
@@ -181,7 +176,6 @@ public class Sistema {
             throw new IllegalArgumentException("No hay técnicos disponibles.");
         }
 
-        // Verificar kit
         if (pilaKits.estaVacia()) {
             if (solicitud.getCriticidad() == NivelCriticidad.CRITICA) {
                 colaCritica.insertar(solicitud);
@@ -191,7 +185,6 @@ public class Sistema {
             throw new IllegalArgumentException("No hay kits disponibles.");
         }
 
-        // Todo disponible — asignar recursos y cambiar estados
         Kit kit = utilizarKit();
 
         solicitud.setUnidadAsignada(unidadDisponible);
@@ -208,24 +201,55 @@ public class Sistema {
         historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
         historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
 
-        //Se agrega a la lista de "En Ejecución"
         listaEnEjecucion.agregar(solicitud);
         System.out.println("Solicitud en proceso");
     }
 
-    public String cerrarSolicitud(String solicitudIdStr) {
+    public void reversarOperacionCompleta(SolicitudServicio solicitud) {
+        if (solicitud == null) {
+            return;
+        }
 
+        if (solicitud.getTecnico() != null) {
+            solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
+            solicitud.getTecnico().setDisponibilidad(true);
+        }
+
+        if (solicitud.getUnidadAsignada() != null) {
+            solicitud.getUnidadAsignada().setEstado(EstadoUnidad.ACTIVO);
+            solicitud.getUnidadAsignada().setDisponibilidad(true);
+        }
+
+        solicitud.setEstado(EstadoSolicitud.PENDIENTE);
+
+        listaEnEjecucion.eliminar(solicitud);
+        if (solicitud.getCriticidad().equals(NivelCriticidad.CRITICA)) {
+            colaCritica.insertar(solicitud);
+        } else if (solicitud.getCriticidad().equals(NivelCriticidad.ORDINARIA)) {
+            colaOrdinaria.enqueue(solicitud); // Modificado de setPeek a enqueue estándar para consistencia
+        }
+        try {
+            csv();
+        } catch (Exception e) {
+            System.out.println("Error actualizando persistencia en reversión");
+        }
+    }
+
+    public String cerrarSolicitud(String solicitudIdStr) {
         if (solicitudIdStr == null) {
             throw new IllegalArgumentException("No seleccionó ninguna solicitud.");
         }
 
         System.out.println("=== ANALIZANDO SOLICITUD ===");
         System.out.println("ID que llegó desde la JTable: [" + solicitudIdStr + "]");
-        if (listaEnEjecucion != null) {
-            System.out.println("Buscando en la lista con tamaño: " + listaEnEjecucion.getTamanno());
-        }
+        
         java.util.UUID uuidBuscado = java.util.UUID.fromString(solicitudIdStr);
         SolicitudServicio solicitud = listaEnEjecucion.obtenerPorUuid(uuidBuscado);
+        
+        if (solicitud == null) {
+            throw new IllegalArgumentException("No se encontró la solicitud en ejecución.");
+        }
+
         solicitud.setEstado(EstadoSolicitud.CERRADA);
 
         if (solicitud.getUnidadAsignada() != null) {
@@ -240,20 +264,26 @@ public class Sistema {
 
         if (solicitud.getKitAsignado() != null) {
             double probabilidad = Math.random();
-            if (probabilidad < 0.8) {//Probabilisticamente puede llegar incompleto
+            if (probabilidad < 0.8) { // 80% llega completo
                 solicitud.getKitAsignado().setCompleto(true);
                 solicitud.getKitAsignado().setRequiereReposicion(false);
-            } else {
+            } else { // 20% requiere reposición
                 solicitud.getKitAsignado().setCompleto(false);
                 solicitud.getKitAsignado().setRequiereReposicion(true);
             }
             listaKits.agregar(solicitud.getKitAsignado());
-
         }
 
-        listaCerradas.agregar(solicitud);
         listaEnEjecucion.eliminar(solicitud);
+        listaCerradas.agregar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
+        
+        try {
+            csv(); // Actualiza el archivo CSV al cerrar
+        } catch (IOException e) {
+            System.out.println("Error al escribir reporte CSV: " + e.getMessage());
+        }
+
         return "Solicitud cerrada con éxito";
     }
 
@@ -267,13 +297,11 @@ public class Sistema {
         if (idKit == null) {
             throw new IllegalArgumentException("No se seleccionó ningun kit.");
         }
-        System.out.println("=== BUSCANDO KIT ===");
-        System.out.println("ID que llegó desde la JTable: [" + idKit + "]");
-        if (listaKits != null) {
-            System.out.println("Buscando en la lista con tamaño: " + listaKits.getTamanno());
-        }
         java.util.UUID idReal = java.util.UUID.fromString(idKit);
         Kit kit = buscarKitPorUuid(idReal);
+        if (kit == null) {
+            throw new IllegalArgumentException("El kit no existe en el sistema.");
+        }
         kit.setCompleto(true);
         kit.setRequiereReposicion(false);
         pilaKits.apilar(kit);
@@ -311,7 +339,7 @@ public class Sistema {
     }
 
     public String deshacerOperacion() {
-        if(historial == null) throw new IllegalArgumentException("El historial está vacío.");
+        if (historial == null || historial.estaVacia()) throw new IllegalArgumentException("El historial está vacío.");
         Operacion operacion = historial.verCima();
         historial.desapilar();
         operacion.deshacer();
@@ -330,6 +358,7 @@ public class Sistema {
         BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.csv"));
         writer.write("id,cliente,tipoServicio,zona");
 
+        @SuppressWarnings("rawtypes")
         ListaEnlazadaSimple.Iterador<SolicitudServicio> it = iteradorCerradas();
 
         writer.newLine();
@@ -370,31 +399,21 @@ public class Sistema {
         if (uuidBuscado == null) {
             return null;
         }
-        System.out.println("--- EJECUTANDO BÚSQUEDA ---");
-        System.out.println("Unidades totales en memoria de la lista: " + listaUnidades.getTamanno());
-        System.out.println("Buscando el UUID: " + uuidBuscado);
-
-        UnidadServicio unidadEncontrada = listaUnidades.obtenerPorUuid(uuidBuscado);
-        System.out.println("¿Se encontró la unidad?: " + (unidadEncontrada != null));
-        return unidadEncontrada;
+        return listaUnidades.obtenerPorUuid(uuidBuscado);
     }
 
     public Kit buscarKitPorUuid(UUID uuidBuscado) {
         if (uuidBuscado == null) {
             return null;
         }
-
-        Kit kitEncontrado = listaKits.obtenerPorUuid(uuidBuscado);
-
-        return kitEncontrado;
+        return listaKits.obtenerPorUuid(uuidBuscado);
     }
 
     public Tecnico buscarTecnicoPorUuid(UUID uuidBuscado) {
         if (uuidBuscado == null) {
             return null;
         }
-        Tecnico tecnicoEncontrado = listaTecnicos.obtenerPorUuid(uuidBuscado);
-        return tecnicoEncontrado;
+        return listaTecnicos.obtenerPorUuid(uuidBuscado);
     }
 
     public Cola<SolicitudServicio> getColaOrdinaria() {
@@ -432,5 +451,4 @@ public class Sistema {
     public ListaEnlazadaSimple<SolicitudServicio> getListaEnEjecucion() {
         return listaEnEjecucion;
     }
-
 }
