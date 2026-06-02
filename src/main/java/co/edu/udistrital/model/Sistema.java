@@ -96,8 +96,7 @@ public class Sistema {
         return listaTecnicos.iterador();
     }
 
-    public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion,
-            Tecnico tecnico, Zona zona) {
+    public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion, Zona zona) {
 
         SolicitudServicio solicitud = new SolicitudServicio(cliente, tipoServicio, descripcion, NivelCriticidad.ORDINARIA, null, null, null, EstadoSolicitud.PENDIENTE, zona);
 
@@ -127,7 +126,7 @@ public class Sistema {
             UnidadServicio u = itUnidades.siguiente();
             if (u.isDisponibilidad() && u.getEstado() != EstadoUnidad.MANTENIMIENTO
                     && esCompatible(u.getTipo(), solicitud.getTipoServicio())
-                    && u.getZona() == solicitud.getZona()) {
+                    && u.getZona().equals(solicitud.getZona())) {
                 unidadDisponible = u;
                 break;
             }
@@ -354,5 +353,5 @@ public class Sistema {
     public ListaEnlazadaSimple<SolicitudServicio> getListaCerradas() {
         return listaCerradas;
     }
-
+    
 }

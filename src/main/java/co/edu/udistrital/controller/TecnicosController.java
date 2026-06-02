@@ -25,6 +25,7 @@ public class TecnicosController {
 
     private void inicializarEventos() {
 
+        vista.getEspecialidad().removeAllItems();
         vista.getEspecialidad().addItem(TipoServicio.APERTURA_PUERTAS.toString());
         vista.getEspecialidad().addItem(TipoServicio.CAMBIO_LLANTA.toString());
         vista.getEspecialidad().addItem(TipoServicio.COMBUSTIBLE.toString());
