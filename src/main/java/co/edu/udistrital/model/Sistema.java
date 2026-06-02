@@ -73,16 +73,18 @@ public class Sistema {
             switch (u.getEstado()) {
                 case MANTENIMIENTO: {
                     EstadoUnidad estadoAnterior = u.getEstado();
+                    boolean disponibilidadAnterior = u.isDisponibilidad();
                     u.setEstado(EstadoUnidad.ACTIVO);
                     u.setDisponibilidad(true);
-                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior));
+                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior, disponibilidadAnterior));
                     return "Unidad sacada de mantenimiento";
                 }
                 case ACTIVO: {
                     EstadoUnidad estadoAnterior = u.getEstado();
+                    boolean disponibilidadAnterior = u.isDisponibilidad();
                     u.setEstado(EstadoUnidad.MANTENIMIENTO);
                     u.setDisponibilidad(false);
-                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior));
+                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior, disponibilidadAnterior));
                     return "Unidad enviada a mantenimiento";
                 }
                 default:
@@ -197,42 +199,11 @@ public class Sistema {
 
         tecnicoDisponible.setDisponibilidad(false);
         tecnicoDisponible.setEstado(EstadoTecnico.ASIGNADO);
-
-        historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
-        historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
+        
+        historial.apilar(new OperacionAtencionServicio(solicitud, unidadDisponible, tecnicoDisponible, kit));
 
         listaEnEjecucion.agregar(solicitud);
         System.out.println("Solicitud en proceso");
-    }
-
-    public void reversarOperacionCompleta(SolicitudServicio solicitud) {
-        if (solicitud == null) {
-            return;
-        }
-
-        if (solicitud.getTecnico() != null) {
-            solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
-            solicitud.getTecnico().setDisponibilidad(true);
-        }
-
-        if (solicitud.getUnidadAsignada() != null) {
-            solicitud.getUnidadAsignada().setEstado(EstadoUnidad.ACTIVO);
-            solicitud.getUnidadAsignada().setDisponibilidad(true);
-        }
-
-        solicitud.setEstado(EstadoSolicitud.PENDIENTE);
-
-        listaEnEjecucion.eliminar(solicitud);
-        if (solicitud.getCriticidad().equals(NivelCriticidad.CRITICA)) {
-            colaCritica.insertar(solicitud);
-        } else if (solicitud.getCriticidad().equals(NivelCriticidad.ORDINARIA)) {
-            colaOrdinaria.enqueue(solicitud); // Modificado de setPeek a enqueue estándar para consistencia
-        }
-        try {
-            csv();
-        } catch (Exception e) {
-            System.out.println("Error actualizando persistencia en reversión");
-        }
     }
 
     public String cerrarSolicitud(String solicitudIdStr) {
@@ -342,7 +313,7 @@ public class Sistema {
         if (historial == null || historial.estaVacia()) throw new IllegalArgumentException("El historial está vacío.");
         Operacion operacion = historial.verCima();
         historial.desapilar();
-        operacion.deshacer();
+        operacion.deshacer(this);
         return "Ultima operación revertida.";
     }
 
