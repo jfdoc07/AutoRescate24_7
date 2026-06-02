@@ -12,9 +12,6 @@ import co.edu.udistrital.model.Sistema;
 import co.edu.udistrital.view.VentanaPrincipal;
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
 
 public class MainController {
 
@@ -26,7 +23,6 @@ public class MainController {
     private SolicitudesController solicitudesController;
     private KitsController kitsController;
     private HistorialController historialController;
-    private DashboardController dashboardController;
 
     public MainController() {
         FlatDarkLaf.setup();
@@ -43,7 +39,6 @@ public class MainController {
         this.solicitudesController = new SolicitudesController(ventana.getSolicitudes(), sistema);
         this.kitsController = new KitsController(ventana.getKits(), sistema);
         this.historialController = new HistorialController(ventana.getHistorial(), sistema);
-        this.dashboardController = new DashboardController(ventana.getDashboard(), sistema);
     }
 
     public void iniciar() {
@@ -79,7 +74,7 @@ public class MainController {
 
         ventana.getBotonHistorial().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getHistorial());
-            /*historialController.actualizarPila();*/
+            historialController.verHistorial();
         });
     }
     

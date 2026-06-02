@@ -19,6 +19,7 @@ public class OperacionAsignacionTecnico extends Operacion{
     public void deshacer() {
         solicitud.eliminarTecnico(tecnico);
         tecnico.setDisponibilidad(true);
+        tecnico.setEstado(EstadoTecnico.DISPONIBLE);
     }
 
     @Override

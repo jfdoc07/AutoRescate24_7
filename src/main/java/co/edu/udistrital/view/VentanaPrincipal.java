@@ -21,7 +21,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * Constructor del JFrame.
      */
-    private PanelDashboard dashboard;
     private PanelSolicitudes solicitudes;
     private PanelTecnicos tecnicos;
     private PanelKits kits;
@@ -39,7 +38,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         contenido.setOpaque(true);
         contenido.setBackground(new Color(26, 26, 46));
         contenido.setLayout(new BorderLayout());
-        dashboard = new PanelDashboard();
         solicitudes = new PanelSolicitudes();
         tecnicos = new PanelTecnicos();
         kits = new PanelKits();
@@ -51,9 +49,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     //Getters de los paneles
-    public PanelDashboard getDashboard() {
-        return dashboard;
-    }
 
     public PanelSolicitudes getSolicitudes() {
         return solicitudes;
@@ -249,9 +244,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         estilizarBoton(botonHistorial, false);
 
         // Activar el que corresponde
-        if (panel == dashboard) {
-            estilizarBoton(botonDashboard, true);
-        }
         if (panel == solicitudes) {
             estilizarBoton(botonSolicitudes, true);
         }

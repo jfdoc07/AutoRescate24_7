@@ -310,10 +310,12 @@ public class Sistema {
         historial.apilar(operacion);
     }
 
-    public void deshacerOperacion() {
+    public String deshacerOperacion() {
+        if(historial == null) throw new IllegalArgumentException("El historial está vacío.");
         Operacion operacion = historial.verCima();
         historial.desapilar();
         operacion.deshacer();
+        return "Ultima operación revertida.";
     }
 
     public Operacion verUltimaOperacion() {
