@@ -551,7 +551,7 @@ public class PanelSolicitudes extends javax.swing.JPanel {
     }
 
     public String getIdUnidadSeleccionada() {
-        if(idsSolicitudes == null){
+        if(idsSolicitudes == null || filaSeleccionadaSolicitudes > idsSolicitudes.length || filaSeleccionadaSolicitudes < 0){
             return null;
         }
         return idsSolicitudes[filaSeleccionadaSolicitudes];
