@@ -23,7 +23,7 @@ public class Sistema {
     private ListaEnlazadaSimple<Kit> listaKits;
     private ListaEnlazadaSimple<Cliente> listaClientes;
     private ListaEnlazadaSimple<SolicitudServicio> listaEnEjecucion;
-    private ListaEnlazadaSimple<SolicitudServicio> listaCerradas;
+    private Pila<SolicitudServicio> pilaCerradas;
 
     public Sistema() {
         colaOrdinaria = new Cola<>();
@@ -35,7 +35,7 @@ public class Sistema {
         listaKits = new ListaEnlazadaSimple<>();
         listaClientes = new ListaEnlazadaSimple<>();
         listaEnEjecucion = new ListaEnlazadaSimple<>();
-        listaCerradas = new ListaEnlazadaSimple<>();
+        pilaCerradas = new Pila<>();
     }
 
     public void añadirUnidad(TipoUnidad tipo, Zona zona) {
@@ -195,7 +195,8 @@ public class Sistema {
         System.out.println("Solicitud en proceso");
     }
 
-    public void reversarOperacionCompleta(SolicitudServicio solicitud) {
+    public void reversarOperacionCompleta() {
+        SolicitudServicio solicitud = pilaCerradas.verCima();
         if (solicitud == null) {
             return;
         }
@@ -242,7 +243,7 @@ public class Sistema {
         }
 
         listaEnEjecucion.eliminar(solicitud);
-        listaCerradas.agregar(solicitud);
+        pilaCerradas.apilar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
     }
 
@@ -292,15 +293,15 @@ public class Sistema {
         return historial.verCima();
     }
 
-    public ListaEnlazadaSimple.Iterador<SolicitudServicio> iteradorCerradas() {
-        return listaCerradas.iterador();
+    public Pila.Iterador<SolicitudServicio> iteradorCerradas() {
+        return pilaCerradas.iterador();
     }
 
     public void csv() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.csv"));
         writer.write("id,   cliente,    tipoServicio,    zona");
 
-        ListaEnlazadaSimple.Iterador<SolicitudServicio> it = iteradorCerradas();
+        Pila.Iterador<SolicitudServicio> it = iteradorCerradas();
 
         writer.newLine();
         while (it.tieneSiguiente()) {
@@ -389,8 +390,8 @@ public class Sistema {
         return listaClientes;
     }
 
-    public ListaEnlazadaSimple<SolicitudServicio> getListaCerradas() {
-        return listaCerradas;
+    public Pila<SolicitudServicio> getPilaCerradas() {
+        return pilaCerradas;
     }
 
     public ListaEnlazadaSimple<SolicitudServicio> getListaEnEjecucion() {
