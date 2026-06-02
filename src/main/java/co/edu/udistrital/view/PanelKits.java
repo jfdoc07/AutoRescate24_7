@@ -455,14 +455,14 @@ public class PanelKits extends javax.swing.JPanel {
     }
 
     public String getIdUnidadSeleccionada() {
-        if (idsUnidades == null) {
+        if (idsUnidades == null || filaSeleccionadaUnidades > idsUnidades.length || filaSeleccionadaUnidades < 0) {
             return null;
         }
         return idsUnidades[filaSeleccionadaUnidades];
     }
 
     public String getIdKitSeleccionado() {
-        if (idsKits == null) {
+        if (idsKits == null || filaSeleccionadaKits > idsKits.length || filaSeleccionadaKits < 0) {
             return null;
         }
         return idsKits[filaSeleccionadaKits];
