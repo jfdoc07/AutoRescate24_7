@@ -53,7 +53,11 @@ public class SolicitudesController {
         this.vista.getBotonGuardar().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                guardarSolicitud();
+                try{
+                    guardarSolicitud();
+                } catch (IllegalArgumentException err){
+                    vista.mostrarMensaje(err.getMessage());
+                }
             }
         });
 
@@ -84,6 +88,9 @@ public class SolicitudesController {
         String tipoServicioSeleccionado = (String) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
         TipoServicio tipoServicio = TipoServicio.valueOf(tipoServicioSeleccionado);
         String descripcion = vista.getDescripcion().getText(); // TextArea llamado Descripcion
+        if (descripcion.isEmpty()) {
+            throw new IllegalArgumentException("Tiene que rellenar todos los campos.");
+        }
         String zonaSeleccionada = (String) vista.getZona().getSelectedItem(); // combo box llamado Zona 
         Zona zona = Zona.valueOf(zonaSeleccionada);
         sistema.registrarSolicitud(cliente, tipoServicio, descripcion, zona);
