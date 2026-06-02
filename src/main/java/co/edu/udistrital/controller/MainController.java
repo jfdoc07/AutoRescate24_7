@@ -11,7 +11,7 @@ package co.edu.udistrital.controller;
 import co.edu.udistrital.model.Sistema;
 import co.edu.udistrital.view.VentanaPrincipal;
 import com.formdev.flatlaf.FlatDarkLaf;
-import javax.swing.SwingUtilities;
+import java.io.IOException;
 
 public class MainController {
 
@@ -23,7 +23,6 @@ public class MainController {
     private SolicitudesController solicitudesController;
     private KitsController kitsController;
     private HistorialController historialController;
-    private DashboardController dashboardController;
 
     public MainController() {
         FlatDarkLaf.setup();
@@ -40,7 +39,6 @@ public class MainController {
         this.solicitudesController = new SolicitudesController(ventana.getSolicitudes(), sistema);
         this.kitsController = new KitsController(ventana.getKits(), sistema);
         this.historialController = new HistorialController(ventana.getHistorial(), sistema);
-        this.dashboardController = new DashboardController(ventana.getDashboard(), sistema);
     }
 
     public void iniciar() {
@@ -49,13 +47,17 @@ public class MainController {
 
     private void conectarNavegacion() {
         ventana.getBotonDashboard().addActionListener(e -> {
-            ventana.mostrarPanel(ventana.getDashboard());
-            /*dashboardController.refrescar();*/
+            try {
+                sistema.csv();
+                System.exit(0);
+            } catch (IOException ex) {
+                
+            }
         });
 
         ventana.getBotonTecnicos().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getTecnicos());
-            /*tecnicosController.actualizarTabla();*/
+            tecnicosController.actualizarTabla();
         });
         ventana.getBotonSolicitudes().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getSolicitudes());
@@ -66,11 +68,14 @@ public class MainController {
         ventana.getBotonKits().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getKits());
             kitsController.mostrarUnidades();
+            kitsController.mostrarKits();
+            kitsController.mostrarProximoKit();
         });
 
         ventana.getBotonHistorial().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getHistorial());
-            /*historialController.actualizarPila();*/
+            historialController.verHistorial();
         });
     }
+    
 }

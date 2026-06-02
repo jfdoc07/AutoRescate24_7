@@ -4,11 +4,13 @@
  */
 package co.edu.udistrital.model;
 
+import java.util.UUID;
+
 
 /**
  *
  * @author Usuario
  */
 public interface Identificable {
-    String getUuid();
+    UUID getUuid();
 }

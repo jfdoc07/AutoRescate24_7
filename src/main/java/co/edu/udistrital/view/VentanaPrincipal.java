@@ -21,7 +21,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     /**
      * Constructor del JFrame.
      */
-    private PanelDashboard dashboard;
     private PanelSolicitudes solicitudes;
     private PanelTecnicos tecnicos;
     private PanelKits kits;
@@ -39,21 +38,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         contenido.setOpaque(true);
         contenido.setBackground(new Color(26, 26, 46));
         contenido.setLayout(new BorderLayout());
-        dashboard = new PanelDashboard();
         solicitudes = new PanelSolicitudes();
         tecnicos = new PanelTecnicos();
         kits = new PanelKits();
         historial = new PanelHistorial();
-        mostrarPanel(dashboard);
+        mostrarPanel(solicitudes);
         setResizable(false);
         setSize(1200, 650);
         setLocationRelativeTo(null);  // centrar en pantalla
     }
 
     //Getters de los paneles
-    public PanelDashboard getDashboard() {
-        return dashboard;
-    }
 
     public PanelSolicitudes getSolicitudes() {
         return solicitudes;
@@ -110,7 +105,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel1.add(contenido, new org.netbeans.lib.awtextra.AbsoluteConstraints(112, 6, 1070, -1));
 
-        botonDashboard.setText("Dashboard");
+        botonDashboard.setText("Cerrar día");
         botonDashboard.setBorder(null);
         botonDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -159,7 +154,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cajaBotones.setLayout(cajaBotonesLayout);
         cajaBotonesLayout.setHorizontalGroup(
             cajaBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(botonDashboard, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(botonSolicitudes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(botonTecnicos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(botonKits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -168,14 +162,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(labelFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(botonDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         cajaBotonesLayout.setVerticalGroup(
             cajaBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(cajaBotonesLayout.createSequentialGroup()
                 .addGap(7, 7, 7)
                 .addComponent(labelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botonDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonSolicitudes, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -184,6 +177,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(botonKits, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botonHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonDashboard, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 247, Short.MAX_VALUE))
         );
 
@@ -249,9 +244,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         estilizarBoton(botonHistorial, false);
 
         // Activar el que corresponde
-        if (panel == dashboard) {
-            estilizarBoton(botonDashboard, true);
-        }
         if (panel == solicitudes) {
             estilizarBoton(botonSolicitudes, true);
         }

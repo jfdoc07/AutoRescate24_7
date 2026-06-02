@@ -24,24 +24,27 @@ public class HistorialController {
     public HistorialController(PanelHistorial vista, Sistema sistema) {
         this.vista = vista;
         this.sistema = sistema;
-        verHistorial();
-    }
-
-    public void inicializarHistorial() {
-        this.vista.getBoton().addActionListener(new ActionListener() {
+        this.vista.getBotonRevertir().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                verHistorial();
+                revertirHistorial();
             }
         });
     }
-    public void verHistorial(){
-        Pila<Operacion> historial = sistema.getHistorial();
-        DefaultListModel<String> visual = new DefaultListModel<>();
-        Pila.Iterador<Operacion> itOperaciones = sistema.getHistorial().iterador();
-        while(itOperaciones.tieneSiguiente()){
-            Operacion operacionActual = itOperaciones.siguiente();
-            visual.addElement(operacionActual.toString());
+
+    public void verHistorial() {
+        if (sistema.getHistorial() == null || sistema.getHistorial().estaVacia()) {
+            vista.mostrarUltimaOperacion(null);
+        } else {
+            vista.mostrarUltimaOperacion(sistema.getHistorial().verCima().toString());
+        }
+    }
+
+    public void revertirHistorial() {
+        try {
+            vista.mostrarMensaje(sistema.deshacerOperacion());
+        } catch (IllegalArgumentException err) {
+            vista.mostrarMensaje(err.getMessage());
         }
     }
 }
