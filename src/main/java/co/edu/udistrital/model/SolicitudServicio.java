@@ -7,9 +7,9 @@ import co.edu.udistrital.model.enums.EstadoSolicitud;
 import co.edu.udistrital.model.enums.Zona;
 import java.util.UUID;
 
-public class SolicitudServicio {
+public class SolicitudServicio implements Identificable{
 
-    private String id;
+    private UUID id;
     private Cliente cliente;
     private TipoServicio tipoServicio;
     private String descripcion;
@@ -30,7 +30,7 @@ public class SolicitudServicio {
     private int puntajeCriticidad; // se calcula al construir
 
     public SolicitudServicio(Cliente cliente, TipoServicio tipoServicio, String descripcion, NivelCriticidad criticidad, UnidadServicio unidadAsignada, Tecnico tecnico, Kit kitAsignado, EstadoSolicitud estado, Zona zona) {
-        this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID();
         this.cliente = cliente;
         this.tipoServicio = tipoServicio;
         this.descripcion = descripcion;
@@ -93,8 +93,9 @@ public class SolicitudServicio {
         return puntajeCriticidad;
     }
 
-    public String getId() {
-        return id;
+    @Override
+    public UUID getUuid() {
+        return this.id;
     }
 
     public Cliente getCliente() {

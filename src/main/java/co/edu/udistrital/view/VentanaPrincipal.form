@@ -77,16 +77,16 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="botonDashboard" alignment="1" max="32767" attributes="0"/>
                   <Component id="botonSolicitudes" alignment="0" max="32767" attributes="0"/>
                   <Component id="botonTecnicos" alignment="0" max="32767" attributes="0"/>
                   <Component id="botonKits" alignment="0" max="32767" attributes="0"/>
                   <Component id="botonHistorial" alignment="1" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="labelFoto" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
+                  <Component id="botonDashboard" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -95,8 +95,6 @@
                       <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Component id="labelFoto" min="-2" pref="41" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="botonDashboard" min="-2" pref="65" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="botonSolicitudes" min="-2" pref="65" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="botonTecnicos" min="-2" pref="65" max="-2" attributes="0"/>
@@ -104,6 +102,8 @@
                       <Component id="botonKits" min="-2" pref="65" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="botonHistorial" min="-2" pref="65" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="botonDashboard" min="-2" pref="65" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="247" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -112,7 +112,7 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="botonDashboard">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Dashboard"/>
+                <Property name="text" type="java.lang.String" value="Cerrar d&#xed;a"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>
@@ -167,7 +167,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="botonKits">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Kits"/>
+                <Property name="text" type="java.lang.String" value="Recursos"/>
+                <Property name="toolTipText" type="java.lang.String" value=""/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
                 </Property>

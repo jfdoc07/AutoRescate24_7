@@ -12,14 +12,14 @@ import java.util.UUID;
  * @author Usuario
  */
 public class Tecnico implements Identificable{
-    private String id;
+    private UUID id;
     private String nombre;
     private TipoServicio especialidad;
     private boolean disponibilidad;
     private EstadoTecnico estado;
 
     public Tecnico(String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
-        this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID();
         this.nombre = nombre;
         this.especialidad = especialidad;
         this.disponibilidad = disponibilidad;
@@ -29,7 +29,7 @@ public class Tecnico implements Identificable{
     
     
     @Override
-    public String getUuid() {
+    public UUID getUuid() {
         return id;
     }
 

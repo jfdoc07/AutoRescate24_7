@@ -4,11 +4,10 @@
  */
 package co.edu.udistrital.controller;
 
-import co.edu.udistrital.model.enums.Cliente;
 import co.edu.udistrital.model.ListaEnlazadaSimple;
+import co.edu.udistrital.model.enums.Cliente;
 import co.edu.udistrital.model.Sistema;
-import co.edu.udistrital.model.Tecnico;
-import co.edu.udistrital.model.UnidadServicio;
+import co.edu.udistrital.model.SolicitudServicio;
 import co.edu.udistrital.model.enums.*;
 import co.edu.udistrital.view.PanelSolicitudes;
 import java.awt.event.ActionEvent;
@@ -57,15 +56,106 @@ public class SolicitudesController {
                 guardarSolicitud();
             }
         });
+
+        this.vista.getAtenderSiguienteBoton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    sistema.atenderSiguienteSolicitud();
+                    vista.mostrarMensaje("Solicitud en proceso");
+                } catch (IllegalArgumentException err) {
+                    vista.mostrarMensaje(err.getMessage());
+                }
+            }
+        });
+
+        this.vista.getFinalizarSeleccionada().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                finalizarSolicitud();
+            }
+        });
+
     }
 
     public void guardarSolicitud() {
-        Cliente cliente = (Cliente) vista.getCliente().getSelectedItem();  // Combobox llamada Cliente
-        TipoServicio tipoServicio = (TipoServicio) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
+        String clienteSeleccionado = (String) vista.getCliente().getSelectedItem();  // Combobox llamada Cliente
+        Cliente cliente = Cliente.valueOf(clienteSeleccionado);
+        String tipoServicioSeleccionado = (String) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
+        TipoServicio tipoServicio = TipoServicio.valueOf(tipoServicioSeleccionado);
         String descripcion = vista.getDescripcion().getText(); // TextArea llamado Descripcion
-        Zona zona = (Zona) vista.getZona().getSelectedItem(); // combo box llamado Zona
+        String zonaSeleccionada = (String) vista.getZona().getSelectedItem(); // combo box llamado Zona 
+        Zona zona = Zona.valueOf(zonaSeleccionada);
         sistema.registrarSolicitud(cliente, tipoServicio, descripcion, zona);
-        System.out.println("solicitud registrada con exito");
+        vista.mostrarMensaje("Solicitud registrada con éxito");
+    }
+
+    public void actualizarProximasSolicitudes() {
+        if (!sistema.getColaOrdinaria().estaVacia()) {
+            SolicitudServicio ordinaria = sistema.getColaOrdinaria().peek();
+            if (ordinaria != null) {
+                String[] datos = {
+                    ordinaria.getCliente().toString(),
+                    ordinaria.getTipoServicio().toString(),
+                    ordinaria.getZona().toString(),
+                    ordinaria.getDescripcion()};
+                vista.mostrarProximaOrdinaria(datos);
+            } else {
+                vista.mostrarProximaOrdinaria(null); // cola vacía
+            }
+        } else {
+            vista.mostrarProximaOrdinaria(null);
+        }
+
+        if (!sistema.getColaCritica().estaVacia()) {
+            SolicitudServicio critica = sistema.getColaCritica().verFrente();
+            if (critica != null) {
+                String[] datos = {
+                    critica.getCliente().toString(),
+                    critica.getTipoServicio().toString(),
+                    critica.getZona().toString(),
+                    critica.getDescripcion()};
+                vista.mostrarProximaCritica(datos);
+            } else {
+                vista.mostrarProximaCritica(null);
+            }
+        } else {
+            vista.mostrarProximaCritica(null);
+        }
+    }
+
+    public void finalizarSolicitud() {
+        try {
+            String idSolicitud = vista.getIdUnidadSeleccionada();
+            vista.mostrarMensaje(sistema.cerrarSolicitud(idSolicitud));
+        } catch (IllegalArgumentException e) {
+            vista.mostrarMensaje(e.getMessage());
+        }
+    }
+
+    public void mostrarSolicitudesEjecucion() {
+        if (sistema.getListaEnEjecucion() == null) {
+            vista.mostrarTablaSolicitudes(new String[0][6]);
+            return;
+        }
+
+        int n = sistema.getListaEnEjecucion().getTamanno();
+        String[][] datos = new String[n][6];
+
+        ListaEnlazadaSimple.Iterador<SolicitudServicio> it = sistema.getListaEnEjecucion().iterador();
+        int i = 0;
+        while (it.tieneSiguiente()) {
+            SolicitudServicio s = it.siguiente();
+            datos[i][0] = s.getUuid().toString();           // ID oculto
+            datos[i][1] = s.getCliente().toString();     // cliente
+            datos[i][2] = s.getTipoServicio().toString(); // servicio
+            datos[i][3] = s.getZona().toString();         // zona
+            datos[i][4] = s.getTecnico().getNombre();     // técnico
+            datos[i][5] = s.getUnidadAsignada().getTipo().toString(); // unidad
+            i++;
+        }
+
+        vista.mostrarTablaSolicitudes(datos);
     }
 
 }

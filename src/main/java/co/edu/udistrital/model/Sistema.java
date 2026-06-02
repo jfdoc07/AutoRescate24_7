@@ -34,11 +34,12 @@ public class Sistema {
         listaTecnicos = new ListaEnlazadaSimple<>();
         listaKits = new ListaEnlazadaSimple<>();
         listaClientes = new ListaEnlazadaSimple<>();
+        listaEnEjecucion = new ListaEnlazadaSimple<>();
         listaCerradas = new ListaEnlazadaSimple<>();
     }
 
-    public void añadirUnidad(TipoUnidad tipo, EstadoUnidad estado, Zona zona, boolean disponibilidad) {
-        UnidadServicio unidad = new UnidadServicio(tipo, estado, zona, disponibilidad);
+    public void añadirUnidad(TipoUnidad tipo, Zona zona) {
+        UnidadServicio unidad = new UnidadServicio(tipo, EstadoUnidad.ACTIVO, zona, true);
         listaUnidades.agregar(unidad);
     }
 
@@ -60,23 +61,42 @@ public class Sistema {
         listaUnidades.eliminar(unidad);
     }
 
-    public void enviarAMantenimiento(UnidadServicio unidad) {
-        EstadoUnidad estadoAnterior = unidad.getEstado();
-        unidad.setEstado(EstadoUnidad.MANTENIMIENTO);
-        unidad.setDisponibilidad(false);
-        historial.apilar(new OperacionCambioEstadoUnidad(unidad, estadoAnterior));
-    }
-
-    public void sacarDeMantenimiento(UnidadServicio unidad) {
-        EstadoUnidad estadoAnterior = unidad.getEstado();
-        unidad.setEstado(EstadoUnidad.ACTIVO);
-        unidad.setDisponibilidad(true);
-        historial.apilar(new OperacionCambioEstadoUnidad(unidad, estadoAnterior));
+    public String enviarSacarMantenimiento(String unidadID) {
+        if (unidadID == null) {
+            throw new IllegalArgumentException("No se seleccionó ninguna unidad.");
+        }
+        java.util.UUID idReal = java.util.UUID.fromString(unidadID);
+        UnidadServicio u = buscarUnidadPorUuid(idReal);
+        if (u == null) {
+            throw new IllegalArgumentException("No se encontró la unidad");
+        } else {
+            switch (u.getEstado()) {
+                case MANTENIMIENTO: {
+                    //Si está en mantenimiento
+                    EstadoUnidad estadoAnterior = u.getEstado();
+                    u.setEstado(EstadoUnidad.ACTIVO);
+                    u.setDisponibilidad(true);
+                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior));
+                    return "Unidad sacada de mantenimiento";
+                }
+                case ACTIVO: {
+                    //Si esta activo o disponible
+                    EstadoUnidad estadoAnterior = u.getEstado();
+                    u.setEstado(EstadoUnidad.MANTENIMIENTO);
+                    u.setDisponibilidad(false);
+                    historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior));
+                    return "Unidad enviada a mantenimiento";
+                }
+                default:
+                    throw new IllegalArgumentException("La unidad se encuentra ocupada, no se puede enviar a mantenimiento.");
+            }
+        }
     }
 
     public void añadirTecnico(String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
         Tecnico tecnico = new Tecnico(nombre, especialidad, disponibilidad, estado);
         listaTecnicos.agregar(tecnico);
+        System.out.println("Tecnico registrado con exito " + tecnico.getNombre() + " " + tecnico.getEspecialidad() + " " + tecnico.getEstado());
     }
 
     public void actualizarTecnico(Tecnico tecnico, String id, String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
@@ -109,6 +129,7 @@ public class Sistema {
             colaOrdinaria.enqueue(solicitud);
         }
     }
+
     public void atenderSiguienteSolicitud() {
         SolicitudServicio solicitud;
 
@@ -137,7 +158,7 @@ public class Sistema {
             } else {
                 colaOrdinaria.enqueue(solicitud);
             }
-            return;
+            throw new IllegalArgumentException("No hay unidades disponibles.");
         }
 
         // Verificar técnico
@@ -157,7 +178,7 @@ public class Sistema {
             } else {
                 colaOrdinaria.enqueue(solicitud);
             }
-            return;
+            throw new IllegalArgumentException("No hay técnicos disponibles.");
         }
 
         // Verificar kit
@@ -167,11 +188,11 @@ public class Sistema {
             } else {
                 colaOrdinaria.enqueue(solicitud);
             }
-            return;
+            throw new IllegalArgumentException("No hay kits disponibles.");
         }
 
         // Todo disponible — asignar recursos y cambiar estados
-        Kit kit = retirarKitDeRevision();
+        Kit kit = utilizarKit();
 
         solicitud.setUnidadAsignada(unidadDisponible);
         solicitud.setTecnico(tecnicoDisponible);
@@ -186,12 +207,25 @@ public class Sistema {
 
         historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
         historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
-        
+
         //Se agrega a la lista de "En Ejecución"
         listaEnEjecucion.agregar(solicitud);
+        System.out.println("Solicitud en proceso");
     }
 
-    public void cerrarSolicitud(SolicitudServicio solicitud) {
+    public String cerrarSolicitud(String solicitudIdStr) {
+
+        if (solicitudIdStr == null) {
+            throw new IllegalArgumentException("No seleccionó ninguna solicitud.");
+        }
+
+        System.out.println("=== ANALIZANDO SOLICITUD ===");
+        System.out.println("ID que llegó desde la JTable: [" + solicitudIdStr + "]");
+        if (listaEnEjecucion != null) {
+            System.out.println("Buscando en la lista con tamaño: " + listaEnEjecucion.getTamanno());
+        }
+        java.util.UUID uuidBuscado = java.util.UUID.fromString(solicitudIdStr);
+        SolicitudServicio solicitud = listaEnEjecucion.obtenerPorUuid(uuidBuscado);
         solicitud.setEstado(EstadoSolicitud.CERRADA);
 
         if (solicitud.getUnidadAsignada() != null) {
@@ -204,8 +238,23 @@ public class Sistema {
             solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
         }
 
+        if (solicitud.getKitAsignado() != null) {
+            double probabilidad = Math.random();
+            if (probabilidad < 0.8) {//Probabilisticamente puede llegar incompleto
+                solicitud.getKitAsignado().setCompleto(true);
+                solicitud.getKitAsignado().setRequiereReposicion(false);
+            } else {
+                solicitud.getKitAsignado().setCompleto(false);
+                solicitud.getKitAsignado().setRequiereReposicion(true);
+            }
+            listaKits.agregar(solicitud.getKitAsignado());
+
+        }
+
         listaCerradas.agregar(solicitud);
+        listaEnEjecucion.eliminar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
+        return "Solicitud cerrada con éxito";
     }
 
     public Kit añadirKit(String descripcion, boolean completo, boolean requiereReposicion) {
@@ -214,19 +263,33 @@ public class Sistema {
         return kit;
     }
 
-    public void ingresarKitARevision(Kit kit) {
+    public String enviarKitAPila(String idKit) {
+        if (idKit == null) {
+            throw new IllegalArgumentException("No se seleccionó ningun kit.");
+        }
+        System.out.println("=== BUSCANDO KIT ===");
+        System.out.println("ID que llegó desde la JTable: [" + idKit + "]");
+        if (listaKits != null) {
+            System.out.println("Buscando en la lista con tamaño: " + listaKits.getTamanno());
+        }
+        java.util.UUID idReal = java.util.UUID.fromString(idKit);
+        Kit kit = buscarKitPorUuid(idReal);
+        kit.setCompleto(true);
+        kit.setRequiereReposicion(false);
         pilaKits.apilar(kit);
+        listaKits.eliminar(kit);
+        return "Kit apilado con éxito.";
     }
 
-    public Kit retirarKitDeRevision() {
-         return pilaKits.desapilar();
+    public Kit utilizarKit() {
+        return pilaKits.desapilar();
     }
-    
-    public void eliminarKit(Kit kit){
+
+    public void eliminarKit(Kit kit) {
         listaKits.eliminar(kit);
     }
 
-    public void actualizarKit(Kit kit, String id, String descripcion, boolean completo, boolean requiereReposicion) {
+    public void actualizarKit(Kit kit, UUID id, String descripcion, boolean completo, boolean requiereReposicion) {
         if (pilaKits.contiene(kit)) {
             kit.setId(id);
             kit.setDescripcion(descripcion);
@@ -239,14 +302,20 @@ public class Sistema {
         return pilaKits.verCima();
     }
 
+    public ListaEnlazadaSimple<Kit> getListaKits() {
+        return listaKits;
+    }
+
     public void registrarOperacion(Operacion operacion) {
         historial.apilar(operacion);
     }
 
-    public void deshacerOperacion() {
+    public String deshacerOperacion() {
+        if(historial == null) throw new IllegalArgumentException("El historial está vacío.");
         Operacion operacion = historial.verCima();
         historial.desapilar();
         operacion.deshacer();
+        return "Ultima operación revertida.";
     }
 
     public Operacion verUltimaOperacion() {
@@ -257,19 +326,20 @@ public class Sistema {
         return listaCerradas.iterador();
     }
 
-    public void csv() throws IOException {
+    public String csv() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.csv"));
-        writer.write("id,   cliente,    tipoServicio,    zona");
+        writer.write("id,cliente,tipoServicio,zona");
 
         ListaEnlazadaSimple.Iterador<SolicitudServicio> it = iteradorCerradas();
 
         writer.newLine();
         while (it.tieneSiguiente()) {
             SolicitudServicio s = it.siguiente();
-            writer.write(s.getId() + ", " + s.getCliente() + ", " + s.getTipoServicio() + ", " + s.getZona());
+            writer.write(s.getUuid().toString() + "," + s.getCliente() + "," + s.getTipoServicio() + "," + s.getZona());
             writer.newLine();
         }
         writer.close();
+        return "Reporte generado con éxito, revisar la carpeta raíz.";
     }
 
     private boolean esCompatible(TipoUnidad tipoUnidad, TipoServicio tipoServicio) {
@@ -300,7 +370,12 @@ public class Sistema {
         if (uuidBuscado == null) {
             return null;
         }
+        System.out.println("--- EJECUTANDO BÚSQUEDA ---");
+        System.out.println("Unidades totales en memoria de la lista: " + listaUnidades.getTamanno());
+        System.out.println("Buscando el UUID: " + uuidBuscado);
+
         UnidadServicio unidadEncontrada = listaUnidades.obtenerPorUuid(uuidBuscado);
+        System.out.println("¿Se encontró la unidad?: " + (unidadEncontrada != null));
         return unidadEncontrada;
     }
 
@@ -353,5 +428,13 @@ public class Sistema {
     public ListaEnlazadaSimple<SolicitudServicio> getListaCerradas() {
         return listaCerradas;
     }
+<<<<<<< HEAD
     
+=======
+
+    public ListaEnlazadaSimple<SolicitudServicio> getListaEnEjecucion() {
+        return listaEnEjecucion;
+    }
+
+>>>>>>> ad92bd531964ab85fe618d3a5876aa49dba12e98
 }
