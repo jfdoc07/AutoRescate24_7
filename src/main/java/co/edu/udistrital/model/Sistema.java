@@ -111,7 +111,7 @@ public class Sistema {
             colaOrdinaria.enqueue(solicitud);
         }
     }
-    
+
     public void atenderSiguienteSolicitud() {
         SolicitudServicio solicitud;
 
@@ -189,10 +189,39 @@ public class Sistema {
 
         historial.apilar(new OperacionCambioEstadoUnidad(unidadDisponible, EstadoUnidad.ACTIVO));
         historial.apilar(new OperacionAsignacionTecnico(tecnicoDisponible, solicitud));
-        
+
         //Se agrega a la lista de "En Ejecución"
         listaEnEjecucion.agregar(solicitud);
         System.out.println("Solicitud en proceso");
+    }
+
+    public void reversarOperacionCompleta(SolicitudServicio solicitud) {
+        if (solicitud == null) {
+            return;
+        }
+
+        if (solicitud.getTecnico() != null) {
+            solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
+        }
+
+        if (solicitud.getUnidadAsignada() != null) {
+            solicitud.getUnidadAsignada().setEstado(EstadoUnidad.ACTIVO);
+        }
+
+        solicitud.setEstado(EstadoSolicitud.PENDIENTE);
+
+        // 4. Sacamos de la lista de ejecución y REENCOLAMOS en la Cola de Prioridad
+        listaEnEjecucion.eliminar(solicitud);
+        if (solicitud.getCriticidad().equals(NivelCriticidad.CRITICA)) {
+            colaCritica.insertar(solicitud);
+        } else if (solicitud.getCriticidad().equals(NivelCriticidad.ORDINARIA)) {
+            colaOrdinaria.setPeek(solicitud);
+        }
+        try {
+            csv();
+        } catch (Exception e) {
+            
+        }
     }
 
     public void cerrarSolicitud(SolicitudServicio solicitud) {
@@ -207,11 +236,11 @@ public class Sistema {
             solicitud.getTecnico().setDisponibilidad(true);
             solicitud.getTecnico().setEstado(EstadoTecnico.DISPONIBLE);
         }
-        
-        if(solicitud.getKitAsignado() != null){
+
+        if (solicitud.getKitAsignado() != null) {
             ingresarKitARevision(solicitud.getKitAsignado());
         }
-        
+
         listaEnEjecucion.eliminar(solicitud);
         listaCerradas.agregar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
@@ -229,10 +258,10 @@ public class Sistema {
     }
 
     public Kit retirarKitDeRevision() {
-         return pilaKits.desapilar();
+        return pilaKits.desapilar();
     }
-    
-    public void eliminarKit(Kit kit){
+
+    public void eliminarKit(Kit kit) {
         listaKits.eliminar(kit);
     }
 
