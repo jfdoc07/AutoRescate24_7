@@ -52,6 +52,17 @@ public class Cola <Y>{
         }
         return inicio.getDato();
     }
+    
+    public void setPeek(Y dato){
+        if(estaVacia()){
+            enqueue(dato);
+        } else {
+            Nodo<Y> nuevo = new Nodo<>(dato);
+            nuevo.setSiguiente(inicio);
+            inicio = nuevo;
+            tamano++;
+        }
+    }
 
     
     public boolean estaVacia() {
