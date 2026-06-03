@@ -7,24 +7,68 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * Clase central que contiene toda la lógica y estructuras de datos del sistema
- * AutoRescate 24/7.
+ * Clase central que administra toda la lógica de negocio del sistema
+ * AutoRescate 24/7. Gestiona las solicitudes de servicio, unidades,
+ * técnicos, kits de herramientas, historial de operaciones y reportes.
  *
- * @author Santiago Aroca, Fernando Cárdenas, Daniel Molano
+ * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano.
  */
 public class Sistema {
 
+    /**
+     * Cola que almacena las solicitudes ordinarias pendientes.
+     */
     private Cola<SolicitudServicio> colaOrdinaria;
+
+    /**
+     * Cola de prioridad utilizada para almacenar solicitudes críticas.
+     */
     private ColaPrioridad colaCritica;
+
+    /**
+     * Historial de operaciones realizadas en el sistema.
+     */
     private Pila<Operacion> historial;
+
+    /**
+     * Pila de kits disponibles para asignación.
+     */
     private Pila<Kit> pilaKits;
+
+    /**
+     * Lista de unidades de servicio registradas.
+     */
     private ListaEnlazadaSimple<UnidadServicio> listaUnidades;
+
+    /**
+     * Lista de técnicos registrados.
+     */
     private ListaEnlazadaSimple<Tecnico> listaTecnicos;
+
+    /**
+     * Lista de kits registrados en el sistema.
+     */
     private ListaEnlazadaSimple<Kit> listaKits;
+
+    /**
+     * Lista de clientes registrados.
+     */
     private ListaEnlazadaSimple<Cliente> listaClientes;
+
+    /**
+     * Lista de solicitudes que actualmente se encuentran en ejecución.
+     */
     private ListaEnlazadaSimple<SolicitudServicio> listaEnEjecucion;
+
+    /**
+     * Lista histórica de solicitudes cerradas.
+     */
     private ListaEnlazadaSimple<SolicitudServicio> listaCerradas;
 
+    /**
+     * Construye una nueva instancia del sistema inicializando todas las
+     * estructuras de datos necesarias para su funcionamiento.
+     */
     public Sistema() {
         colaOrdinaria = new Cola<>();
         colaCritica = new ColaPrioridad();
@@ -38,17 +82,38 @@ public class Sistema {
         listaCerradas = new ListaEnlazadaSimple<>();
     }
 
+    /**
+     * Registra una nueva unidad de servicio en el sistema.
+     *
+     * @param tipo Tipo de unidad a registrar.
+     * @param zona Zona de operación de la unidad.
+     */
     public void añadirUnidad(TipoUnidad tipo, Zona zona) {
         UnidadServicio unidad = new UnidadServicio(tipo, EstadoUnidad.ACTIVO, zona, true);
         listaUnidades.agregar(unidad);
     }
 
+    /**
+     * Obtiene un iterador para recorrer las unidades registradas.
+     *
+     * @return Iterador de unidades.
+     */
     public ListaEnlazadaSimple.Iterador<UnidadServicio> iteradorUnidades() {
         return listaUnidades.iterador();
     }
 
-    public void actualizarUnidad(UnidadServicio unidad, TipoUnidad tipo, EstadoUnidad estado,
-            Zona zona, boolean disponibilidad) {
+    /**
+     * Actualiza la información de una unidad registrada.
+     *
+     * @param unidad Unidad a actualizar.
+     * @param tipo Nuevo tipo de unidad.
+     * @param estado Nuevo estado.
+     * @param zona Nueva zona.
+     * @param disponibilidad Nueva disponibilidad.
+     */
+    public void actualizarUnidad(UnidadServicio unidad, TipoUnidad tipo,
+            EstadoUnidad estado, Zona zona, boolean disponibilidad) {
+
         if (listaUnidades.contiene(unidad)) {
             unidad.setTipo(tipo);
             unidad.setEstado(estado);
@@ -57,10 +122,23 @@ public class Sistema {
         }
     }
 
+    /**
+     * Elimina una unidad del sistema.
+     *
+     * @param unidad Unidad a eliminar.
+     */
     public void eliminarUnidad(UnidadServicio unidad) {
         listaUnidades.eliminar(unidad);
     }
 
+    /**
+     * Envía una unidad a mantenimiento o la devuelve a operación activa.
+     * Además registra la operación en el historial para permitir deshacerla.
+     *
+     * @param unidadID Identificador de la unidad.
+     * @return Mensaje indicando el resultado de la operación.
+     * @throws IllegalArgumentException Si la unidad no existe o está ocupada.
+     */
     public String enviarSacarMantenimiento(String unidadID) {
         if (unidadID == null) {
             throw new IllegalArgumentException("No se seleccionó ninguna unidad.");
@@ -93,13 +171,42 @@ public class Sistema {
         }
     }
 
-    public void añadirTecnico(String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
-        Tecnico tecnico = new Tecnico(nombre, especialidad, disponibilidad, estado);
+    /**
+     * Registra un nuevo técnico en el sistema.
+     *
+     * @param nombre Nombre del técnico.
+     * @param especialidad Especialidad del técnico.
+     * @param disponibilidad Disponibilidad inicial.
+     * @param estado Estado inicial.
+     */
+    public void añadirTecnico(String nombre, TipoServicio especialidad,
+            boolean disponibilidad, EstadoTecnico estado) {
+
+        Tecnico tecnico = new Tecnico(nombre, especialidad,
+                disponibilidad, estado);
+
         listaTecnicos.agregar(tecnico);
-        System.out.println("Tecnico registrado con exito " + tecnico.getNombre() + " " + tecnico.getEspecialidad() + " " + tecnico.getEstado());
+
+        System.out.println("Tecnico registrado con exito "
+                + tecnico.getNombre() + " "
+                + tecnico.getEspecialidad() + " "
+                + tecnico.getEstado());
     }
 
-    public void actualizarTecnico(Tecnico tecnico, String id, String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
+    /**
+     * Actualiza la información de un técnico registrado.
+     *
+     * @param tecnico Técnico a actualizar.
+     * @param id Identificador recibido desde la interfaz.
+     * @param nombre Nuevo nombre.
+     * @param especialidad Nueva especialidad.
+     * @param disponibilidad Nueva disponibilidad.
+     * @param estado Nuevo estado.
+     */
+    public void actualizarTecnico(Tecnico tecnico, String id,
+            String nombre, TipoServicio especialidad,
+            boolean disponibilidad, EstadoTecnico estado) {
+
         if (listaTecnicos.contiene(tecnico)) {
             tecnico.setNombre(nombre);
             tecnico.setEspecialidad(especialidad);
@@ -108,15 +215,37 @@ public class Sistema {
         }
     }
 
+    /**
+     * Elimina un técnico del sistema.
+     *
+     * @param tecnico Técnico a eliminar.
+     */
     public void eliminarTecnico(Tecnico tecnico) {
         listaTecnicos.eliminar(tecnico);
     }
 
+    /**
+     * Obtiene un iterador para recorrer los técnicos registrados.
+     *
+     * @return Iterador de técnicos.
+     */
     public ListaEnlazadaSimple.Iterador<Tecnico> iteradorTecnicos() {
         return listaTecnicos.iterador();
     }
 
-    public void registrarSolicitud(Cliente cliente, TipoServicio tipoServicio, String descripcion, Zona zona) {
+    /**
+     * Registra una nueva solicitud de servicio y la ubica en la estructura
+     * correspondiente según su nivel de criticidad.
+     *
+     * @param cliente Tipo de cliente que realiza la solicitud.
+     * @param tipoServicio Servicio solicitado.
+     * @param descripcion Descripción de la solicitud.
+     * @param zona Zona donde se requiere el servicio.
+     */
+    public void registrarSolicitud(Cliente cliente,
+            TipoServicio tipoServicio,
+            String descripcion,
+            Zona zona) {
         SolicitudServicio solicitud = new SolicitudServicio(cliente, tipoServicio, descripcion, NivelCriticidad.ORDINARIA, null, null, null, EstadoSolicitud.PENDIENTE, zona);
         solicitud.setPuntajeCriticidad(solicitud.calcularPuntaje());
         solicitud.setCriticidad(solicitud.calcularNivel());
@@ -128,6 +257,12 @@ public class Sistema {
         }
     }
 
+    /**
+     * Atiende la siguiente solicitud disponible asignando automáticamente
+     * una unidad, un técnico y un kit compatibles.
+     *
+     * @throws IllegalArgumentException Si no existen recursos disponibles.
+     */
     public void atenderSiguienteSolicitud() {
         SolicitudServicio solicitud;
 
@@ -206,6 +341,15 @@ public class Sistema {
         System.out.println("Solicitud en proceso");
     }
 
+    /**
+     * Finaliza una solicitud en ejecución liberando los recursos asignados,
+     * almacenándola en el historial de solicitudes cerradas y generando
+     * el reporte actualizado.
+     *
+     * @param solicitudIdStr Identificador de la solicitud.
+     * @return Mensaje indicando el resultado de la operación.
+     * @throws IllegalArgumentException Si la solicitud no existe.
+     */
     public String cerrarSolicitud(String solicitudIdStr) {
         if (solicitudIdStr == null) {
             throw new IllegalArgumentException("No seleccionó ninguna solicitud.");
@@ -258,12 +402,28 @@ public class Sistema {
         return "Solicitud cerrada con éxito";
     }
 
-    public Kit añadirKit(String descripcion, boolean completo, boolean requiereReposicion) {
+    /**
+     * Registra un nuevo kit de herramientas.
+     *
+     * @param descripcion Descripción del kit.
+     * @param completo Indica si el kit está completo.
+     * @param requiereReposicion Indica si requiere reposición.
+     * @return Kit creado.
+     */
+    public Kit añadirKit(String descripcion,
+            boolean completo,
+            boolean requiereReposicion) {
         Kit kit = new Kit(descripcion, completo, requiereReposicion);
         listaKits.agregar(kit);
         return kit;
     }
 
+    /**
+     * Envía un kit a la pila de kits disponibles.
+     *
+     * @param idKit Identificador del kit.
+     * @return Mensaje de confirmación.
+     */
     public String enviarKitAPila(String idKit) {
         if (idKit == null) {
             throw new IllegalArgumentException("No se seleccionó ningun kit.");
@@ -280,15 +440,38 @@ public class Sistema {
         return "Kit apilado con éxito.";
     }
 
+    /**
+     * Obtiene un kit disponible desde la pila.
+     *
+     * @return Kit extraído.
+     */
     public Kit utilizarKit() {
         return pilaKits.desapilar();
     }
 
+    /**
+     * Elimina un kit del sistema.
+     *
+     * @param kit Kit a eliminar.
+     */
     public void eliminarKit(Kit kit) {
         listaKits.eliminar(kit);
     }
 
-    public void actualizarKit(Kit kit, UUID id, String descripcion, boolean completo, boolean requiereReposicion) {
+    /**
+     * Actualiza la información de un kit.
+     *
+     * @param kit Kit a modificar.
+     * @param id Nuevo identificador.
+     * @param descripcion Nueva descripción.
+     * @param completo Nuevo estado de completitud.
+     * @param requiereReposicion Nuevo estado de reposición.
+     */
+    public void actualizarKit(Kit kit,
+            UUID id,
+            String descripcion,
+            boolean completo,
+            boolean requiereReposicion) {
         if (pilaKits.contiene(kit)) {
             kit.setId(id);
             kit.setDescripcion(descripcion);
@@ -297,18 +480,39 @@ public class Sistema {
         }
     }
 
+    /**
+     * Obtiene el kit ubicado en la cima de la pila.
+     *
+     * @return Kit en la cima.
+     */
     public Kit verCimaKits() {
         return pilaKits.verCima();
     }
 
+    /**
+     * Obtiene la lista de kits registrados en el sistema.
+     *
+     * @return Lista de kits.
+     */
     public ListaEnlazadaSimple<Kit> getListaKits() {
         return listaKits;
     }
 
+    /**
+     * Registra una operación en el historial.
+     *
+     * @param operacion Operación realizada.
+     */
     public void registrarOperacion(Operacion operacion) {
         historial.apilar(operacion);
     }
 
+    /**
+     * Deshace la última operación registrada.
+     *
+     * @return Mensaje de confirmación.
+     * @throws IllegalArgumentException Si el historial está vacío.
+     */
     public String deshacerOperacion() {
         if (historial == null || historial.estaVacia()) throw new IllegalArgumentException("El historial está vacío.");
         Operacion operacion = historial.verCima();
@@ -317,14 +521,30 @@ public class Sistema {
         return "Ultima operación revertida.";
     }
 
+    /**
+     * Obtiene la última operación registrada.
+     *
+     * @return Última operación del historial.
+     */
     public Operacion verUltimaOperacion() {
         return historial.verCima();
     }
 
+    /**
+     * Obtiene un iterador para recorrer las solicitudes cerradas.
+     *
+     * @return Iterador de solicitudes cerradas.
+     */
     public ListaEnlazadaSimple.Iterador<SolicitudServicio> iteradorCerradas() {
         return listaCerradas.iterador();
     }
 
+    /**
+     * Genera un archivo CSV con las solicitudes cerradas registradas.
+     *
+     * @return Mensaje indicando el resultado de la operación.
+     * @throws IOException Si ocurre un error al escribir el archivo.
+     */
     public String csv() throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.csv"));
         writer.write("id,cliente,tipoServicio,zona");
@@ -342,7 +562,15 @@ public class Sistema {
         return "Reporte generado con éxito, revisar la carpeta raíz.";
     }
 
-    private boolean esCompatible(TipoUnidad tipoUnidad, TipoServicio tipoServicio) {
+    /**
+     * Determina si una unidad es compatible con un tipo de servicio.
+     *
+     * @param tipoUnidad Tipo de unidad.
+     * @param tipoServicio Tipo de servicio.
+     * @return true si es compatible, false en caso contrario.
+     */
+    private boolean esCompatible(TipoUnidad tipoUnidad,
+            TipoServicio tipoServicio) {
         switch (tipoServicio) {
             case GRUA:
                 return tipoUnidad == TipoUnidad.GRUA;
@@ -366,6 +594,12 @@ public class Sistema {
         }
     }
 
+    /**
+     * Busca una unidad por su identificador único.
+     *
+     * @param uuidBuscado UUID de la unidad.
+     * @return Unidad encontrada o null si no existe.
+     */
     public UnidadServicio buscarUnidadPorUuid(UUID uuidBuscado) {
         if (uuidBuscado == null) {
             return null;
@@ -373,6 +607,12 @@ public class Sistema {
         return listaUnidades.obtenerPorUuid(uuidBuscado);
     }
 
+    /**
+     * Busca un kit por su identificador único.
+     *
+     * @param uuidBuscado UUID del kit.
+     * @return Kit encontrado o null si no existe.
+     */
     public Kit buscarKitPorUuid(UUID uuidBuscado) {
         if (uuidBuscado == null) {
             return null;
@@ -380,6 +620,12 @@ public class Sistema {
         return listaKits.obtenerPorUuid(uuidBuscado);
     }
 
+    /**
+     * Busca un técnico por su identificador único.
+     *
+     * @param uuidBuscado UUID del técnico.
+     * @return Técnico encontrado o null si no existe.
+     */
     public Tecnico buscarTecnicoPorUuid(UUID uuidBuscado) {
         if (uuidBuscado == null) {
             return null;
@@ -387,38 +633,83 @@ public class Sistema {
         return listaTecnicos.obtenerPorUuid(uuidBuscado);
     }
 
+    /**
+     * Obtiene la cola de solicitudes ordinarias pendientes de atención.
+     *
+     * @return Cola de solicitudes ordinarias.
+     */
     public Cola<SolicitudServicio> getColaOrdinaria() {
         return colaOrdinaria;
     }
 
+    /**
+     * Obtiene la cola de prioridad que almacena las solicitudes críticas.
+     *
+     * @return Cola de solicitudes críticas.
+     */
     public ColaPrioridad getColaCritica() {
         return colaCritica;
     }
 
+    /**
+     * Obtiene el historial de operaciones realizadas en el sistema.
+     *
+     * @return Pila que contiene el historial de operaciones.
+     */
     public Pila<Operacion> getHistorial() {
         return historial;
     }
 
+    /**
+     * Obtiene la pila de kits disponibles para ser asignados a solicitudes.
+     *
+     * @return Pila de kits disponibles.
+     */
     public Pila<Kit> getPilaKits() {
         return pilaKits;
     }
 
+    /**
+     * Obtiene la lista de unidades de servicio registradas en el sistema.
+     *
+     * @return Lista de unidades de servicio.
+     */
     public ListaEnlazadaSimple<UnidadServicio> getListaUnidades() {
         return listaUnidades;
     }
 
+    /**
+     * Obtiene la lista de técnicos registrados en el sistema.
+     *
+     * @return Lista de técnicos.
+     */
     public ListaEnlazadaSimple<Tecnico> getListaTecnicos() {
         return listaTecnicos;
     }
 
+    /**
+     * Obtiene la lista de clientes registrados en el sistema.
+     *
+     * @return Lista de clientes.
+     */
     public ListaEnlazadaSimple<Cliente> getListaClientes() {
         return listaClientes;
     }
 
+    /**
+     * Obtiene la lista de solicitudes que han sido cerradas.
+     *
+     * @return Lista de solicitudes cerradas.
+     */
     public ListaEnlazadaSimple<SolicitudServicio> getListaCerradas() {
         return listaCerradas;
     }
 
+    /**
+     * Obtiene la lista de solicitudes que se encuentran actualmente en ejecución.
+     *
+     * @return Lista de solicitudes en ejecución.
+     */
     public ListaEnlazadaSimple<SolicitudServicio> getListaEnEjecucion() {
         return listaEnEjecucion;
     }

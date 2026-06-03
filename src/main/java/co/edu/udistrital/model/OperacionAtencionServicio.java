@@ -1,21 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package co.edu.udistrital.model;
+
 import co.edu.udistrital.model.enums.*;
 
 /**
+ * Representa una operación de atención de servicio dentro del sistema.
+ * Esta operación permite revertir la asignación de recursos realizada
+ * durante la puesta en servicio de una solicitud.
  *
- * @author Home
+ * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano.
  */
 public class OperacionAtencionServicio extends Operacion {
 
+    /**
+     * Solicitud de servicio asociada a la operación.
+     */
     private SolicitudServicio solicitud;
+
+    /**
+     * Unidad de servicio asignada a la solicitud.
+     */
     private UnidadServicio unidadServicio;
+
+    /**
+     * Técnico asignado para atender la solicitud.
+     */
     private Tecnico tecnico;
+
+    /**
+     * Kit utilizado durante la atención del servicio.
+     */
     private Kit kit;
 
+    /**
+     * Construye una operación de atención de servicio con los recursos involucrados.
+     *
+     * @param solicitud Solicitud de servicio atendida.
+     * @param unidadServicio Unidad de servicio asignada.
+     * @param tecnico Técnico responsable de la atención.
+     * @param kit Kit utilizado en la operación.
+     */
     public OperacionAtencionServicio(SolicitudServicio solicitud, UnidadServicio unidadServicio, Tecnico tecnico, Kit kit) {
         this.solicitud = solicitud;
         this.unidadServicio = unidadServicio;
@@ -23,33 +46,36 @@ public class OperacionAtencionServicio extends Operacion {
         this.kit = kit;
     }
 
+    /**
+     * Revierte completamente la atención de una solicitud de servicio.
+     * Restablece la disponibilidad de los recursos utilizados, devuelve
+     * el kit al inventario y retorna la solicitud a su cola correspondiente.
+     *
+     * @param sistema Sistema sobre el cual se ejecutará la reversión.
+     */
     @Override
     public void deshacer(Sistema sistema) {
         System.out.println("-> Ejecutando Rollback total de recursos implicados...");
 
-        // 1. Resetear Técnico
         if (tecnico != null) {
             tecnico.setEstado(EstadoTecnico.DISPONIBLE);
             tecnico.setDisponibilidad(true);
         }
 
-        // 2. Resetear Unidad
         if (unidadServicio != null) {
             unidadServicio.setEstado(EstadoUnidad.ACTIVO);
             unidadServicio.setDisponibilidad(true);
         }
 
-        // 3. Devolver el Kit exacto a la pila de inventario
         if (solicitud.getKitAsignado() != null) {
             Kit kitUsado = solicitud.getKitAsignado();
             kitUsado.setCompleto(true);
             kitUsado.setRequiereReposicion(false);
 
-            sistema.getPilaKits().apilar(kitUsado); // Regresa a la cima
-            solicitud.setKitAsignado(null); // Desvincula
+            sistema.getPilaKits().apilar(kitUsado);
+            solicitud.setKitAsignado(null);
         }
 
-        // 4. Mover la solicitud de regreso a las colas correspondientes
         solicitud.setEstado(EstadoSolicitud.PENDIENTE);
         sistema.getListaEnEjecucion().eliminar(solicitud);
 
@@ -60,9 +86,13 @@ public class OperacionAtencionServicio extends Operacion {
         }
     }
 
+    /**
+     * Obtiene una descripción textual de la operación.
+     *
+     * @return Descripción de la operación realizada.
+     */
     @Override
     public String toString() {
         return "Operación puesta en servicio " + solicitud.getDescripcion();
     }
-
 }

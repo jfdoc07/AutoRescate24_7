@@ -3,16 +3,39 @@ package co.edu.udistrital.model;
 import co.edu.udistrital.model.enums.*;
 
 /**
+ * Representa una operación de cierre de servicio.
+ * Permite revertir el cierre de una solicitud restaurando los recursos
+ * asociados y regresando la solicitud al estado de ejecución.
  *
- * @author Usuario
+ * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano.
  */
 public class OperacionCierreServicio extends Operacion {
 
+    /**
+     * Solicitud de servicio cerrada.
+     */
     private SolicitudServicio solicitud;
+
+    /**
+     * Unidad de servicio asociada a la solicitud.
+     */
     private UnidadServicio unidadServicio;
+
+    /**
+     * Técnico asignado a la solicitud.
+     */
     private Tecnico tecnico;
+
+    /**
+     * Kit utilizado durante la atención del servicio.
+     */
     private Kit kit;
 
+    /**
+     * Construye una operación de cierre de servicio a partir de una solicitud.
+     *
+     * @param solicitud Solicitud de servicio que fue cerrada.
+     */
     public OperacionCierreServicio(SolicitudServicio solicitud) {
         this.solicitud = solicitud;
         unidadServicio = solicitud.getUnidadAsignada();
@@ -20,42 +43,46 @@ public class OperacionCierreServicio extends Operacion {
         kit = solicitud.getKitAsignado();
     }
 
+    /**
+     * Revierte el cierre de una solicitud de servicio.
+     * Restablece la ocupación de los recursos asociados, elimina el kit de la
+     * lista general y devuelve la solicitud al estado de ejecución.
+     *
+     * @param sistema Sistema sobre el cual se realizará la reversión.
+     */
     @Override
     public void deshacer(Sistema sistema) {
         System.out.println("-> Deshaciendo Cierre de Servicio: Reabriendo solicitud...");
 
-        // 1. Volver a ocupar al Técnico asignado
         if (tecnico != null) {
             tecnico.setEstado(EstadoTecnico.ASIGNADO);
-            tecnico.setDisponibilidad(false); // Vuelve a estar ocupado trabajando
+            tecnico.setDisponibilidad(false);
         }
 
-        // 2. Volver a ocupar la Unidad de Servicio
         if (unidadServicio != null) {
             unidadServicio.setEstado(EstadoUnidad.OCUPADO);
-            unidadServicio.setDisponibilidad(false); // Vuelve a estar en ruta/operación
+            unidadServicio.setDisponibilidad(false);
         }
 
-        // 3. 🚨 Manejo del Kit de herramientas
         if (kit != null) {
-            // Como la solicitud se cerró, el kit se había enviado a la lista general de revisión/kits.
-            // Debemos sacarlo de esa lista para que vuelva a estar vinculado exclusivamente a la ejecución.
             sistema.getListaKits().eliminar(kit);
         }
 
-        // 4. Cambiar el estado de la solicitud a EN_EJECUCION
         solicitud.setEstado(EstadoSolicitud.EN_EJECUCION);
 
-        // 5. Mover entre estructuras de datos de la aplicación
-        sistema.getListaCerradas().eliminar(solicitud);   // Sale del histórico de terminados
-        sistema.getListaEnEjecucion().agregar(solicitud); // Reingresa al panel de control activo
+        sistema.getListaCerradas().eliminar(solicitud);
+        sistema.getListaEnEjecucion().agregar(solicitud);
 
         this.solicitud.setEstado(EstadoSolicitud.EN_EJECUCION);
     }
 
+    /**
+     * Obtiene una representación textual de la operación.
+     *
+     * @return Descripción de la operación de cierre de servicio.
+     */
     @Override
     public String toString() {
         return "Operación cerrada " + solicitud.getDescripcion();
     }
-
 }

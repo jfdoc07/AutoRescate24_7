@@ -1,13 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
- */
 package co.edu.udistrital.model.enums;
 
 /**
+ * Representa los tipos de clientes que pueden solicitar servicios
+ * dentro del sistema AutoRescate 24/7.
  *
- * @author Usuario
+ * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano.
  */
 public enum Cliente {
-    PARTICULAR, EMPRESA, ASEGURADORA
+
+    /**
+     * Cliente particular que solicita servicios de manera individual.
+     */
+    PARTICULAR,
+
+    /**
+     * Empresa que contrata servicios para sus vehículos o personal.
+     */
+    EMPRESA,
+
+    /**
+     * Compañía aseguradora que solicita servicios para sus afiliados.
+     */
+    ASEGURADORA
 }

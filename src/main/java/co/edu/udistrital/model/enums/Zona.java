@@ -1,13 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Enum.java to edit this template
- */
 package co.edu.udistrital.model.enums;
 
 /**
+ * Representa las zonas geográficas de cobertura utilizadas por el sistema
+ * AutoRescate 24/7 para la asignación y atención de servicios.
  *
- * @author Usuario
+ * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano.
  */
 public enum Zona {
-    NORTE, ESTE, OESTE ,SUR, CENTRO
+
+    /**
+     * Zona norte de cobertura.
+     */
+    NORTE,
+
+    /**
+     * Zona este de cobertura.
+     */
+    ESTE,
+
+    /**
+     * Zona oeste de cobertura.
+     */
+    OESTE,
+
+    /**
+     * Zona sur de cobertura.
+     */
+    SUR,
+
+    /**
+     * Zona centro de cobertura.
+     */
+    CENTRO
 }
