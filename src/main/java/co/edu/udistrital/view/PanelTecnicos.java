@@ -7,7 +7,6 @@ package co.edu.udistrital.view;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -207,13 +206,7 @@ public class PanelTecnicos extends javax.swing.JPanel {
     private javax.swing.JPanel panelFormulario;
     private javax.swing.JTable tablaTecnicos;
     // End of variables declaration//GEN-END:variables
-    /**
-     * Este método se encarga de colorear todos los contenidos dentro de los
-     * contenedores.
-     *
-     * @param contenedor el JPanel principal. Toma todos los elementos al
-     * interior y los colorea, les da estilos.
-     */
+
     private void pintarFondo(java.awt.Container contenedor) {
         contenedor.setBackground(new Color(26, 26, 46));
 

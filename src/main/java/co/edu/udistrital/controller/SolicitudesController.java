@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package co.edu.udistrital.controller;
 
 import co.edu.udistrital.model.ListaEnlazadaSimple;
@@ -13,10 +9,6 @@ import co.edu.udistrital.view.PanelSolicitudes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- *
- * @author Usuario
- */
 public class SolicitudesController {
 
     private PanelSolicitudes vista;

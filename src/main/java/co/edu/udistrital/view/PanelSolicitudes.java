@@ -12,18 +12,10 @@ import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Santiago Aroca, Fernando Cárdenas y Daniel Molano
- */
 public class PanelSolicitudes extends javax.swing.JPanel {
 
     private String[] idsSolicitudes;
     private int filaSeleccionadaSolicitudes = -1;
-
-    /**
-     * Creates new form PanelSolicitudes
-     */
 
     public PanelSolicitudes() {
         initComponents();
@@ -451,13 +443,7 @@ public class PanelSolicitudes extends javax.swing.JPanel {
     private javax.swing.JLabel zonaCritica;
     private javax.swing.JLabel zonaNormal;
     // End of variables declaration//GEN-END:variables
-    /**
-     * Este método se encarga de colorear todos los contenidos dentro de los
-     * contenedores.
-     *
-     * @param contenedor el JPanel principal. Toma todos los elementos al
-     * interior y los colorea, les da estilos.
-     */
+
     private void pintarFondo(java.awt.Container contenedor) {
         contenedor.setBackground(new Color(26, 26, 46));
 
