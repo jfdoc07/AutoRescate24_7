@@ -8,7 +8,6 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
@@ -93,7 +92,7 @@ public class PanelKits extends javax.swing.JPanel {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Ingrese una corta descripción del kit.");
 
-        enviarAPila.setText("Enviar a la pila");
+        enviarAPila.setText("Enviar próximo a pila");
         enviarAPila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 enviarAPilaActionPerformed(evt);
@@ -163,16 +162,15 @@ public class PanelKits extends javax.swing.JPanel {
                     .addComponent(jScrollPane2)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                     .addGroup(panelRegistroKitsLayout.createSequentialGroup()
-                        .addGroup(panelRegistroKitsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelRegistroKitsLayout.createSequentialGroup()
-                                .addGap(200, 200, 200)
-                                .addComponent(botonGuardarKit))
-                            .addGroup(panelRegistroKitsLayout.createSequentialGroup()
-                                .addGap(190, 190, 190)
-                                .addComponent(enviarAPila)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(200, 200, 200)
+                        .addComponent(botonGuardarKit)
+                        .addGap(0, 208, Short.MAX_VALUE))
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(panelRegistroKitsLayout.createSequentialGroup()
+                .addGap(182, 182, 182)
+                .addComponent(enviarAPila)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelRegistroKitsLayout.setVerticalGroup(
             panelRegistroKitsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -6,16 +6,12 @@ import co.edu.udistrital.view.PanelTecnicos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- *
- * @author Usuario
- */
 public class Controlador implements ActionListener{
     PanelTecnicos view;
     Sistema model;
     
     public Controlador() {
-        view = new PanelTecnicos();  //este es para pruebas
+        view = new PanelTecnicos();
         model = new Sistema();
     }
     

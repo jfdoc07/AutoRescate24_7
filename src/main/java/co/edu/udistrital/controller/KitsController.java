@@ -73,7 +73,7 @@ public class KitsController {
     }
 
     public void guardarKit() {
-        String descripcion = vista.getDescripcion().getText(); //TextArea llamado descripcion
+        String descripcion = vista.getDescripcion().getText();
         sistema.añadirKit(descripcion, true, false);
         vista.mostrarMensaje("Kit guardado correctamente");
     }
@@ -81,7 +81,7 @@ public class KitsController {
     public void guardarUnidad() {
         String tipoUnidadSeleccionada = (String) vista.getTipoUnidad().getSelectedItem();
         TipoUnidad tipoUnidad = TipoUnidad.valueOf(tipoUnidadSeleccionada);
-        String zonaSeleccionada = (String) vista.getZona().getSelectedItem(); // combo box llamado Zona 
+        String zonaSeleccionada = (String) vista.getZona().getSelectedItem();
         Zona zona = Zona.valueOf(zonaSeleccionada);
         sistema.añadirUnidad(tipoUnidad, zona);
         vista.mostrarMensaje("Unidad guardada " + tipoUnidad + " " + zona);

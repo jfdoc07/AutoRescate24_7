@@ -7,10 +7,6 @@ import co.edu.udistrital.model.enums.EstadoTecnico;
 import co.edu.udistrital.model.enums.TipoServicio;
 import java.util.UUID;
 
-/**
- *
- * @author Usuario
- */
 public class Tecnico implements Identificable{
     private UUID id;
     private String nombre;

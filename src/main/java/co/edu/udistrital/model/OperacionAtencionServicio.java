@@ -26,30 +26,24 @@ public class OperacionAtencionServicio extends Operacion {
     @Override
     public void deshacer(Sistema sistema) {
         System.out.println("-> Ejecutando Rollback total de recursos implicados...");
-
-        // 1. Resetear Técnico
         if (tecnico != null) {
             tecnico.setEstado(EstadoTecnico.DISPONIBLE);
             tecnico.setDisponibilidad(true);
         }
-
-        // 2. Resetear Unidad
         if (unidadServicio != null) {
             unidadServicio.setEstado(EstadoUnidad.ACTIVO);
             unidadServicio.setDisponibilidad(true);
         }
 
-        // 3. Devolver el Kit exacto a la pila de inventario
         if (solicitud.getKitAsignado() != null) {
             Kit kitUsado = solicitud.getKitAsignado();
             kitUsado.setCompleto(true);
             kitUsado.setRequiereReposicion(false);
 
-            sistema.getPilaKits().apilar(kitUsado); // Regresa a la cima
-            solicitud.setKitAsignado(null); // Desvincula
+            sistema.getPilaKits().apilar(kitUsado);
+            solicitud.setKitAsignado(null);
         }
 
-        // 4. Mover la solicitud de regreso a las colas correspondientes
         solicitud.setEstado(EstadoSolicitud.PENDIENTE);
         sistema.getListaEnEjecucion().eliminar(solicitud);
 

@@ -49,9 +49,9 @@ public class TecnicosController {
     }
 
     private String guardarTecnico() {
-        String nombre = vista.getNombre().getText().trim();  //Es un JTextField
-        String especialidadStr = vista.getEspecialidad().getSelectedItem().toString();  // es un JComboBox
-        TipoServicio especialidad = TipoServicio.valueOf(especialidadStr); // convierte a enum
+        String nombre = vista.getNombre().getText().trim();
+        String especialidadStr = vista.getEspecialidad().getSelectedItem().toString();
+        TipoServicio especialidad = TipoServicio.valueOf(especialidadStr);
         if (nombre.isEmpty()) {
             throw new IllegalArgumentException("Tiene que rellenar todos los campos.");
         }

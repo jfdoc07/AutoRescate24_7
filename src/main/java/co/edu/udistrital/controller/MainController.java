@@ -18,7 +18,6 @@ public class MainController {
     private VentanaPrincipal ventana;
     private Sistema sistema;
 
-    // Sub-controladores
     private TecnicosController tecnicosController;
     private SolicitudesController solicitudesController;
     private KitsController kitsController;

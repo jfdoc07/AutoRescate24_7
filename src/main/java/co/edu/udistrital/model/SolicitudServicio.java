@@ -27,7 +27,7 @@ public class SolicitudServicio implements Identificable{
     public void setPuntajeCriticidad(int puntajeCriticidad) {
         this.puntajeCriticidad = puntajeCriticidad;
     }
-    private int puntajeCriticidad; // se calcula al construir
+    private int puntajeCriticidad;
 
     public SolicitudServicio(Cliente cliente, TipoServicio tipoServicio, String descripcion, NivelCriticidad criticidad, UnidadServicio unidadAsignada, Tecnico tecnico, Kit kitAsignado, EstadoSolicitud estado, Zona zona) {
         this.id = UUID.randomUUID();

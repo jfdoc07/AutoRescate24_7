@@ -6,12 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.UUID;
 
-/**
- * Clase central que contiene toda la lógica y estructuras de datos del sistema
- * AutoRescate 24/7.
- *
- * @author Santiago Aroca, Fernando Cárdenas, Daniel Molano
- */
 public class Sistema {
 
     private Cola<SolicitudServicio> colaOrdinaria;

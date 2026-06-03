@@ -83,15 +83,15 @@ public class SolicitudesController {
     }
 
     public void guardarSolicitud() {
-        String clienteSeleccionado = (String) vista.getCliente().getSelectedItem();  // Combobox llamada Cliente
+        String clienteSeleccionado = (String) vista.getCliente().getSelectedItem();
         Cliente cliente = Cliente.valueOf(clienteSeleccionado);
-        String tipoServicioSeleccionado = (String) vista.getTipoServicio().getSelectedItem(); // ComboBox llamada TipoServicio
+        String tipoServicioSeleccionado = (String) vista.getTipoServicio().getSelectedItem();
         TipoServicio tipoServicio = TipoServicio.valueOf(tipoServicioSeleccionado);
-        String descripcion = vista.getDescripcion().getText(); // TextArea llamado Descripcion
+        String descripcion = vista.getDescripcion().getText();
         if (descripcion.isEmpty()) {
             throw new IllegalArgumentException("Tiene que rellenar todos los campos.");
         }
-        String zonaSeleccionada = (String) vista.getZona().getSelectedItem(); // combo box llamado Zona 
+        String zonaSeleccionada = (String) vista.getZona().getSelectedItem();
         Zona zona = Zona.valueOf(zonaSeleccionada);
         sistema.registrarSolicitud(cliente, tipoServicio, descripcion, zona);
         vista.mostrarMensaje("Solicitud registrada con éxito");
@@ -108,7 +108,7 @@ public class SolicitudesController {
                     ordinaria.getDescripcion()};
                 vista.mostrarProximaOrdinaria(datos);
             } else {
-                vista.mostrarProximaOrdinaria(null); // cola vacía
+                vista.mostrarProximaOrdinaria(null);
             }
         } else {
             vista.mostrarProximaOrdinaria(null);
@@ -153,12 +153,12 @@ public class SolicitudesController {
         int i = 0;
         while (it.tieneSiguiente()) {
             SolicitudServicio s = it.siguiente();
-            datos[i][0] = s.getUuid().toString();           // ID oculto
-            datos[i][1] = s.getCliente().toString();     // cliente
-            datos[i][2] = s.getTipoServicio().toString(); // servicio
-            datos[i][3] = s.getZona().toString();         // zona
-            datos[i][4] = s.getTecnico().getNombre();     // técnico
-            datos[i][5] = s.getUnidadAsignada().getTipo().toString(); // unidad
+            datos[i][0] = s.getUuid().toString();
+            datos[i][1] = s.getCliente().toString();
+            datos[i][2] = s.getTipoServicio().toString();
+            datos[i][3] = s.getZona().toString();
+            datos[i][4] = s.getTecnico().getNombre();
+            datos[i][5] = s.getUnidadAsignada().getTipo().toString();
             i++;
         }
 
