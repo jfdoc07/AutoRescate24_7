@@ -2,10 +2,6 @@ package co.edu.udistrital.model;
 
 import co.edu.udistrital.model.enums.*;
 
-/**
- *
- * @author Usuario
- */
 public class OperacionCierreServicio extends Operacion {
 
     private SolicitudServicio solicitud;

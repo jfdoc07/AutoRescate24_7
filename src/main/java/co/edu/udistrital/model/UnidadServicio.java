@@ -1,4 +1,3 @@
-
 package co.edu.udistrital.model;
 import co.edu.udistrital.model.enums.TipoUnidad;
 import co.edu.udistrital.model.enums.EstadoUnidad;

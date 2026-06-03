@@ -1,4 +1,3 @@
-
 package co.edu.udistrital.model;
 
 import java.util.UUID;

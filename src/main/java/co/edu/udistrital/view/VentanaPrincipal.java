@@ -30,7 +30,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         mostrarPanel(solicitudes);
         setResizable(false);
         setSize(1200, 650);
-        setLocationRelativeTo(null);  // centrar en pantalla
+        setLocationRelativeTo(null);
     }
 
     public PanelSolicitudes getSolicitudes() {

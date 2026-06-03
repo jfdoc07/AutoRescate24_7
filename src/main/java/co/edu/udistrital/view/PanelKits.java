@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package co.edu.udistrital.view;
 
 import java.awt.Color;
@@ -14,13 +10,8 @@ import javax.swing.table.DefaultTableModel;
 public class PanelKits extends javax.swing.JPanel {
 
     private String[] idsUnidades;
-    private String[] idsKits;
     private int filaSeleccionadaUnidades = -1;
-    private int filaSeleccionadaKits = -1;
 
-    /**
-     * Creates new form PanelKits
-     */
     public PanelKits() {
         initComponents();
         pintarFondo(this);
@@ -275,9 +266,9 @@ public class PanelKits extends javax.swing.JPanel {
                 .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRegistroUnidadesLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(enviarSacarMantenimiento)
-                .addGap(133, 133, 133))
+                .addGap(135, 135, 135))
         );
         panelRegistroUnidadesLayout.setVerticalGroup(
             panelRegistroUnidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,10 +288,10 @@ public class PanelKits extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(enviarSacarMantenimiento)
-                .addGap(33, 33, 33))
+                .addGap(54, 54, 54))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -385,7 +376,7 @@ public class PanelKits extends javax.swing.JPanel {
             if (c instanceof javax.swing.JPanel) {
                 ((javax.swing.JPanel) c).setOpaque(true);
                 ((javax.swing.JPanel) c).setBackground(new Color(26, 26, 46));
-                pintarFondo((java.awt.Container) c); // recursivo para paneles anidados
+                pintarFondo((java.awt.Container) c);
             }
             if (c instanceof javax.swing.JLabel) {
                 ((javax.swing.JLabel) c).setForeground(new Color(238, 238, 238));
