@@ -55,7 +55,7 @@ public class OperacionCierreServicio extends Operacion {
 
     @Override
     public String toString() {
-        return "Operación cerrada " + solicitud.getDescripcion();
+        return "Solicitud cerrada. Descripción" + solicitud.getDescripcion();
     }
 
 }

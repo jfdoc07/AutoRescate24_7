@@ -29,7 +29,7 @@ public class OperacionCambioEstadoUnidad  extends Operacion{
 
     @Override
     public String toString() {
-        return "OperacionCambioEstadoUnidad{" + "unidad=" + unidad + ", anterior=" + anterior + '}';
+        return "Unidad " + unidad.getTipo() + "cambiada de " + anterior.toString() + '}';
     }
     
     

@@ -62,7 +62,7 @@ public class OperacionAtencionServicio extends Operacion {
 
     @Override
     public String toString() {
-        return "Operación puesta en servicio " + solicitud.getDescripcion();
+        return "Solicitud puesta en ejecución. Descripción: " + solicitud.getDescripcion();
     }
 
 }

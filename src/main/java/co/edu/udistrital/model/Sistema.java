@@ -77,7 +77,7 @@ public class Sistema {
                     u.setEstado(EstadoUnidad.ACTIVO);
                     u.setDisponibilidad(true);
                     historial.apilar(new OperacionCambioEstadoUnidad(u, estadoAnterior, disponibilidadAnterior));
-                    return "Unidad sacada de mantenimiento";
+                    return "Unidad sacada de mantenimiento. Recargue la página para ver los cambios.";
                 }
                 case ACTIVO: {
                     EstadoUnidad estadoAnterior = u.getEstado();
@@ -88,7 +88,7 @@ public class Sistema {
                     return "Unidad enviada a mantenimiento";
                 }
                 default:
-                    throw new IllegalArgumentException("La unidad se encuentra ocupada, no se puede enviar a mantenimiento.");
+                    throw new IllegalArgumentException("La unidad se encuentra ocupada, no se puede enviar a mantenimiento. Recargue la página para ver los cambios.");
             }
         }
     }
@@ -96,7 +96,7 @@ public class Sistema {
     public void añadirTecnico(String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
         Tecnico tecnico = new Tecnico(nombre, especialidad, disponibilidad, estado);
         listaTecnicos.agregar(tecnico);
-        System.out.println("Tecnico registrado con exito " + tecnico.getNombre() + " " + tecnico.getEspecialidad() + " " + tecnico.getEstado());
+        System.out.println("Tecnico registrado con exito " + tecnico.getNombre() + " " + tecnico.getEspecialidad() + " " + tecnico.getEstado() + "Recargue la página para ver los cambios.");
     }
 
     public void actualizarTecnico(Tecnico tecnico, String id, String nombre, TipoServicio especialidad, boolean disponibilidad, EstadoTecnico estado) {
@@ -277,7 +277,7 @@ public class Sistema {
         kit.setRequiereReposicion(false);
         pilaKits.apilar(kit);
         listaKits.eliminar(kit);
-        return "Kit apilado con éxito.";
+        return "Kit apilado con éxito. Recargue la página para ver los cambios.";
     }
 
     public Kit utilizarKit() {
