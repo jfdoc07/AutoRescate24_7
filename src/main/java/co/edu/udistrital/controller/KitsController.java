@@ -43,14 +43,14 @@ public class KitsController {
                 guardarUnidad();
             }
         });
-        
+
         this.vista.getEnviarSacarMantenimiento().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 enviarSacarMantenimiento();
             }
         });
-        
+
         this.vista.getEnviarAPila().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -86,12 +86,12 @@ public class KitsController {
         sistema.añadirUnidad(tipoUnidad, zona);
         vista.mostrarMensaje("Unidad guardada " + tipoUnidad + " " + zona);
     }
-    
-    public void enviarSacarMantenimiento(){
-        try{
+
+    public void enviarSacarMantenimiento() {
+        try {
             String idUnidad = vista.getIdUnidadSeleccionada();
             vista.mostrarMensaje(sistema.enviarSacarMantenimiento(idUnidad));
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             vista.mostrarMensaje(e.getMessage());
         }
     }
@@ -118,46 +118,39 @@ public class KitsController {
         }
         vista.mostrarTablaUnidades(datos);
     }
-    
-    public void mostrarKits(){
-        if (sistema.getListaKits() == null){
-            vista.mostrarTablaKits(new String [0][4]);
-            return;
+
+    public void mostrarKitRevision() {
+        if (!sistema.getPilaKitsRevision().estaVacia() || !sistema.getPilaKitsRevision().estaVacia()) {
+            Kit k = sistema.getPilaKitsRevision().verCima();
+            if (k != null) {
+                String[] datos = new String[3];
+                datos[0] = k.getDescripcion();
+                datos[1] = k.isCompleto() ? "Si" : "No";
+                datos[2] = k.isRequiereReposicion() ? "Si" : "No";
+                vista.mostrarKitRevision(datos);
+            } else {
+                vista.mostrarKitRevision(null);
+            }
+        } else {
+            vista.mostrarKitRevision(null);
         }
-        
-        int n = sistema.getListaKits().getTamanno();
-        String[][] datos = new String[n][5];
-        
-        ListaEnlazadaSimple.Iterador<Kit> it = sistema.getListaKits().iterador();
-        int i = 0;
-        while(it.tieneSiguiente()){
-            Kit k = it.siguiente();
-            datos[i][0] = k.getUuid().toString();
-            datos[i][1] = k.getDescripcion();
-            datos[i][2] = k.isCompleto() ? "Sí" : "No";
-            datos[i][3] = k.isRequiereReposicion() ? "Sí" : "No";
-            
-            i++;
-        }
-        vista.mostrarTablaKits(datos);
     }
-    
-    public void añadirAPila(){
-        try{
-            String idKit = vista.getIdKitSeleccionado();
-            vista.mostrarMensaje(sistema.enviarKitAPila(idKit));
+
+    public void añadirAPila() {
+        try {
+            vista.mostrarMensaje(sistema.enviarKitAPila());
         } catch (IllegalArgumentException e) {
             vista.mostrarMensaje(e.getMessage());
         }
     }
-    
-    public void mostrarProximoKit(){
-        if (!sistema.getPilaKits().estaVacia()){
+
+    public void mostrarProximoKit() {
+        if (!sistema.getPilaKits().estaVacia()) {
             Kit k = sistema.getPilaKits().verCima();
-            if(k != null) {
+            if (k != null) {
                 String desc = k.getDescripcion();
                 vista.mostrarProximoKit(desc);
-            }else{
+            } else {
                 vista.mostrarProximoKit(null);
             }
         } else {

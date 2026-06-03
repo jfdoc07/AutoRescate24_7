@@ -33,12 +33,6 @@ public class PanelKits extends javax.swing.JPanel {
                 filaSeleccionadaUnidades = tablaUnidades.getSelectedRow();
             }
         });
-
-        tablaKits.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                filaSeleccionadaKits = tablaKits.getSelectedRow();
-            }
-        });
     }
 
     /**
@@ -57,13 +51,16 @@ public class PanelKits extends javax.swing.JPanel {
         descripcion = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
         enviarAPila = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablaKits = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
         proximoKit = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         descProximoKit = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        proximoKit1 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        descKitRevisable = new javax.swing.JLabel();
+        completoKitRevisable = new javax.swing.JLabel();
+        requiereRepoKitRevisable = new javax.swing.JLabel();
         panelRegistroUnidades = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         tipoUnidad = new javax.swing.JComboBox<>();
@@ -99,19 +96,6 @@ public class PanelKits extends javax.swing.JPanel {
             }
         });
 
-        tablaKits.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(tablaKits);
-
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Kits pendientes de revisión:");
         jLabel7.setToolTipText("");
@@ -131,7 +115,7 @@ public class PanelKits extends javax.swing.JPanel {
             .addGroup(proximoKitLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(proximoKitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
                     .addComponent(descProximoKit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -141,13 +125,52 @@ public class PanelKits extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(descProximoKit, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                .addComponent(descProximoKit, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Ingreso de kits");
+
+        proximoKit1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Próximo kit a revisar:");
+
+        descKitRevisable.setText("Descripción: -");
+
+        completoKitRevisable.setText("- ");
+
+        requiereRepoKitRevisable.setText("- ");
+
+        javax.swing.GroupLayout proximoKit1Layout = new javax.swing.GroupLayout(proximoKit1);
+        proximoKit1.setLayout(proximoKit1Layout);
+        proximoKit1Layout.setHorizontalGroup(
+            proximoKit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(proximoKit1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(proximoKit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE)
+                    .addComponent(descKitRevisable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(completoKitRevisable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(requiereRepoKitRevisable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        proximoKit1Layout.setVerticalGroup(
+            proximoKit1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(proximoKit1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addGap(18, 18, 18)
+                .addComponent(descKitRevisable, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(completoKitRevisable, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(requiereRepoKitRevisable, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout panelRegistroKitsLayout = new javax.swing.GroupLayout(panelRegistroKits);
         panelRegistroKits.setLayout(panelRegistroKitsLayout);
@@ -159,16 +182,16 @@ public class PanelKits extends javax.swing.JPanel {
                     .addComponent(proximoKit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(descripcionScroll)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                     .addGroup(panelRegistroKitsLayout.createSequentialGroup()
                         .addGap(200, 200, 200)
                         .addComponent(botonGuardarKit)
                         .addGap(0, 208, Short.MAX_VALUE))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(proximoKit1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(panelRegistroKitsLayout.createSequentialGroup()
-                .addGap(182, 182, 182)
+                .addGap(178, 178, 178)
                 .addComponent(enviarAPila)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -183,15 +206,15 @@ public class PanelKits extends javax.swing.JPanel {
                 .addComponent(descripcionScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(botonGuardarKit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(proximoKit1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(enviarAPila)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(proximoKit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65))
+                .addGap(99, 99, 99))
         );
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -335,6 +358,8 @@ public class PanelKits extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonGuardarKit;
+    private javax.swing.JLabel completoKitRevisable;
+    private javax.swing.JLabel descKitRevisable;
     private javax.swing.JLabel descProximoKit;
     private javax.swing.JTextArea descripcion;
     private javax.swing.JScrollPane descripcionScroll;
@@ -349,13 +374,14 @@ public class PanelKits extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel panelRegistroKits;
     private javax.swing.JPanel panelRegistroUnidades;
     private javax.swing.JPanel proximoKit;
-    private javax.swing.JTable tablaKits;
+    private javax.swing.JPanel proximoKit1;
+    private javax.swing.JLabel requiereRepoKitRevisable;
     private javax.swing.JTable tablaUnidades;
     private javax.swing.JComboBox<String> tipoUnidad;
     private javax.swing.JComboBox<String> zona;
@@ -430,26 +456,16 @@ public class PanelKits extends javax.swing.JPanel {
         tablaUnidades.setModel(modelo);
     }
 
-    public void mostrarTablaKits(String[][] datos) {
-        idsKits = new String[datos.length];
-        filaSeleccionadaKits = -1;
-
-        String[] columnas = {"Descripción", "Completo", "Requiere reposición"};
-
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        for (int i = 0; i < datos.length; i++) {
-            idsKits[i] = datos[i][0];
-            modelo.addRow(new Object[]{
-                datos[i][1], datos[i][2], datos[i][3]
-            });
+    public void mostrarKitRevision(String[] datos) {
+        if (datos == null) {
+            descKitRevisable.setText("Sin kits pendientes por revisar.");
+            completoKitRevisable.setText("-");
+            requiereRepoKitRevisable.setText("-");
+        } else {
+            descKitRevisable.setText("Descripción: " + datos[0]);
+            completoKitRevisable.setText("¿Está completo? " + datos[1]);
+            requiereRepoKitRevisable.setText("¿Requiere reposición? " + datos[2]);
         }
-
-        tablaKits.setModel(modelo);
     }
 
     public String getIdUnidadSeleccionada() {
@@ -457,13 +473,6 @@ public class PanelKits extends javax.swing.JPanel {
             return null;
         }
         return idsUnidades[filaSeleccionadaUnidades];
-    }
-
-    public String getIdKitSeleccionado() {
-        if (idsKits == null || filaSeleccionadaKits > idsKits.length || filaSeleccionadaKits < 0) {
-            return null;
-        }
-        return idsKits[filaSeleccionadaKits];
     }
 
     public void mostrarProximoKit(String desc) {

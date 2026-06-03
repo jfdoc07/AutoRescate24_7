@@ -35,7 +35,7 @@ public class OperacionCierreServicio extends Operacion {
         }
 
         if (kit != null) {
-            sistema.getListaKits().eliminar(kit);
+            sistema.getPilaKitsRevision().desapilar();
         }
 
         solicitud.setEstado(EstadoSolicitud.EN_EJECUCION);

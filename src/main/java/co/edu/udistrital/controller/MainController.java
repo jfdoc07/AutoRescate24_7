@@ -67,7 +67,7 @@ public class MainController {
         ventana.getBotonKits().addActionListener(e -> {
             ventana.mostrarPanel(ventana.getKits());
             kitsController.mostrarUnidades();
-            kitsController.mostrarKits();
+            kitsController.mostrarKitRevision();
             kitsController.mostrarProximoKit();
         });
 

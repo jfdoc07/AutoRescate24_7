@@ -14,7 +14,7 @@ public class Sistema {
     private Pila<Kit> pilaKits;
     private ListaEnlazadaSimple<UnidadServicio> listaUnidades;
     private ListaEnlazadaSimple<Tecnico> listaTecnicos;
-    private ListaEnlazadaSimple<Kit> listaKits;
+    private Pila<Kit> pilaKitsRevision;
     private ListaEnlazadaSimple<Cliente> listaClientes;
     private ListaEnlazadaSimple<SolicitudServicio> listaEnEjecucion;
     private ListaEnlazadaSimple<SolicitudServicio> listaCerradas;
@@ -26,7 +26,7 @@ public class Sistema {
         pilaKits = new Pila<>();
         listaUnidades = new ListaEnlazadaSimple<>();
         listaTecnicos = new ListaEnlazadaSimple<>();
-        listaKits = new ListaEnlazadaSimple<>();
+        pilaKitsRevision = new Pila<>();
         listaClientes = new ListaEnlazadaSimple<>();
         listaEnEjecucion = new ListaEnlazadaSimple<>();
         listaCerradas = new ListaEnlazadaSimple<>();
@@ -193,7 +193,7 @@ public class Sistema {
 
         tecnicoDisponible.setDisponibilidad(false);
         tecnicoDisponible.setEstado(EstadoTecnico.ASIGNADO);
-        
+
         historial.apilar(new OperacionAtencionServicio(solicitud, unidadDisponible, tecnicoDisponible, kit));
 
         listaEnEjecucion.agregar(solicitud);
@@ -207,10 +207,10 @@ public class Sistema {
 
         System.out.println("=== ANALIZANDO SOLICITUD ===");
         System.out.println("ID que llegó desde la JTable: [" + solicitudIdStr + "]");
-        
+
         java.util.UUID uuidBuscado = java.util.UUID.fromString(solicitudIdStr);
         SolicitudServicio solicitud = listaEnEjecucion.obtenerPorUuid(uuidBuscado);
-        
+
         if (solicitud == null) {
             throw new IllegalArgumentException("No se encontró la solicitud en ejecución.");
         }
@@ -236,13 +236,15 @@ public class Sistema {
                 solicitud.getKitAsignado().setCompleto(false);
                 solicitud.getKitAsignado().setRequiereReposicion(true);
             }
-            listaKits.agregar(solicitud.getKitAsignado());
+
+            // CAMBIO CRÍTICO: El kit usado entra directo al tope de la pila de revisión
+            pilaKitsRevision.apilar(solicitud.getKitAsignado());
         }
 
         listaEnEjecucion.eliminar(solicitud);
         listaCerradas.agregar(solicitud);
         historial.apilar(new OperacionCierreServicio(solicitud));
-        
+
         try {
             csv(); // Actualiza el archivo CSV al cerrar
         } catch (IOException e) {
@@ -254,33 +256,31 @@ public class Sistema {
 
     public Kit añadirKit(String descripcion, boolean completo, boolean requiereReposicion) {
         Kit kit = new Kit(descripcion, completo, requiereReposicion);
-        listaKits.agregar(kit);
+        pilaKitsRevision.apilar(kit);
         return kit;
     }
 
-    public String enviarKitAPila(String idKit) {
-        if (idKit == null) {
-            throw new IllegalArgumentException("No se seleccionó ningun kit.");
+    public String enviarKitAPila() {
+        if (pilaKitsRevision.estaVacia()) {
+            throw new IllegalArgumentException("No hay kits pendientes en la zona de revisión.");
         }
-        java.util.UUID idReal = java.util.UUID.fromString(idKit);
-        Kit kit = buscarKitPorUuid(idReal);
+        Kit kit = pilaKitsRevision.desapilar();
         if (kit == null) {
             throw new IllegalArgumentException("El kit no existe en el sistema.");
         }
         kit.setCompleto(true);
         kit.setRequiereReposicion(false);
         pilaKits.apilar(kit);
-        listaKits.eliminar(kit);
-        return "Kit apilado con éxito. Recargue la página para ver los cambios.";
+        return "Kit" + kit.getDescripcion() +" verificado con éxito y movido a la estantería de disponibles. Recargue la página para ver los cambios.";
     }
 
     public Kit utilizarKit() {
         return pilaKits.desapilar();
     }
 
-    public void eliminarKit(Kit kit) {
-        listaKits.eliminar(kit);
-    }
+    /*public void eliminarKit(Kit kit) {
+        pilaKits.desapilar(kit);
+    }*/
 
     public void actualizarKit(Kit kit, UUID id, String descripcion, boolean completo, boolean requiereReposicion) {
         if (pilaKits.contiene(kit)) {
@@ -295,8 +295,8 @@ public class Sistema {
         return pilaKits.verCima();
     }
 
-    public ListaEnlazadaSimple<Kit> getListaKits() {
-        return listaKits;
+    public Pila<Kit> getPilaKitsRevision() {
+        return pilaKitsRevision;
     }
 
     public void registrarOperacion(Operacion operacion) {
@@ -304,7 +304,9 @@ public class Sistema {
     }
 
     public String deshacerOperacion() {
-        if (historial == null || historial.estaVacia()) throw new IllegalArgumentException("El historial está vacío.");
+        if (historial == null || historial.estaVacia()) {
+            throw new IllegalArgumentException("El historial está vacío.");
+        }
         Operacion operacion = historial.verCima();
         historial.desapilar();
         operacion.deshacer(this);
@@ -371,7 +373,7 @@ public class Sistema {
         if (uuidBuscado == null) {
             return null;
         }
-        return listaKits.obtenerPorUuid(uuidBuscado);
+        return pilaKits.obtenerPorUuid(uuidBuscado);
     }
 
     public Tecnico buscarTecnicoPorUuid(UUID uuidBuscado) {
